@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+category registration page
+<form action="/product/category" method="post" >
+    <label for="asd">
+    <input id="asd" name="productCategory" type="text" placeholder="새로운 카테고리를 입력하세요">
+    </label>
+    <button>저장</button>
+</form>
+<table>
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>항목</th>
+            <th>등록자</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="category:${categoryList}">
+            <td th:text="${category.id}"></td>
+            <td th:text="${category.productCategory}"></td>
+            <td th:text="${category.memberId}"></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
