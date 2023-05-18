@@ -1,7 +1,6 @@
 package com.gamsung.scmproject.productCategory.vo;
 
 
-import com.gamsung.scmproject.productCategory.model.ProductCategoryEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,15 +16,7 @@ public class ProductCategoryVo {
 
     private long memberId;
 
-    public ProductCategoryEntity parseProductCategoryEntity(){
 
-        ProductCategoryEntity entity = new ProductCategoryEntity();
-        entity.setId(this.id);
-        entity.setMemberId(this.memberId);
-        entity.setProductCategory(this.productCategory);
-
-        return entity;
-    }
 
 
 

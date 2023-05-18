@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gamsung.scmproject.productCategory.mapper.ProductCategoryMapper">
+    <insert id="insertProductCategory">
+        INSERT INTO productCategory
+            (
+             productSizeId,
+             productCategory,
+             memberId
+            )
+        VALUES
+            (
+             #{productSizeId},
+             #{productCategory},
+             #{memberId}
+            )
+    </insert>
+    <select id="selectProductCategoryList" resultType="com.gamsung.scmproject.productCategory.vo.ProductCategoryVo">
+        SELECT * FROM productCategory
+    </select>
+
+
+</mapper>
