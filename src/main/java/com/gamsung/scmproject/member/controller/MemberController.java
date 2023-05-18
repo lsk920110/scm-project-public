@@ -20,6 +20,10 @@ public class MemberController {
 
     //회원 리스트 가져오기
 
+//    @GetMapping(value="/")
+//    public String main(){
+//        return "blank";
+//    }
 
     //회원가입
     @PostMapping("/api/member/join")

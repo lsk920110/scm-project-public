@@ -12,6 +12,7 @@ import java.util.List;
 @Service
 public class MemberServiceImpl implements MemberService {
 
+
     @Autowired
     private MemberMapper memberMapper;
 
