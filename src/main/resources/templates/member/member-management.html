@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:replace="common/fragments/config-fragment :: ConfigFragment">
+  <!--    <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">공통 타이틀</title>-->
+</head>
+<body>
+<th:block th:replace="common/fragments/left-navbar" :: LeftNavbarFragment></th:block>
+<th:block th:replace="common/fragments/header-fragment" :: headerFragment></th:block>
+
+<div class="content-area">
+  <h2>직원관리</h2>
+  <hr>
+  <form action="/member/join" method="post">
+    <div class="input-group mb-3">
+      <select name="department" class="form-select" aria-label="Default select example">
+        <option th:each="department : ${departmentList}" th:value="${department.id}" th:text="${department.department}"></option>
+      </select>
+    </div>
+    <div class="input-group mb-3">
+      <span style="width : 100px;" class="input-group-text" id="basic-addon1">이름</span>
+      <input name="name" type="text" class="form-control" placeholder="ex) 홍길동" aria-label="function-name" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+      <span style="width : 100px;" class="input-group-text" id="basic-addon2">비밀번호</span>
+      <input name="password" type="text" class="form-control" placeholder="" aria-label="function-name" aria-describedby="basic-addon2">
+    </div>
+    <div class="input-group mb-3">
+      <span style="width : 100px;" class="input-group-text" id="basic-addon3">이메일</span>
+      <input name="email" type="text" class="form-control" placeholder="ex) gam@sung.com" aria-label="relative-url" aria-describedby="basic-addon3">
+    </div>
+    <div class="input-group mb-3">
+      <span style="width : 100px;" class="input-group-text" id="basic-addon4">생년월일</span>
+      <input name="birth" type="text" class="form-control" placeholder="ex) 19001231" aria-label="relative-url" aria-describedby="basic-addon4">
+    </div>
+
+    <div class="d-grid gap-2 col-6 mx-auto">
+      <button class="btn btn-primary" type="submit">저장</button>
+    </div>
+  </form>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>부서</th>
+      <th>이름</th>
+      <th>이메일</th>
+      <th>생년월일</th>
+      <th>재직상태</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="member : ${memberList}">
+      <td th:text="${member.id}"></td>
+      <td th:text="${member.department}"></td>
+      <td th:text="${member.name}"></td>
+      <td th:text="${member.email}"></td>
+      <td th:text="${member.birth}"></td>
+      <td th:text="${member.state}"></td>
+    </tr>
+    </tbody>
+    <tfoot></tfoot>
+  </table>
+
+</div>
+</body>
+</html>

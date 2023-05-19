@@ -1,5 +1,6 @@
 package com.gamsung.scmproject.member.service.impl;
 
+import com.gamsung.scmproject.common.vo.DepartmentVo;
 import com.gamsung.scmproject.member.mapper.MemberMapper;
 import com.gamsung.scmproject.member.service.MemberService;
 import com.gamsung.scmproject.member.vo.MemberForSessionVo;
@@ -20,6 +21,7 @@ public class MemberServiceImpl implements MemberService {
     public void joinMember(MemberVo params) {
         //encrypt
         String password = params.getPassword();
+        params.setState("1");
 
         int row = memberMapper.insertMember(params);
     }
@@ -50,6 +52,11 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<MemberVo> selectMemberList() {
-        return null;
+        return memberMapper.selectMemberList();
+    }
+
+    @Override
+    public List<DepartmentVo> selectDepartmentList() {
+        return memberMapper.selectDepartmentList();
     }
 }

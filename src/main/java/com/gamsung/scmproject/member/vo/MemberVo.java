@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class MemberVo {
     private Long id;
+    private String name;
     private String department;
     private String email;
     private String password;

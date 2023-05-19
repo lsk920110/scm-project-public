@@ -3,7 +3,7 @@
 xmlns:th="http://www.thymeleaf.org"
 th:fragment="LeftNavbarFragment">
 <style>
-  nav{
+  nav.sidebar{
     width : 200px;
     background-color : #eee;
     border-right : 1px solid #ddd;
@@ -26,25 +26,28 @@ th:fragment="LeftNavbarFragment">
     color: white;
   }
   .content-area{
-    padding-left : 200px;
+    padding-left : 250px;
+    padding-top : 150px;
+    padding-right : 50px;
   }
 </style>
 <body>
-  <nav>
+  <nav class="sidebar">
     <h1>한국총괄포탈</h1>
     <div class="menu list-group">
-      <button type="button" class="list-group-item list-group-item-action">메뉴관리</button>
-      <button type="button" class="list-group-item list-group-item-action">제품카테고리</button>
-      <button type="button" class="list-group-item list-group-item-action">거래선</button>
-      <button type="button" class="list-group-item list-group-item-action active" aria-current="true">모델등록</button>
-      <button type="button" class="list-group-item list-group-item-action">상품코드등록</button>
-      <button type="button" class="list-group-item list-group-item-action">직원관리</button>
-      <button type="button" class="list-group-item list-group-item-action">코드조회</button>
-      <button type="button" class="list-group-item list-group-item-action">발주관리</button>
-      <button type="button" class="list-group-item list-group-item-action">주문관리</button>
-      <button type="button" class="list-group-item list-group-item-action">매출조회</button>
-      <button type="button" class="list-group-item list-group-item-action">해피콜관리</button>
-      <button type="button" class="list-group-item list-group-item-action">배송상황조회</button>
+      <button th:each="menu : ${sidebar}" th:onclick="|location.href='@{${menu.link}}'|" class="list-group-item list-group-item-action" th:text="${menu.menuTitle}"></button>
+<!--      <button type="button" class="list-group-item list-group-item-action">메뉴관리</button>-->
+<!--      <button type="button" class="list-group-item list-group-item-action">제품카테고리</button>-->
+<!--      <button type="button" class="list-group-item list-group-item-action">거래선</button>-->
+<!--      <button type="button" class="list-group-item list-group-item-action active" aria-current="true">모델등록</button>-->
+<!--      <button type="button" class="list-group-item list-group-item-action">상품코드등록</button>-->
+<!--      <button type="button" class="list-group-item list-group-item-action">직원관리</button>-->
+<!--      <button type="button" class="list-group-item list-group-item-action">코드조회</button>-->
+<!--      <button type="button" class="list-group-item list-group-item-action">발주관리</button>-->
+<!--      <button type="button" class="list-group-item list-group-item-action">주문관리</button>-->
+<!--      <button type="button" class="list-group-item list-group-item-action">매출조회</button>-->
+<!--      <button type="button" class="list-group-item list-group-item-action">해피콜관리</button>-->
+<!--      <button type="button" class="list-group-item list-group-item-action">배송상황조회</button>-->
     </div>
   </nav>
 </body>

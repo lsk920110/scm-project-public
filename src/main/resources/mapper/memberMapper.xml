@@ -5,12 +5,14 @@
     <insert id="insertMember">
         INSERT INTO member
         (`department`,
+         `name`,
          `email`,
          `password`,
          `birth`,
          `state`,
          `role`)
         VALUES ( #{department},
+                #{name},
                  #{email},
                  #{password}
                , #{birth}
@@ -23,9 +25,16 @@
         FROM
             member
         WHERE `id` = #{id} AND `state` = `1`
+        ORDER BY `id` DESC
     </select>
     <select id="duplicateEmailCheck" resultType="java.lang.Integer">
     SELECT count(email) FROM member WHERE email = #{param1} AND state = '1'
+    </select>
+    <select id="selectDepartmentList" resultType="com.gamsung.scmproject.common.vo.DepartmentVo">
+        SELECT id , department FROM department
+    </select>
+    <select id="selectMemberList" resultType="com.gamsung.scmproject.member.vo.MemberVo">
+        SELECT id,department,name,email,birth,state FROM member
     </select>
 
 

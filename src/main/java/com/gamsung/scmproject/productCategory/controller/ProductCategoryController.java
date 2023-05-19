@@ -17,7 +17,8 @@ import java.util.List;
 public class ProductCategoryController {
 
 
-    @Autowired
+
+
     private ProductCategoryService productCategoryService;
 
     @GetMapping("/api/product/category/list")

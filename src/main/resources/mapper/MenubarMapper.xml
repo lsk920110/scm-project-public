@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gamsung.scmproject.menubar.mapper.MenuBarMapper">
+
+
+    <insert id="insertManuBar" parameterType="com.gamsung.scmproject.menubar.vo.MenubarInfoVo">
+        INSERT INTO menubar (menuTitle,link,position,state) VALUES (#{menuTitle},#{link},#{position},'1')
+    </insert>
+    <select id="selectMenubar" resultType="com.gamsung.scmproject.menubar.vo.MenubarInfoVo">
+        SELECT id,menuTitle,link,position,state FROM menubar WHERE position = #{position}
+    </select>
+</mapper>
