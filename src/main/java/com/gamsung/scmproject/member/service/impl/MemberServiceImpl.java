@@ -3,6 +3,7 @@ package com.gamsung.scmproject.member.service.impl;
 import com.gamsung.scmproject.common.vo.DepartmentVo;
 import com.gamsung.scmproject.member.mapper.MemberMapper;
 import com.gamsung.scmproject.member.service.MemberService;
+import com.gamsung.scmproject.member.vo.LoginResultVo;
 import com.gamsung.scmproject.member.vo.MemberForSessionVo;
 import com.gamsung.scmproject.member.vo.MemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +28,24 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Boolean loginMember(MemberVo params) {
+    public LoginResultVo loginMember(MemberVo params) {
         MemberVo loginMember = memberMapper.selectMemberForLogin(params.getId());
+        LoginResultVo loginResultVo = new LoginResultVo();
         Boolean result;
         if(loginMember == null){
             //결과 자체가 없음
-            return false;
+            loginResultVo.setLoginSuccess(false);
+            return loginResultVo;
         } else {
-            result = params.getPassword() == loginMember.getPassword();
-            return result;
+            result = params.getPassword().equals(loginMember.getPassword());
+            loginResultVo.setLoginSuccess(result);
+            if(result){
+                loginResultVo.setId(loginMember.getId());
+                loginResultVo.setName(loginMember.getName());
+            }
+
         }
+        return loginResultVo;
     }
 
     @Override

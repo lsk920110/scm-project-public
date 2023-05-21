@@ -11,4 +11,8 @@ public interface MenuBarMapper {
     int insertManuBar(MenubarInfoVo params);
 
     List<MenubarInfoVo> selectMenubar(@Qualifier("position") String position);
+
+    List<MenubarInfoVo> selectMenubarAllForManagement();
+
+    void updateMenuBar(MenubarInfoVo params);
 }

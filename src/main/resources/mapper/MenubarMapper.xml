@@ -8,6 +8,13 @@
         INSERT INTO menubar (menuTitle,link,position,state) VALUES (#{menuTitle},#{link},#{position},'1')
     </insert>
     <select id="selectMenubar" resultType="com.gamsung.scmproject.menubar.vo.MenubarInfoVo">
-        SELECT id,menuTitle,link,position,state FROM menubar WHERE position = #{position}
+        SELECT id,menuTitle,link,position,state FROM menubar WHERE position = #{position} AND state = '1'
     </select>
+    <select id="selectMenubarAllForManagement" resultType="com.gamsung.scmproject.menubar.vo.MenubarInfoVo">
+        SELECT id,menuTitle,link,position,state FROM menubar
+    </select>
+    <update id="updateMenuBar" parameterType="com.gamsung.scmproject.menubar.vo.MenubarInfoVo">
+    UPDATE `menubar` SET state = #{state} , position = #{position}
+    WHERE id = #{id}
+    </update>
 </mapper>

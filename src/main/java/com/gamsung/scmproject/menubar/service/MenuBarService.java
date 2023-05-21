@@ -16,4 +16,7 @@ public interface MenuBarService {
     List<MenubarInfoVo> selectHeaderMenubarAll();
 
 
+    List<MenubarInfoVo> selectMenubarAllForManagement();
+
+    void updateMenuBar(MenubarInfoVo params);
 }

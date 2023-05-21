@@ -13,6 +13,7 @@ public class MemberForSessionVo {
     private String department;
     private String email;
     private String role;
+    private String name;
 
 
     public MemberForSessionVo(){
@@ -23,6 +24,7 @@ public class MemberForSessionVo {
         this.role = memberVo.getRole();
         this.department = memberVo.getDepartment();
         this.email = memberVo.getEmail();
+        this.name = memberVo.getName();
     }
 
 }

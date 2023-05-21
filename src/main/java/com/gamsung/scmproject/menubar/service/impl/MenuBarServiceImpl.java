@@ -37,4 +37,14 @@ public class MenuBarServiceImpl implements MenuBarService {
     public List<MenubarInfoVo> selectHeaderMenubarAll() {
         return menuBarMapper.selectMenubar("2");
     }
+
+    @Override
+    public List<MenubarInfoVo> selectMenubarAllForManagement() {
+        return menuBarMapper.selectMenubarAllForManagement();
+    }
+
+    @Override
+    public void updateMenuBar(MenubarInfoVo params) {
+        menuBarMapper.updateMenuBar(params);
+    }
 }

@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head th:replace="common/fragments/config-fragment :: ConfigFragment">
-<!--    <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">공통 타이틀</title>-->
+    <!--    <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">공통 타이틀</title>-->
 </head>
 <body>
 <th:block th:replace="common/fragments/left-navbar" :: LeftNavbarFragment></th:block>
@@ -15,53 +15,98 @@
     <hr>
     <form action="/menubar/registration" method="post">
 
-    <div style="width : 500px;"  class="input-group mb-3">
-        <span style="width : 100px;" class="input-group-text" id="basic-addon1">기 능 명</span>
-        <input name="menuTitle" type="text" class="form-control" placeholder="ex) 발주관리 , 주문관리" aria-label="function-name" aria-describedby="basic-addon1">
-    </div>
-    <div style="width : 500px;"  class="input-group mb-3">
-        <span style="width : 100px;" class="input-group-text" id="basic-addon2">상대 URL</span>
-        <input name="link" type="text" class="form-control" placeholder="ex) /api/user , /order/registration" aria-label="relative-url" aria-describedby="basic-addon2">
-    </div>
-    <div class="form-check">
-        <input value="1" class="form-check-input" type="radio" name="position" id="flexRadioDefault1" checked>
-        <label class="form-check-label" for="flexRadioDefault1">
-            사이드바
-        </label>
-    </div>
+        <div style="width : 500px;" class="input-group mb-3">
+            <span style="width : 100px;" class="input-group-text" id="basic-addon1">기 능 명</span>
+            <input name="menuTitle" type="text" class="form-control" placeholder="ex) 발주관리 , 주문관리"
+                   aria-label="function-name" aria-describedby="basic-addon1">
+        </div>
+        <div style="width : 500px;" class="input-group mb-3">
+            <span style="width : 100px;" class="input-group-text" id="basic-addon2">상대 URL</span>
+            <input name="link" type="text" class="form-control" placeholder="ex) /api/user , /order/registration"
+                   aria-label="relative-url" aria-describedby="basic-addon2">
+        </div>
+        <div class="form-check">
+            <input value="1" class="form-check-input" type="radio" name="position" id="flexRadioDefault1" checked>
+            <label class="form-check-label" for="flexRadioDefault1">
+                사이드바
+            </label>
+        </div>
         <input value="2" class="form-check-input" type="radio" name="position" id="flexRadioDefault2">
         <label class="form-check-label" for="flexRadioDefault2">
             헤더
         </label>
-    <div class="form-check">
-    </div>
-    <div class="d-grid gap-2 col-6 mx-auto">
-        <button class="btn btn-primary" type="submit">저장</button>
-    </div>
+        <div class="form-check">
+        </div>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <button class="btn btn-primary" type="submit">저장</button>
+        </div>
     </form>
-
-    <table class="table">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>기능</th>
-            <th>URL</th>
-            <th>위치</th>
-            <th>상태</th>
-        </tr>
-        </thead>
-        <tbody>
-            <tr th:each="menu : ${sidebar}">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>기능</th>
+                <th>URL</th>
+                <th>위치</th>
+                <th>상태</th>
+                <th>수정</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="menu : ${menubars}">
                 <td th:text="${menu.id}"></td>
                 <td th:text="${menu.menuTitle}"></td>
                 <td th:text="${menu.link}"></td>
-                <td th:text="${menu.position}"></td>
-                <td th:text="${menu.state}"></td>
+                <td>
+                    <label>
+                        <select class="form-select" th:classappend="'position-'+${menu.id}">
+                            <option th:selected="${menu.position == '1'}" th:value="1" th:text="사이드"></option>
+                            <option th:selected="${menu.position == '2'}" th:value="2" th:text="상단"></option>
+                        </select>
+                    </label>
+                </td>
+                <td>
+                    <div class="form-check form-switch">
+                        <input th:checked="${menu.state == '1'}" class="form-check-input" th:classappend="'state-'+${menu.id}" type="checkbox" role="switch">
+                    </div>
+<!--                    <label>-->
+<!--                        <select class="form-select" th:classappend="'state-'+${menu.id}">-->
+<!--                            <option th:selected="${menu.state == '1'}" th:value="1" th:text="사용"></option>-->
+<!--                            <option th:selected="${menu.state == '2'}" th:value="2" th:text="미사용"></option>-->
+<!--                        </select>-->
+<!--                    </label>-->
+                </td>
+                <td>
+                    <button class="btn btn-primary" th:onclick="|update(${menu.id})|">저장</button>
+                </td>
             </tr>
-        </tbody>
-        <tfoot></tfoot>
-    </table>
-
+            </tbody>
+            <tfoot></tfoot>
+        </table>
+    </div>
 </div>
 </body>
+<script>
+    function update(id){
+        const position = $('.position-'+id).val();
+        const state = $('.state-'+id).checked ? '1' : '2';
+        const params = {
+            id : id,
+            state : state,
+            position : position
+        }
+        $.ajax({
+            method : 'put',
+            url : '/menubar/update',
+            data : JSON.stringify(params),
+            contentType : 'application/json',
+            dataType : 'json',
+            success : (data)=>{
+                console.log(data);
+            },
+            error : (e)=>{console.log(e);}
+        })
+    }
+</script>
 </html>

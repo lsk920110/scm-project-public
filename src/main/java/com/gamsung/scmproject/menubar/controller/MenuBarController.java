@@ -1,30 +1,34 @@
 package com.gamsung.scmproject.menubar.controller;
 
+import com.gamsung.scmproject.common.constant.SessionKeys;
+import com.gamsung.scmproject.common.controller.BaseController;
+import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.menubar.service.MenuBarService;
 import com.gamsung.scmproject.menubar.vo.MenubarInfoVo;
 import com.gamsung.scmproject.menubar.vo.MenubarSideAndHeaderVo;
+import org.cef.handler.CefLoadHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
 @Controller
-public class MenuBarController {
+public class MenuBarController extends BaseController {
 
     @Autowired
     private MenuBarService menuBarService;
 
     @GetMapping("/menubar/management")
     public ModelAndView menuManagementForm(){
-        MenubarSideAndHeaderVo menubars = menuBarService.selectMenubarAll();
-
+//        MenubarSideAndHeaderVo menubarList = menuBarService.selectMenubarAll();
+        List<MenubarInfoVo> menubars = menuBarService.selectMenubarAllForManagement();
         ModelAndView mav = new ModelAndView("menu-management-form");
-        mav.addObject("sidebar",menubars.getSidebarList());
-        mav.addObject("header",menubars.getHeaderList());
+        mav.addObject("menubars",menubars);
+        menuBarInfo(mav);
+//        mav.addObject(SessionKeys.HEADER,menubarList.getHeaderList());
+//        mav.addObject(SessionKeys.SIDEBAR,menubarList.getSidebarList());
         return mav;
     }
 
@@ -34,6 +38,17 @@ public class MenuBarController {
         menuBarService.insertMenuBar(params);
 
         return "redirect:/menubar/management";
+    }
+
+    @PutMapping("/menubar/update")
+    @ResponseBody
+    public ResultVo<?> menubarUpdate(@RequestBody MenubarInfoVo params){
+        menuBarService.updateMenuBar(params);
+        ResultVo<Object> resultVo = new ResultVo<>();
+        resultVo.setErrorCode("0000");
+        resultVo.setErrorMessage("success");
+
+        return resultVo;
     }
 
 

@@ -5,13 +5,11 @@
     <insert id="insertProductCategory">
         INSERT INTO productCategory
             (
-             productSizeId,
              productCategory,
              memberId
             )
         VALUES
             (
-             #{productSizeId},
              #{productCategory},
              #{memberId}
             )

@@ -1,23 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="common/fragments/config-fragment :: ConfigFragment">
+
 <body>
-category registration page
+<th:block th:replace="common/fragments/left-navbar" :: LeftNavbarFragment></th:block>
+<th:block th:replace="common/fragments/header-fragment" :: headerFragment></th:block>
+<div class="content-area">
+    <h2>직원관리</h2>
+    <hr>
 <form action="/product/category" method="post" >
-    <label for="asd">
-    <input id="asd" name="productCategory" type="text" placeholder="새로운 카테고리를 입력하세요">
-    </label>
-    <button>저장</button>
+    <div class="form-floating mb-3">
+        <input name="productCategory" type="text" class="form-control" id="floatingInput" placeholder="제품 카테고리를 입력하세요">
+        <label for="floatingInput">제품 카테고리를 입력하세요</label>
+    </div>
+<!--    <div class="form-floating mb-3">-->
+<!--        <select class="form-select">-->
+<!--            <option th:text="대형가전"></option>-->
+<!--            <option th:text="소형가전"></option>-->
+<!--        </select>-->
+<!--    </div>-->
+    <div class="d-grid gap-2">
+        <button class="btn btn-primary">저장</button>
+    </div>
 </form>
-<table>
+    <div style="height : 50px;"></div>
+<table class="table">
     <thead>
         <tr>
             <th>No</th>
             <th>항목</th>
             <th>등록자</th>
+            <th>등록일</th>
         </tr>
     </thead>
     <tbody>
@@ -25,8 +40,10 @@ category registration page
             <td th:text="${category.id}"></td>
             <td th:text="${category.productCategory}"></td>
             <td th:text="${category.memberId}"></td>
+            <td></td>
         </tr>
     </tbody>
 </table>
+</div>
 </body>
 </html>

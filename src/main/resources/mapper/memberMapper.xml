@@ -24,7 +24,7 @@
             `id`,`department`,`email`,`password`,`birth`,`state`,`role`
         FROM
             member
-        WHERE `id` = #{id} AND `state` = `1`
+        WHERE `id` = #{id} AND `state` = '1'
         ORDER BY `id` DESC
     </select>
     <select id="duplicateEmailCheck" resultType="java.lang.Integer">

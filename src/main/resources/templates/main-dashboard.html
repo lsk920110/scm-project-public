@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:replace="common/fragments/config-fragment :: ConfigFragment">
+<!--    <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">공통 타이틀</title>-->
+</head>
+<body>
+<th:block th:replace="common/fragments/left-navbar" :: LeftNavbarFragment></th:block>
+<th:block th:replace="common/fragments/header-fragment" :: headerFragment></th:block>
+
+<div class="content-area">
+ dashboard
+</div>
+</body>
+</html>
