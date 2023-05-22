@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gamsung.scmproject.productModel.mapper.ProductModelMapper">
+    <select id="selectProductModelAll" resultType="com.gamsung.scmproject.productModel.vo.ProductModelVo">
+        SELECT
+            id
+             , productCategoryId
+             , modelCord
+             , stock
+             , regDt
+             , productStatus
+             , memberId
+        FROM productModelInfo
+    </select>
+    <insert id="insertProductModel" parameterType="com.gamsung.scmproject.productModel.vo.ProductModelVo">
+        INSERT INTO
+        productModelInfo
+        (
+         productCategoryId
+        ,modelCord
+        ,stock
+        ,productStatus
+        ,memberId
+        )
+        VALUES
+        (
+         #{productCategoryId}
+         ,#{modelCord}
+         ,#{stock}
+         ,#{productStatus}
+         ,#{loginId}
+         )
+    </insert>
+
+</mapper>
