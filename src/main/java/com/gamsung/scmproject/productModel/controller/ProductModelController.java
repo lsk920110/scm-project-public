@@ -4,7 +4,9 @@ import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.productCategory.service.ProductCategoryService;
 import com.gamsung.scmproject.productCategory.vo.ProductCategoryVo;
 import com.gamsung.scmproject.productModel.service.ProductModelService;
+import com.gamsung.scmproject.productModel.vo.ProductModelForListVo;
 import com.gamsung.scmproject.productModel.vo.ProductModelVo;
+import com.gamsung.scmproject.productModel.vo.ProductStatusVo;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,10 +31,12 @@ public class ProductModelController extends BaseController {
     public ModelAndView productModelForm(){
         ModelAndView mav = new ModelAndView("productModel/productModel-form");
         menuBarInfo(mav);
-//        List<ProductModelVo> list = productModelService.selectProductModelAll();
-//        mav.addObject("productModelList",list);
-        List<ProductCategoryVo> productCategoryList = productCategoryService.selectProductCategoryList();
+        List<ProductModelForListVo> list = productModelService.selectProductModelAll();
+        mav.addObject("productModelList",list);
+        List<ProductCategoryVo> productCategoryList = productCategoryService.selectProductCategoryList("1");
         mav.addObject("productCategoryList",productCategoryList);
+        List<ProductStatusVo> productStatusList = productCategoryService.selectProductStatusList();
+        mav.addObject("productStatusList",productStatusList);
         return mav;
     }
 

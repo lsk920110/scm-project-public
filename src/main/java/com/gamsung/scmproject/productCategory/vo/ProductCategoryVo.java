@@ -12,10 +12,9 @@ public class ProductCategoryVo {
 
 
     private long id;
-    private long productSizeId;
-
     private String productCategory;
 
+    private String state;
     private long memberId;
     private LocalDateTime regDt;
 

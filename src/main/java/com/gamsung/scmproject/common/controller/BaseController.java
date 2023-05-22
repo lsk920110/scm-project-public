@@ -36,7 +36,12 @@ public class BaseController {
     }
 
     public void sessionLoginInfo(HttpSession session , AuthIf params){
+
         MemberForSessionVo memberVo = (MemberForSessionVo) session.getAttribute(SessionKeys.LOGIN_ID_INFO);
+        if (memberVo == null) {
+            memberVo = new MemberForSessionVo();
+            memberVo.setId(100000L);
+        };
         log.info("getId : {}",memberVo.getId());
         params.setLoginId(memberVo.getId());
         log.info("logniId : {}", params.getLoginId());

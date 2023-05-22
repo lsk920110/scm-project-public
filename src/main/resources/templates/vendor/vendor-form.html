@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="common/fragments/config-fragment :: ConfigFragment">
+<body>
+<th:block th:replace="common/fragments/left-navbar" :: LeftNavbarFragment></th:block>
+<th:block th:replace="common/fragments/header-fragment" :: headerFragment></th:block>
+<div class="content-area">
+    <h2>거래선 관리</h2>
+    <hr>
+    <form action="/product/model" method="post">
+
+        <div style="padding-bottom: 5px;">
+
+        </div>
+        <div style="padding-bottom: 10px;">
+
+        </div>
+        <div class="form-floating mb-3">
+            <input name="vendorName" id="vendorName" class="form-control" type="text">
+            <label for="vendorName">업체명을 입력하세요</label>
+        </div>
+        <div class="d-grid gap-2">
+            <input placeholder="사업자 번호를 입력하세요" class="form-control" name="businessRegNum" id="businessRegNum"
+                   type="text">
+            <label for="businessRegNum"></label>
+        </div>
+        <div class="d-grid gap-2">
+            <input placeholder="거래시작일" class="form-control" name="contractStartDt" id="contractStartDt"
+                   type="date">
+            <label for="contractStartDt"></label>
+        </div>
+        <div class="d-grid gap-2">
+            <input placeholder="거래종료일" class="form-control" name="contractEndDt" id="contractEndDt"
+                   type="date">
+            <label for="contractEndDt"></label>
+        </div>
+        <div class="d-grid gap-2">
+            <button class="btn btn-primary">저장</button>
+        </div>
+    </form>
+    <div style="height : 15px;"></div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>카테고리</th>
+            <th>모델코드</th>
+            <th>재고량</th>
+            <th>출시상태</th>
+            <th>등록자</th>
+            <th>등록일자</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="productModel : ${productModelList}">
+            <td th:text="${productModel.id}" aria-label="아이디"></td>
+            <td th:text="${productModel.productCategory}" aria-label="카데고리"></td>
+            <td th:text="${productModel.modelCord}" aria-label="모델코드"></td>
+            <td th:text="${productModel.stock}" aria-label="재고량"></td>
+            <td aria-label="출시상태">
+                <select class="form-select">
+                    <option th:each="productStatus : ${productStatusList}"
+                            th:value="${productStatus.id}"
+                            th:text="${productStatus.productStatus}"
+                            th:selected="${productStatus.id} == ${productModel.productStatusId}"
+                    ></option>
+                </select>
+            </td>
+            <td th:text="${productModel.name}" aria-label="등록자"></td>
+            <td th:text="${productModel.regDt}" aria-label="등록일"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

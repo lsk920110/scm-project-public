@@ -32,11 +32,7 @@ public class ProductCategoryController extends BaseController {
     @GetMapping("/product/category")
     public String productCategoryManagementForm(Model model){
         menuBarInfo(model);
-//        MenubarSideAndHeaderVo menubars = menuBarService.selectMenubarAll();
-//
-//        model.addAttribute(SessionKeys.SIDEBAR,menubars.getSidebarList());
-//        model.addAttribute(SessionKeys.HEADER,menubars.getHeaderList());
-        List<ProductCategoryVo> productCategoryList = productCategoryService.selectProductCategoryList();
+        List<ProductCategoryVo> productCategoryList = productCategoryService.selectProductCategoryList(null);
         model.addAttribute("productCategoryList",productCategoryList);
         return "category/category-form";
     }
@@ -51,7 +47,7 @@ public class ProductCategoryController extends BaseController {
     @GetMapping("/api/product/category/list")
     @ResponseBody
     public ResultVo<?> categoryPage(){
-        List<ProductCategoryVo> productCategorylist = productCategoryService.selectProductCategoryList();
+        List<ProductCategoryVo> productCategorylist = productCategoryService.selectProductCategoryList(null);
         ResultVo<List<ProductCategoryVo>> resultVo = new ResultVo<>();
         return resultVo;
     }

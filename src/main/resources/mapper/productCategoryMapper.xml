@@ -2,6 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gamsung.scmproject.productCategory.mapper.ProductCategoryMapper">
+    <select id="selectProductCategoryList"
+            resultType="com.gamsung.scmproject.productCategory.vo.ProductCategoryVo">
+        SELECT * FROM productCategory
+        <if test="state eq '1'.toString()">
+            WHERE state = 1
+        </if>
+    </select>
+    <select id="selectProductStatusList" resultType="com.gamsung.scmproject.productModel.vo.ProductStatusVo">
+    SELECT id , productStatus
+    FROM productStatus
+    </select>
+
     <insert id="insertProductCategory">
         INSERT INTO productCategory
             (
@@ -14,9 +26,6 @@
              #{memberId}
             )
     </insert>
-    <select id="selectProductCategoryList" resultType="com.gamsung.scmproject.productCategory.vo.ProductCategoryVo">
-        SELECT * FROM productCategory
-    </select>
 
 
 </mapper>

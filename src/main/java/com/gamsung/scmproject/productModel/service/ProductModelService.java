@@ -1,11 +1,12 @@
 package com.gamsung.scmproject.productModel.service;
 
+import com.gamsung.scmproject.productModel.vo.ProductModelForListVo;
 import com.gamsung.scmproject.productModel.vo.ProductModelVo;
 
 import java.util.List;
 
 public interface ProductModelService {
-    List<ProductModelVo> selectProductModelAll();
+    List<ProductModelForListVo> selectProductModelAll();
 
 
     void insertProductModel(ProductModelVo params);
