@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gamsung.scmproject.vendor.mapper.VendorMapper">
+
+
+    <insert id="insertVendorInfo" parameterType="com.gamsung.scmproject.vendor.vo.VendorVo">
+    INSERT INTO vendorInfo
+        (
+         vendorName,
+         businessRegNum,
+         contractStartDt,
+         contractEndDt,
+         state,
+         regMemberId,
+         regDt
+        )
+    VALUES
+        (
+        #{vendorName},
+         #{businessRegNum},
+         #{contractStartDt},
+         #{contractEndDt},
+         #{state},
+         #{regMemberId},
+         #{regDt}
+        )
+
+    </insert>
+    <select id="selectVendorList" resultType="com.gamsung.scmproject.vendor.vo.VendorWithMemberNameVo">
+        select
+            vi.id,
+            vi.vendorName,
+            vi.businessRegNum,
+            DATE_FORMAT(vi.contractStartDt,'%Y-%m-%d') contractStartDt,
+            DATE_FORMAT(vi.contractEndDt,'%Y-%m-%d') contractEndDt,
+            vi.state,
+            vi.regMemberId,
+            DATE_FORMAT(vi.regDt,'%Y/%m/%d %h:%m:%s') regDt,
+            m.name
+        from vendorInfo vi
+        inner join `member` m
+            on vi.regMemberId = m.id
+        <if test="state != null">
+            WHERE vi.state = #{state}
+        </if>
+    </select>
+</mapper>

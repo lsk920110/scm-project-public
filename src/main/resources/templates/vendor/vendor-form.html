@@ -9,10 +9,9 @@
 <div class="content-area">
     <h2>거래선 관리</h2>
     <hr>
-    <form action="/product/model" method="post">
+    <form action="/vendor/registration" method="post">
 
         <div style="padding-bottom: 5px;">
-
         </div>
         <div style="padding-bottom: 10px;">
 
@@ -26,6 +25,12 @@
                    type="text">
             <label for="businessRegNum"></label>
         </div>
+        <script>
+            $(document).on('keypress','#businessRegNum',function(event){
+                return event.key === '-' || event.key >= 0 && event.key <= 9;
+
+            });
+        </script>
         <div class="d-grid gap-2">
             <input placeholder="거래시작일" class="form-control" name="contractStartDt" id="contractStartDt"
                    type="date">
@@ -44,32 +49,51 @@
     <table class="table">
         <thead>
         <tr>
-            <th>id</th>
-            <th>카테고리</th>
-            <th>모델코드</th>
-            <th>재고량</th>
-            <th>출시상태</th>
+            <th>
+                <input class="form-check-input" type="checkbox" value="" id="all-check">
+            <script>
+                $('#all-check').click(function(){
+                    if($(this).is(':checked')){
+                        $('.form-check-input').attr('checked',true);
+                    } else {
+                        $('.form-check-input').attr('checked',false);
+                    }
+                });
+
+                $('#all-check').change(function(){
+                    if($(this).is(':checked')){
+                        $('input:checkbox[name="checkbox"]').prop('checked',true);
+                    } else {
+                        $('input:checkbox[name="checkbox"]').prop('checked',false);
+                    }
+                })
+
+
+            </script>
+            </th>
+            <th>거래선코드</th>
+            <th>거래선</th>
+            <th>사업자번호</th>
+            <th>거래시작일</th>
+            <th>거래종료일</th>
+            <th>거래상태</th>
             <th>등록자</th>
             <th>등록일자</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="productModel : ${productModelList}">
-            <td th:text="${productModel.id}" aria-label="아이디"></td>
-            <td th:text="${productModel.productCategory}" aria-label="카데고리"></td>
-            <td th:text="${productModel.modelCord}" aria-label="모델코드"></td>
-            <td th:text="${productModel.stock}" aria-label="재고량"></td>
-            <td aria-label="출시상태">
-                <select class="form-select">
-                    <option th:each="productStatus : ${productStatusList}"
-                            th:value="${productStatus.id}"
-                            th:text="${productStatus.productStatus}"
-                            th:selected="${productStatus.id} == ${productModel.productStatusId}"
-                    ></option>
-                </select>
-            </td>
-            <td th:text="${productModel.name}" aria-label="등록자"></td>
-            <td th:text="${productModel.regDt}" aria-label="등록일"></td>
+        <tr th:each="vendor : ${vendorList}">
+            <th>
+                <input class="form-check-input" name="checkbox" type="checkbox" value="" th:id="check+${vendor.id}">
+            </th>
+            <td th:text="${vendor.id}"></td>
+            <td th:text="${vendor.vendorName}"></td>
+            <td th:text="${vendor.businessRegNum}"></td>
+            <td th:text="${vendor.contractStartDt}"></td>
+            <td th:text="${vendor.contractEndDt}"></td>
+            <td th:text="${vendor.state}"></td>
+            <td th:text="${vendor.name}"></td>
+            <td th:text="${vendor.regDt}"></td>
         </tr>
         </tbody>
     </table>
