@@ -1,11 +1,9 @@
 package com.gamsung.scmproject.menubar.controller;
 
-import com.gamsung.scmproject.common.constant.SessionKeys;
 import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.menubar.service.MenuBarService;
 import com.gamsung.scmproject.menubar.vo.MenubarInfoVo;
-import com.gamsung.scmproject.menubar.vo.MenubarSideAndHeaderVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +21,7 @@ public class MenuBarController extends BaseController {
     public ModelAndView menuManagementForm(){
 //        MenubarSideAndHeaderVo menubarList = menuBarService.selectMenubarAll();
         List<MenubarInfoVo> menubars = menuBarService.selectMenubarAllForManagement();
-        ModelAndView mav = new ModelAndView("menu-management-form");
+        ModelAndView mav = new ModelAndView("menubar/menu-management-form");
         mav.addObject("menubars",menubars);
         menuBarInfo(mav);
 //        mav.addObject(SessionKeys.HEADER,menubarList.getHeaderList());

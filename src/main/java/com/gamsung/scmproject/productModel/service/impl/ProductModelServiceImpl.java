@@ -23,4 +23,9 @@ public class ProductModelServiceImpl implements ProductModelService {
     public void insertProductModel(ProductModelVo params) {
         productModelMapper.insertProductModel(params);
     }
+
+    @Override
+    public List<ProductModelVo> selectProductModelByProductCategoryId(Long productCategoryId) {
+        return productModelMapper.selectProductModelByProductCategoryId(productCategoryId);
+    }
 }
