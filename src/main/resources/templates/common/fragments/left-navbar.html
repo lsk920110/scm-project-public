@@ -34,7 +34,7 @@ th:fragment="LeftNavbarFragment">
 <body>
   <nav class="sidebar">
     <h1>한국총괄포탈</h1>
-    <div class="menu list-group">
+    <div class="menu list-group" style="padding-top: 30px;">
       <button th:each="menu : ${sidebar}" th:onclick="|location.href='@{${menu.link}}'|" class="list-group-item list-group-item-action" th:text="${menu.menuTitle}"></button>
 <!--      <button type="button" class="list-group-item list-group-item-action">메뉴관리</button>-->
 <!--      <button type="button" class="list-group-item list-group-item-action">제품카테고리</button>-->

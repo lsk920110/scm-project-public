@@ -14,20 +14,20 @@
              , ps.productStatus
              , pmi.memberId
              , m.name
-        FROM productModelInfo pmi
+        FROM productModel pmi
                  inner join productCategory pc on pmi.productCategoryId = pc.id
                  inner join `member` m on pmi.memberId = m.id
                  inner join productStatus ps on pmi.productStatusId = ps.id
     </select>
     <select id="selectProductModelByProductCategoryId"
             resultType="com.gamsung.scmproject.productModel.vo.ProductModelVo">
-        SELECT id , modelCord FROM productModelInfo WHERE productCategoryId = #{productCategoryId}
+        SELECT id , modelCord FROM productModel WHERE productCategoryId = #{productCategoryId}
 
 
     </select>
     <insert id="insertProductModel" parameterType="com.gamsung.scmproject.productModel.vo.ProductModelVo">
         INSERT INTO
-        productModelInfo
+        productModel
         (
          productCategoryId
         ,modelCord

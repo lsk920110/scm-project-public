@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gamsung.scmproject.productCord.mapper.ProductCordMapper">
+
+    <insert id="insertProductCord" parameterType="com.gamsung.scmproject.productCord.vo.ProductCordVo">
+        INSERT INTO productCord
+        (
+         vendorId,
+         productModelId,
+         productCord,
+         supplyPrice,
+         supplyPriceVat,
+         regDt,
+         state,
+         regMemberId
+        )
+        VALUES
+            (
+             #{vendorId},
+             #{productModelId},
+             #{productCord},
+             #{supplyPrice},
+             #{supplyPriceVat},
+             now(),
+             '1',
+             #{loginId}
+            )
+    </insert>
+    <select id="productCordList" resultType="com.gamsung.scmproject.productCord.vo.ProductCordVoForList">
+        SELECT
+            pc.id,
+            pc.vendorId ,
+            vi.vendorName ,
+            pc.productModelId,
+            pm.modelCord ,
+            pc.productCord,
+            pc.supplyPrice ,
+            pc.supplyPriceVat ,
+            pc.regDt,
+            pc.state,
+            pc.regMemberId,
+            m.name
+        FROM
+            productCord pc
+                INNER JOIN vendorInfo vi on pc.vendorId = vi.id
+                INNER JOIN productModel pm on pc.productModelId = pm.id
+                INNER JOIN `member` m on m.id = pc.regMemberId
+        <if test="state != null">
+            WHERE pc.state = #{state}
+        </if>
+    </select>
+</mapper>

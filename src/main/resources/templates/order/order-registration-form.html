@@ -7,9 +7,18 @@
 <th:block th:replace="common/fragments/left-navbar" :: LeftNavbarFragment></th:block>
 <th:block th:replace="common/fragments/header-fragment" :: headerFragment></th:block>
 <div class="content-area">
-    <h2>코드관리</h2>
+    <h2>발주등록</h2>
     <hr>
     <form action="/productCord" method="post">
+        거래선 , 판매번호 ,
+        이름 , 연락처1,2 , 주소, 비고,
+        상품코드 , 수량
+        요구납기일
+        <div class="input-group">
+            <span class="input-group-text">거래선</span>
+            <input type="text" aria-label="vendorId name" class="form-control">
+            <input type="text" disabled aria-label="vendorName" class="form-control">
+        </div>
 
         <div style="padding-bottom: 5px;">
             <select name="vendorId" id="vendor-select" class="form-select">
