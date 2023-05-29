@@ -50,4 +50,19 @@
             WHERE pc.state = #{state}
         </if>
     </select>
+    <select id="selectProductModelInfoByVendorIdAndProductCord"
+            resultType="com.gamsung.scmproject.productCord.vo.ProductCordWithVendorAndProductModelVo">
+        SELECT
+            vendorId ,
+            productCord ,
+            supplyPrice ,
+            supplyPriceVat,
+            pm.modelCord
+        FROM productCord pc
+            INNER JOIN
+            vendorInfo vi ON pc.vendorId = vi.id
+            INNER JOIN productModel pm on pc.productModelId = pm.id
+        WHERE pc.state = 1
+          AND productStatusId = 1
+    </select>
 </mapper>

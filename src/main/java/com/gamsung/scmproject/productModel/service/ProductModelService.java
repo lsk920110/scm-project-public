@@ -12,4 +12,5 @@ public interface ProductModelService {
     void insertProductModel(ProductModelVo params);
 
     List<ProductModelVo> selectProductModelByProductCategoryId(Long productCategoryId);
+
 }

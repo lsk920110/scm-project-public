@@ -25,6 +25,7 @@
 
 
     </select>
+
     <insert id="insertProductModel" parameterType="com.gamsung.scmproject.productModel.vo.ProductModelVo">
         INSERT INTO
         productModel
@@ -44,4 +45,5 @@
          ,#{loginId}
          )
     </insert>
+
 </mapper>

@@ -27,4 +27,9 @@ public class VendorServiceImpl implements VendorService {
     public List<VendorWithMemberNameVo> selectVendorList(String state) {
         return vendorMapper.selectVendorList(state);
     }
+
+    @Override
+    public VendorVo selectVendorNameById(long vendorId) {
+        return vendorMapper.selectVendorNameById(vendorId);
+    }
 }

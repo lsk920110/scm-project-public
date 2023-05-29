@@ -4,6 +4,8 @@ import com.gamsung.scmproject.productCord.mapper.ProductCordMapper;
 import com.gamsung.scmproject.productCord.service.ProductCordService;
 import com.gamsung.scmproject.productCord.vo.ProductCordVo;
 import com.gamsung.scmproject.productCord.vo.ProductCordVoForList;
+import com.gamsung.scmproject.productCord.vo.ProductCordWithVendorAndProductModelVo;
+import com.gamsung.scmproject.productModel.vo.ProductModelVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +24,10 @@ public class ProductCordServiceImpl implements ProductCordService {
     @Override
     public List<ProductCordVoForList> productCordList(String state) {
         return productCordMapper.productCordList(state);
+    }
+
+    @Override
+    public ProductCordWithVendorAndProductModelVo selectProductModelInfoByVendorIdAndProductCord(String productCord, Long vendorId) {
+        return productCordMapper.selectProductModelInfoByVendorIdAndProductCord(productCord,vendorId);
     }
 }

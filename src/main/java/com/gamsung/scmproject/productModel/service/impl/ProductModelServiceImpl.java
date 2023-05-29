@@ -28,4 +28,8 @@ public class ProductModelServiceImpl implements ProductModelService {
     public List<ProductModelVo> selectProductModelByProductCategoryId(Long productCategoryId) {
         return productModelMapper.selectProductModelByProductCategoryId(productCategoryId);
     }
+
+
+
+
 }

@@ -17,4 +17,5 @@ public interface ProductModelMapper {
 
     List<ProductModelVo> selectProductModelByProductCategoryId(
             @Qualifier("productCategoryId") Long productCategoryId);
+
 }

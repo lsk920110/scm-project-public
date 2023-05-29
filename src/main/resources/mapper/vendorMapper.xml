@@ -45,4 +45,19 @@
             WHERE vi.state = #{state}
         </if>
     </select>
+    <select id="selectVendorNameById" resultType="com.gamsung.scmproject.vendor.vo.VendorVo">
+    SELECT
+        id,
+        vendorName
+    FROM
+        vendorInfo
+    WHERE
+        state = #{state}
+    AND
+        id = #{id}
+    AND
+        contractStartDt <![CDATA[<=]]> now()
+    AND
+        contractEndDt <![CDATA[>=]]> now()
+    </select>
 </mapper>

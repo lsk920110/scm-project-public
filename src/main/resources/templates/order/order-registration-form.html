@@ -14,12 +14,6 @@
         이름 , 연락처1,2 , 주소, 비고,
         상품코드 , 수량
         요구납기일
-        <div class="input-group">
-            <span class="input-group-text">거래선</span>
-            <input type="text" aria-label="vendorId name" class="form-control">
-            <input type="text" disabled aria-label="vendorName" class="form-control">
-        </div>
-
         <div style="padding-bottom: 5px;">
             <select name="vendorId" id="vendor-select" class="form-select">
                 <option th:each="vendor : ${vendorList}"
@@ -29,121 +23,125 @@
             </select>
             <label for="vendor-select"></label>
         </div>
-        <div style="padding-bottom: 10px;">
-            <select name="productCategory" class="form-select">
-                <option value="0">카테고리를 선택해주세요</option>
-                <option th:each="productCategory : ${productCategoryList}"
-                        th:value="${productCategory.id}"
-                        th:text="${productCategory.productCategory}"></option>
-            </select>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="sales-no">판매번호</span>
+            <input type="text" name="sales-no" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
         </div>
-<!--        productCategory 선택시 관련된 코드들을 불러옴 -->
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="customer-name">고객명</span>
+            <input type="text" name="sales-no" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="customer-phone-number">연락처</span>
+            <input type="text" name="sales-no" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="customer-address-first">시/도</span>
+            <input type="text" name="customerAddressFirst" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="customer-address-second">군/구</span>
+            <input type="text" name="customerAddressSecond" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="customer-address-third">읍/면/동</span>
+            <input type="text" name="customerAddressThird" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="customer-address-detail">상세주소</span>
+            <input type="text" name="customerAddressDetail" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="delivery-req-dt">배송요청일</span>
+            <input type="date" name="deliveryReqDt" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="remarks">비고사항</span>
+            <input type="text" name="customerAddressDetail" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th><input type="checkbox"></th>
+                <th>상품코드</th>
+                <th>모델코드</th>
+                <th>수량</th>
+                <th>공급가</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="text" id="productCordEnter"></td>
+                <td></td>
+                <td></td>
+                <td><input type="button" value="삭제"></td>
+            </tr>
+            </tfoot>
+        </table>
         <script>
-            $('select[name="productCategory"]').change(function(e){
-                // const vendorId = $('#vendor-select').val();
+            $('#productCordEnter').keyup((event) => {
+                if (event.keyCode != 13) {
+                    return
+                }
+                // console.log(event.value);
+                // console.log(this);
+                // console.log($(this));
+
+
+                const productCord = $('#productCordEnter').val();
+                // console.log(productCord)
+                const vendorId = $('#vendor-select').val();
+                // const params = JSON.stringify({
+                //     productCord : productCord,
+                //     vendorId : vendorId
+                // });
+                console.log(productCord, vendorId)
                 $.ajax({
-                    url : `/api/product/model?productCategoryId=${this.value}`,
-                    method : 'GET',
-                    dataType : 'json',
-                    success : (result)=>{
+                    type: 'GET',
+                    url: `/api/productModelInfo?productCord=${productCord}&vendorId=${vendorId}`,
+                    dataType: 'json',
+                    success: (result) => {
                         console.log(result);
-                        let txt = result.result.length === 0
-                            ? '<option>등록된 모델이 없습니다.</option>' : '';
+                        let txt = '';
+                        txt +=
+                            `<tr>
+                            <td><input type="checkbox"/></td>
+                            <td class="productCord"><input class="productCord" type="text" value="${result.result.productCord}"></td>
+                            <td class="modelCord"><input class="modelCord" type="text" value="${result.result.modelCord}"></td>
+                            <td class="quantity"><input class="quantity" value="1" type="number" min="0" max="999" onchange="changeQuantity(this,${result.result.supplyPrice})"/></td>
+                            <td class="suplyPrice"><input class="supplyPrice" type="text" value="${result.result.supplyPrice}"></td>
+                            </tr>`;
+                        $('tbody').append(txt);
 
-                        result.result.forEach((item,idx)=>{
-                            txt += `<option value="${item.id}">${item.modelCord}</option>`;
-                        })
-
-                        $('select[name="productModelId"]').empty();
-                        $('select[name="productModelId"]').append(txt);
                     },
-                    error : ()=>{}
-                })
-
-            })
-        </script>
-        <div>
-            <select name="productModelId" class="form-select">
-                <option>-----</option>
-            </select>
-        </div>
-
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="inputGroup-supply-price">공급가</span>
-            <input type="number" name="supplyPrice" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-supply-price">
-        </div>
-        <script>
-            $('input[name="supplyPrice"]').keyup(function(){
-                const vat = Math.ceil(this.value / 10);
-                $('input[name="supplyPriceVat"]').val(vat);
-                $('input[name="supplyPriceVat"]').attr("min",vat -5);
-                $('input[name="supplyPriceVat"]').attr("max",vat +5);
-                $('input[name="total-price"]').val(parseInt(this.value) + parseInt(vat));
+                    error: (error) => {
+                        console.log(error);
+                        alert('통신에러입니다.');
+                    }
+                });
             });
-            $('input[name="supplyPriceVat"]').click(function(){
-                const supply_price = $('input[name="supply-price"]').val();
-                $('#total-price-input').val(parseInt(supply_price) + parseInt(this.value));
-            });
+            const changeQuantity=(e,supplyPrice)=>{
+                console.log(e);
+                console.log(supplyPrice);
+                const quantity = e.value;
+                console.log('quantity : ',quantity);
+                $(e).parent('td').next('td').innerHTML = e.value * supplyPrice;
 
-
+            }
         </script>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="inputGroup-supply-price-vat">부가세</span>
-            <input type="number" name="supplyPriceVat" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-supply-price-vat">
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="total-price">금액</span>
-            <input disabled type="number" id="total-price-input" class="form-control" aria-label="Sizing example input" aria-describedby="total-price">
-        </div>
-        <div class="form-floating mb-3">
-            <input name="productCord" id="productCord" class="form-control" type="text">
-            <label for="productCord">제품코드를 입력하세요</label>
-        </div>
-        <div class="d-grid gap-2">
-            <button class="btn btn-primary">저장</button>
-        </div>
     </form>
-    <div style="height : 15px;"></div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>id</th>
-            <th>거래선코드</th>
-            <th>거래선</th>
-            <th>모델코드</th>
-            <th>상품코드</th>
-            <th>공급가</th>
-            <th>부가세</th>
-            <th>등록자</th>
-            <th>코드상태</th>
-            <th>등록일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="productCord : ${productCordList}">
-            <td th:text="${productCord.id}"></td>
-            <td th:text="${productCord.vendorId}"></td>
-            <td th:text="${productCord.vendorName}"></td>
-            <td th:text="${productCord.modelCord}"></td>
-            <td th:text="${productCord.productCord}"></td>
-            <td th:text="${productCord.supplyPrice}"></td>
-            <td th:text="${productCord.supplyPriceVat}"></td>
-            <td th:text="${productCord.name}"></td>
-            <td th:text="${productCord.state}"></td>
-            <td th:text="${productCord.regDt}"></td>
-<!--            -->
-<!--            <td aria-label="출시상태">-->
-<!--                <select class="form-select">-->
-<!--                    <option th:each="productStatus : ${productStatusList}"-->
-<!--                            th:value="${productStatus.id}"-->
-<!--                            th:text="${productStatus.productStatus}"-->
-<!--                            th:selected="${productStatus.id} == ${productModel.productStatusId}"-->
-<!--                    ></option>-->
-<!--                </select>-->
-<!--            </td>-->
-        </tr>
-        </tbody>
-    </table>
 </div>
 
 </body>

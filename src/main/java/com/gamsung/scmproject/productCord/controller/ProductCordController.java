@@ -1,11 +1,14 @@
 package com.gamsung.scmproject.productCord.controller;
 
 import com.gamsung.scmproject.common.controller.BaseController;
+import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.productCategory.service.ProductCategoryService;
 import com.gamsung.scmproject.productCategory.vo.ProductCategoryVo;
 import com.gamsung.scmproject.productCord.service.ProductCordService;
 import com.gamsung.scmproject.productCord.vo.ProductCordVo;
 import com.gamsung.scmproject.productCord.vo.ProductCordVoForList;
+import com.gamsung.scmproject.productCord.vo.ProductCordWithVendorAndProductModelVo;
+import com.gamsung.scmproject.productModel.vo.ProductModelVo;
 import com.gamsung.scmproject.vendor.service.VendorService;
 import com.gamsung.scmproject.vendor.vo.VendorWithMemberNameVo;
 import jakarta.servlet.http.HttpSession;
@@ -14,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -48,5 +53,18 @@ public class ProductCordController extends BaseController {
         return "redirect:/productCord/management";
     }
 
+    @GetMapping("/api/productModelInfo")
+    @ResponseBody
+    public ResultVo<?> productModelInfoByVendorIdAndProductCord(
+            @RequestParam("productCord") String productCord, @RequestParam("vendorId") Long vendorId
+    ){
+        ProductCordWithVendorAndProductModelVo productModelInfo = productCordService.selectProductModelInfoByVendorIdAndProductCord(productCord,vendorId);
 
+        ResultVo<ProductCordWithVendorAndProductModelVo> resultVo = new ResultVo<>();
+        resultVo.setErrorCode("0000");
+        resultVo.setErrorMessage("success");
+        resultVo.setResult(productModelInfo);
+
+        return resultVo;
+    }
 }

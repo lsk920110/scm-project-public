@@ -11,4 +11,6 @@ public interface VendorMapper {
     void insertVendorInfo(VendorVo params);
 
     List<VendorWithMemberNameVo> selectVendorList(String state);
+
+    VendorVo selectVendorNameById(long vendorId);
 }
