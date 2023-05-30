@@ -1,20 +1,27 @@
 package com.gamsung.scmproject.order.controller;
 
 import com.gamsung.scmproject.common.controller.BaseController;
+import com.gamsung.scmproject.common.vo.ResultVo;
+import com.gamsung.scmproject.order.service.OrderService;
+import com.gamsung.scmproject.order.vo.OrderRegistrationInfoVo;
 import com.gamsung.scmproject.vendor.service.VendorService;
 import com.gamsung.scmproject.vendor.vo.VendorWithMemberNameVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 public class OrderController extends BaseController {
 
 
     @Autowired private VendorService vendorService;
+
+    @Autowired private OrderService orderService;
 
 
 
@@ -32,5 +39,23 @@ public class OrderController extends BaseController {
         return "order/order-management-form";
     }
 
+    @PostMapping("/api/order/registration")
+    @ResponseBody
+    public ResultVo<?> orderRegistration(
+            @RequestBody OrderRegistrationInfoVo params,
+            @RequestParam String callback
+            ){
+        log.info("params : {}",params.toString());
+
+        orderService.statementRegistration(params);
+        if(callback.equals("orderRegistration")){
+            orderService.orderRegistration(params);
+        }
+
+        ResultVo<Object> resultVo = new ResultVo<>();
+        resultVo.setErrorCode("0000");
+        resultVo.setErrorMessage("success");
+        return resultVo;
+    }
 
 }

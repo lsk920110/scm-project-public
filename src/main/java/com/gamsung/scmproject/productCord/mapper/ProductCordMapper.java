@@ -5,6 +5,7 @@ import com.gamsung.scmproject.productCord.vo.ProductCordVoForList;
 import com.gamsung.scmproject.productCord.vo.ProductCordWithVendorAndProductModelVo;
 import com.gamsung.scmproject.productModel.vo.ProductModelVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 
@@ -14,5 +15,6 @@ public interface ProductCordMapper {
 
     List<ProductCordVoForList> productCordList(String state);
 
-    ProductCordWithVendorAndProductModelVo selectProductModelInfoByVendorIdAndProductCord(String productCord, Long vendorId);
+    ProductCordWithVendorAndProductModelVo selectProductModelInfoByVendorIdAndProductCord(
+            @Qualifier("productCord") String productCord,@Qualifier("vendorId") Long vendorId);
 }

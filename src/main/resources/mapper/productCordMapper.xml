@@ -64,5 +64,7 @@
             INNER JOIN productModel pm on pc.productModelId = pm.id
         WHERE pc.state = 1
           AND productStatusId = 1
+        AND productCord = #{productCord}
+        AND vendorId = #{vendorId}
     </select>
 </mapper>

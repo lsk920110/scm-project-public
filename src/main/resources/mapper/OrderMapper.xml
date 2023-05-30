@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gamsung.scmproject.order.mapper.OrderMapper">
+
+    <insert id="insertStatement"
+            parameterType="com.gamsung.scmproject.order.vo.OrderRegistrationInfoVo"
+            useGeneratedKeys="true"
+            keyColumn="id"
+            keyProperty="id"
+    >
+    INSERT INTO `statement`
+    (
+         salesNo,
+         customerName,
+         customerPhoneNumber,
+         customerAddressFirst,
+         customerAddressSecond,
+         customerAddressThird,
+         customerAddressDetail,
+         deliveryReqDt,
+         remarks,
+         state,
+         vendorId,
+         regMemberId
+    )
+    VALUES
+        (
+         #{salesNo},
+         #{customerName},
+         #{customerPhoneNumber},
+         #{customerAddressFirst},
+         #{customerAddressSecond},
+         #{customerAddressThird},
+         #{customerAddressDetail},
+         #{deliveryReqDt},
+         #{remarks},
+         #{state},
+         #{vendorId},
+         #{regMemberId}
+        )
+    </insert>
+    <insert id="insertOrderProducts"
+            parameterType="java.util.List"
+    >
+        INSERT INTO
+        `statementProductCord`
+        (
+         `statementId`,
+         `orderSeq`,
+         `productCord`,
+         `orderQuantity`,
+         `state`
+        )
+        VALUES
+            <foreach collection="list" item="item" separator=",">
+                (
+                 #{item.statementId},
+                 #{item.productCord},
+                 #{item.orderSeq},
+                 #{item.orderQuantity},
+                 '1'
+                )
+            </foreach>
+
+    </insert>
+</mapper>
