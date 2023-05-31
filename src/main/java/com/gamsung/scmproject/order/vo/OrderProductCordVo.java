@@ -9,6 +9,8 @@ import lombok.ToString;
 @ToString
 public class OrderProductCordVo {
 
+
+    private Long id;
     private Long statementId;
     private int orderSeq;
     private String productCord;

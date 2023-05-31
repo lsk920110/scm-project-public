@@ -117,7 +117,10 @@
                     txt +=
                         `<tr class="productCord-info">
                             <td><input class="form-check" type="checkbox"/></td>
-                            <td class="productCord"><input name="productCord" disabled class="form-control productCord" type="text" value="${result.result.productCord}"></td>
+                            <td class="productCord">
+<!--                            <input name="productCordId" type="hidden" value="${result.result.productCordId}"/>-->
+                            <input name="productCord" disabled class="form-control productCord" type="text" value="${result.result.productCord}">
+                            </td>
                             <td class="modelCord"><input name="modelCord" disabled class="form-control modelCord" type="text" value="${result.result.modelCord}"></td>
                             <td class="quantity"><input name="orderQuantity" class="form-control quantity" value="1" type="number" min="1" max="999" onchange="changeQuantity(this,${result.result.supplyPrice})"/></td>
                             <td class="supplyPrice"><input disabled class="form-control supplyPrice" type="text" value="${result.result.supplyPrice}"></td>
@@ -142,10 +145,10 @@
     </script>
     <div class="d-grid gap-2 d-md-block" style="text-align : right;">
         <button class="btn btn-primary" type="button" onclick="createStatement()">전표생성</button>
-        <button class="btn btn-secondary" type="button">주문생성</button>
+        <button class="btn btn-secondary" type="button" onclick="createStatement('orderRegistration')">주문생성</button>
     </div>
     <script>
-        function createStatement() {
+        function createStatement(callback) {
             const form = $('form').serializeArray();
             let orderInfo = {}
             for (let i = 0; i < form.length; i++) {
@@ -170,7 +173,7 @@
             console.log(JSON.stringify(orderInfo));
             $.ajax({
                 type : 'post',
-                url : '/api/order/registration',
+                url : '/api/order/registration?callback='+callback,
                 data : JSON.stringify(orderInfo),
                 dataType : 'json',
                 contentType : 'application/json',

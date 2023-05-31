@@ -7,134 +7,42 @@
 <th:block th:replace="common/fragments/left-navbar" :: LeftNavbarFragment></th:block>
 <th:block th:replace="common/fragments/header-fragment" :: headerFragment></th:block>
 <div class="content-area">
-    <h2>코드관리</h2>
+    <h2>주문관리</h2>
     <hr>
-    <form action="/productCord" method="post">
-
-        <div style="padding-bottom: 5px;">
-            <select name="vendorId" id="vendor-select" class="form-select">
-                <option th:each="vendor : ${vendorList}"
-                        th:text="${vendor.vendorName}"
-                        th:value="${vendor.id}"
-                ></option>
+    <div>
+        <div style="width : 150px;">
+            <select class="form-select">
+                <option>거래선</option>
+                <option></option>
+                <option></option>
             </select>
-            <label for="vendor-select"></label>
-        </div>
-        <div style="padding-bottom: 10px;">
-            <select name="productCategory" class="form-select">
-                <option value="0">카테고리를 선택해주세요</option>
-                <option th:each="productCategory : ${productCategoryList}"
-                        th:value="${productCategory.id}"
-                        th:text="${productCategory.productCategory}"></option>
+            <select class="form-select">
+                <option>주문번호</option>
+                <option>발주번호</option>
+                <option>고객명</option>
             </select>
         </div>
-<!--        productCategory 선택시 관련된 코드들을 불러옴 -->
-        <script>
-            $('select[name="productCategory"]').change(function(e){
-                // const vendorId = $('#vendor-select').val();
-                $.ajax({
-                    url : `/api/product/model?productCategoryId=${this.value}`,
-                    method : 'GET',
-                    dataType : 'json',
-                    success : (result)=>{
-                        console.log(result);
-                        let txt = result.result.length === 0
-                            ? '<option>등록된 모델이 없습니다.</option>' : '';
+        <input class="form-control" type="text">
+        <input class="form-control" type="text">
+        <button class="btn btn-primary">검색</button>
+    </div>
+    <div>
+        <table class="table">
+            <thead>
+            <tr><input type="checkbox"></tr>
+            <tr>주문번호</tr>
+            <tr>판매번호</tr>
+            <tr>상품코드</tr>
+            <tr>모델코드</tr>
+            <tr>TC</tr>
+            <tr>요구납기일</tr>
+            <tr>배송예정일</tr>
+            <tr>납품번호</tr>
+            <tr>배송여부</tr>
+            </thead>
+        </table>
+    </div>
 
-                        result.result.forEach((item,idx)=>{
-                            txt += `<option value="${item.id}">${item.modelCord}</option>`;
-                        })
-
-                        $('select[name="productModelId"]').empty();
-                        $('select[name="productModelId"]').append(txt);
-                    },
-                    error : ()=>{}
-                })
-
-            })
-        </script>
-        <div>
-            <select name="productModelId" class="form-select">
-                <option>-----</option>
-            </select>
-        </div>
-
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="inputGroup-supply-price">공급가</span>
-            <input type="number" name="supplyPrice" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-supply-price">
-        </div>
-        <script>
-            $('input[name="supplyPrice"]').keyup(function(){
-                const vat = Math.ceil(this.value / 10);
-                $('input[name="supplyPriceVat"]').val(vat);
-                $('input[name="supplyPriceVat"]').attr("min",vat -5);
-                $('input[name="supplyPriceVat"]').attr("max",vat +5);
-                $('input[name="total-price"]').val(parseInt(this.value) + parseInt(vat));
-            });
-            $('input[name="supplyPriceVat"]').click(function(){
-                const supply_price = $('input[name="supply-price"]').val();
-                $('#total-price-input').val(parseInt(supply_price) + parseInt(this.value));
-            });
-
-
-        </script>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="inputGroup-supply-price-vat">부가세</span>
-            <input type="number" name="supplyPriceVat" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-supply-price-vat">
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="total-price">금액</span>
-            <input disabled type="number" id="total-price-input" class="form-control" aria-label="Sizing example input" aria-describedby="total-price">
-        </div>
-        <div class="form-floating mb-3">
-            <input name="productCord" id="productCord" class="form-control" type="text">
-            <label for="productCord">제품코드를 입력하세요</label>
-        </div>
-        <div class="d-grid gap-2">
-            <button class="btn btn-primary">저장</button>
-        </div>
-    </form>
-    <div style="height : 15px;"></div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>id</th>
-            <th>거래선코드</th>
-            <th>거래선</th>
-            <th>모델코드</th>
-            <th>상품코드</th>
-            <th>공급가</th>
-            <th>부가세</th>
-            <th>등록자</th>
-            <th>코드상태</th>
-            <th>등록일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="productCord : ${productCordList}">
-            <td th:text="${productCord.id}"></td>
-            <td th:text="${productCord.vendorId}"></td>
-            <td th:text="${productCord.vendorName}"></td>
-            <td th:text="${productCord.modelCord}"></td>
-            <td th:text="${productCord.productCord}"></td>
-            <td th:text="${productCord.supplyPrice}"></td>
-            <td th:text="${productCord.supplyPriceVat}"></td>
-            <td th:text="${productCord.name}"></td>
-            <td th:text="${productCord.state}"></td>
-            <td th:text="${productCord.regDt}"></td>
-<!--            -->
-<!--            <td aria-label="출시상태">-->
-<!--                <select class="form-select">-->
-<!--                    <option th:each="productStatus : ${productStatusList}"-->
-<!--                            th:value="${productStatus.id}"-->
-<!--                            th:text="${productStatus.productStatus}"-->
-<!--                            th:selected="${productStatus.id} == ${productModel.productStatusId}"-->
-<!--                    ></option>-->
-<!--                </select>-->
-<!--            </td>-->
-        </tr>
-        </tbody>
-    </table>
 </div>
 
 </body>

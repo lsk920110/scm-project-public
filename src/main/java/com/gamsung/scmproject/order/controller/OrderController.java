@@ -6,6 +6,7 @@ import com.gamsung.scmproject.order.service.OrderService;
 import com.gamsung.scmproject.order.vo.OrderRegistrationInfoVo;
 import com.gamsung.scmproject.vendor.service.VendorService;
 import com.gamsung.scmproject.vendor.vo.VendorWithMemberNameVo;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,9 +44,12 @@ public class OrderController extends BaseController {
     @ResponseBody
     public ResultVo<?> orderRegistration(
             @RequestBody OrderRegistrationInfoVo params,
-            @RequestParam String callback
+            @RequestParam(value="callback" , required = false) String callback,
+            HttpSession session
+
             ){
         log.info("params : {}",params.toString());
+        sessionLoginInfo(session,params);
 
         orderService.statementRegistration(params);
         if(callback.equals("orderRegistration")){

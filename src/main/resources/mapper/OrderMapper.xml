@@ -22,7 +22,8 @@
          remarks,
          state,
          vendorId,
-         regMemberId
+         regMemberId,
+        regDt
     )
     VALUES
         (
@@ -37,7 +38,8 @@
          #{remarks},
          #{state},
          #{vendorId},
-         #{regMemberId}
+         #{regMemberId},
+         now()
         )
     </insert>
     <insert id="insertOrderProducts"
@@ -56,12 +58,27 @@
             <foreach collection="list" item="item" separator=",">
                 (
                  #{item.statementId},
-                 #{item.productCord},
                  #{item.orderSeq},
+                 #{item.productCord},
                  #{item.orderQuantity},
                  '1'
                 )
             </foreach>
 
+    </insert>
+    <insert id="insertOrderInfo"
+    parameterType="com.gamsung.scmproject.order.vo.OrderRegistrationInfoVo">
+        INSERT INTO orderInfo
+            (statementId,
+             orderState,
+             regDt,
+             deliveryReqDt,
+             state)
+        VALUES
+            (#{id},
+            '1',
+            now(),
+            #{deliveryReqDt},
+            '1')
     </insert>
 </mapper>
