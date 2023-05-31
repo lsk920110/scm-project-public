@@ -10,35 +10,57 @@
     <h2>주문관리</h2>
     <hr>
     <div>
-        <div style="width : 150px;">
-            <select class="form-select">
-                <option>거래선</option>
-                <option></option>
-                <option></option>
+        <span style="float: left; width : 50%;"></span>
+
+    </div>
+    <div>
+        <div class="input-group">
+            <select style="width:15%;" class="form-select" id="" aria-label="Example select with button addon">
+                <option selected>거래선*</option>
+                <option value="1">주문번호</option>
+                <option value="2">판매번호</option>
+                <option value="3">납품번호</option>
             </select>
-            <select class="form-select">
-                <option>주문번호</option>
-                <option>발주번호</option>
-                <option>고객명</option>
+            <select style="width:15%;" class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                <option selected>선택*</option>
+                <option value="1">주문번호</option>
+                <option value="2">판매번호</option>
+                <option value="3">납품번호</option>
+            </select>
+            <input style="width:70%;" class="form-control" type="button" value="">
+        </div>
+        <div class="input-group">
+            <span class="input-group-text">주문생성일*</span>
+            <input type="date" class="form-control">
+            <input type="date" class="form-control">
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-text">주문상태</span>
+            <select class="form-select" style="float:left;width:15%;">
+                <option selected>전체</option>
+                <option>생성</option>
+                <option>미생성</option>
             </select>
         </div>
-        <input class="form-control" type="text">
         <input class="form-control" type="text">
         <button class="btn btn-primary">검색</button>
     </div>
     <div>
         <table class="table">
             <thead>
-            <tr><input type="checkbox"></tr>
-            <tr>주문번호</tr>
-            <tr>판매번호</tr>
-            <tr>상품코드</tr>
-            <tr>모델코드</tr>
-            <tr>TC</tr>
-            <tr>요구납기일</tr>
-            <tr>배송예정일</tr>
-            <tr>납품번호</tr>
-            <tr>배송여부</tr>
+            <tr>
+                <th><input type="checkbox"></th>
+                <th>주문번호</th>
+                <th>판매번호</th>
+                <th>상품코드</th>
+                <th>모델코드</th>
+                <th>TC</th>
+                <th>요구납기일</th>
+                <th>배송예정일</th>
+                <th>납품번호</th>
+                <th>배송여부</th>
+            </tr>
             </thead>
         </table>
     </div>
