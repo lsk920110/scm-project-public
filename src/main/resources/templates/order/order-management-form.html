@@ -53,6 +53,7 @@
             <thead>
             <tr>
                 <th><input type="checkbox"></th>
+                <th>발주번호</th>
                 <th>주문번호</th>
                 <th>판매번호</th>
                 <th>상품코드</th>
@@ -65,6 +66,7 @@
                 <th>배송여부</th>
             </tr>
             </thead>
+            <tbody></tbody>
         </table>
     </div>
 
@@ -90,6 +92,29 @@
             orderState          : orderState,
             modelCord           : modelCord
         }
+
+        $.ajax({
+            type : 'post',
+            url : '/api/order/list',
+            dataType : 'json',
+            contentType : 'application/json',
+            data : JSON.stringify(params),
+            success: (result)=>{
+                console.log(result);
+                let txt = '';
+                result.result.forEach((item,idx)=>{
+                    txt += `<tr>`;
+                    txt += `<td>${item.statementId}</td>`;
+                    txt += `<td>${item.orderId}</td>`;
+                    txt += `<td>${item.salesNo}</td>`;
+                    txt += `<td>${item.salesNo}</td>`;
+                    txt += `<td>${item.salesNo}</td>`;
+                })
+                $('tbody').empty().append(txt);
+            }
+            ,
+            error : (err)=>console.log
+        })
     }
 
 

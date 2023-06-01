@@ -161,5 +161,6 @@
             `statementProductCord` spc
                 INNER JOIN productCord pc ON spc.productCord = pc.productCord
                 INNER JOIN productModel pm ON pm.id = pc.productModelId
+        WHERE spc.statementId = #{statementId}
     </select>
 </mapper>

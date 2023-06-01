@@ -67,13 +67,15 @@ public class OrderController extends BaseController {
     }
 
     @PostMapping("/api/order/list")
+    @ResponseBody
     public ResultVo<?> orderList(@RequestBody OrderSearchParamVo params){
-
-
+        log.info("params : {}", params.toString());
         List<OrderInfoForListVo> list = orderService.selectOrderList(params);
-
-
-        return null;
+        ResultVo<List<OrderInfoForListVo>> resultVo = new ResultVo<>();
+        resultVo.setErrorMessage("success");
+        resultVo.setErrorCode("0000");
+        resultVo.setResult(list);
+        return resultVo;
     }
 
 }
