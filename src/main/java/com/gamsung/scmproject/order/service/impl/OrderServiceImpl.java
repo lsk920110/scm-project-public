@@ -2,11 +2,15 @@ package com.gamsung.scmproject.order.service.impl;
 
 import com.gamsung.scmproject.order.mapper.OrderMapper;
 import com.gamsung.scmproject.order.service.OrderService;
+import com.gamsung.scmproject.order.vo.OrderInfoForListVo;
 import com.gamsung.scmproject.order.vo.OrderProductCordVo;
 import com.gamsung.scmproject.order.vo.OrderRegistrationInfoVo;
+import com.gamsung.scmproject.order.vo.OrderSearchParamVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -28,6 +32,13 @@ public class OrderServiceImpl implements OrderService {
 
         //제품 생성
         orderMapper.insertOrderProducts(params.getOrderProductCordArray());
+    }
+
+    @Override
+    public List<OrderInfoForListVo> selectOrderList(OrderSearchParamVo params) {
+        return orderMapper.selectOrderList(params);
+
+//        return null;
     }
 
 

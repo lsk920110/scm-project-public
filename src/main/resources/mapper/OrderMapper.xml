@@ -81,4 +81,85 @@
             #{deliveryReqDt},
             '1')
     </insert>
+
+    <resultMap id="orderSearchInfo" type="com.gamsung.scmproject.order.vo.OrderInfoForListVo">
+        <result column="statementId" property="statementId"/>
+        <result column="salesNo" property="salesNo"/>
+        <result column="customerName" property="customerName"/>
+        <result column="customerPhoneNumber" property="customerPhoneNumber"/>
+        <result column="deliveryReqDt" property="deliveryReqDt"/>
+        <result column="statementState" property="statementState"/>
+        <result column="orderRegDt" property="orderRegDt"/>
+        <result column="orderId" property="orderId"/>
+        <result column="orderState" property="orderState"/>
+        <collection column="statementId"
+                    property="productList"
+                    ofType="com.gamsung.scmproject.order.vo.OrderProductCordInfoVo"
+                    select="selectProductList"
+        >
+            <result property="id" column="id"/>
+            <result property="productCord" column="productCord"/>
+            <result property="statementId" column="statementId"/>
+            <result property="orderSeq" column="orderSeq"/>
+            <result property="orderQuantity" column="orderQuantity"/>
+            <result property="supplyPrice" column="supplyPrice"/>
+            <result property="supplyPriceVat" column="supplyPriceVat"/>
+            <result property="modelCord" column="modelCord"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectOrderList"
+            parameterType="com.gamsung.scmproject.order.vo.OrderSearchParamVo"
+            resultMap="orderSearchInfo">
+        SELECT
+            s.id AS statementId,
+            s.salesNo,
+            s.customerName ,
+            s.customerPhoneNumber ,
+            s.deliveryReqDt ,
+            s.state AS statementState,
+            DATE_FORMAT(oi.regDt,'%Y-%m-%d') AS orderRegDt,
+            oi.id AS orderId,
+            oi.state AS orderState
+        FROM
+            `statement` s
+                LEFT OUTER JOIN `orderInfo` oi ON oi.statementId = s.id
+        where s.vendorId = #{vendorId}
+        <if test="searchCriteria == '1'">
+              AND oi.id = #{searchContent}
+        </if>
+        <if test="searchCriteria == '2'">
+            AND s.salesNo = #{searchContent}
+        </if>
+        <if test="searchCriteria == '3'">
+            AND 1=1
+        </if>
+        <if test="searchCriteria == '4'">
+            AND s.customerName LIKE '%${searchContent}%'
+        </if>
+        <if test="orderState == '1'">
+            AND 1=1
+        </if>
+        <if test="orderState == '2'">
+            AND oi.id IS NOT NULL -- 주문생성여
+        </if>
+        <if test="orderState == '3'">
+        AND oi.id IS NULL
+        </if>
+    </select>
+    <select id="selectProductList" parameterType="int" resultType="com.gamsung.scmproject.order.vo.OrderProductCordInfoVo">
+        SELECT
+            spc.id,
+            spc.productCord,
+            spc.statementId ,
+            spc.orderSeq,
+            spc.orderQuantity ,
+            pc.supplyPrice ,
+            pc.supplyPriceVat ,
+            pm.modelCord
+        FROM
+            `statementProductCord` spc
+                INNER JOIN productCord pc ON spc.productCord = pc.productCord
+                INNER JOIN productModel pm ON pm.id = pc.productModelId
+    </select>
 </mapper>

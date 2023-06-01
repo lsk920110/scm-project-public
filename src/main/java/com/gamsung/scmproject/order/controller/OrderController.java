@@ -3,7 +3,9 @@ package com.gamsung.scmproject.order.controller;
 import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.order.service.OrderService;
+import com.gamsung.scmproject.order.vo.OrderInfoForListVo;
 import com.gamsung.scmproject.order.vo.OrderRegistrationInfoVo;
+import com.gamsung.scmproject.order.vo.OrderSearchParamVo;
 import com.gamsung.scmproject.vendor.service.VendorService;
 import com.gamsung.scmproject.vendor.vo.VendorWithMemberNameVo;
 import jakarta.servlet.http.HttpSession;
@@ -37,6 +39,8 @@ public class OrderController extends BaseController {
     @GetMapping("order/management")
     public String orderManagementForm(Model model){
         menuBarInfo(model);
+        List<VendorWithMemberNameVo> vendorList = vendorService.selectVendorList("1");
+        model.addAttribute("vendorList",vendorList);
         return "order/order-management-form";
     }
 
@@ -60,6 +64,16 @@ public class OrderController extends BaseController {
         resultVo.setErrorCode("0000");
         resultVo.setErrorMessage("success");
         return resultVo;
+    }
+
+    @PostMapping("/api/order/list")
+    public ResultVo<?> orderList(@RequestBody OrderSearchParamVo params){
+
+
+        List<OrderInfoForListVo> list = orderService.selectOrderList(params);
+
+
+        return null;
     }
 
 }
