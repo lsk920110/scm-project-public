@@ -22,4 +22,5 @@ public class OrderSearchParamVo {
     private String orderCreateEndDt;
     private String orderState;
     private String modelCord;
+    private String customerName;
 }

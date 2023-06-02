@@ -44,13 +44,22 @@ public class OrderController extends BaseController {
         return "order/order-management-form";
     }
 
+    @GetMapping("order/update")
+    public String orderManagementUpdateForm(Model model , @RequestParam Long statementId){
+        menuBarInfo(model);
+        List<VendorWithMemberNameVo> vendorList = vendorService.selectVendorList("1");
+        model.addAttribute("vendorList",vendorList);
+
+
+        return "order/order-registration-update-form";
+    }
+
     @PostMapping("/api/order/registration")
     @ResponseBody
     public ResultVo<?> orderRegistration(
             @RequestBody OrderRegistrationInfoVo params,
             @RequestParam(value="callback" , required = false) String callback,
             HttpSession session
-
             ){
         log.info("params : {}",params.toString());
         sessionLoginInfo(session,params);
@@ -77,5 +86,12 @@ public class OrderController extends BaseController {
         resultVo.setResult(list);
         return resultVo;
     }
+
+//    @PostMapping("/api/order")
+//    @ResponseBody
+//    public ResultVo<?> insertOrder(@RequestBody ){
+//
+//        return null;
+//    }
 
 }

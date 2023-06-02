@@ -125,25 +125,28 @@
             `statement` s
                 LEFT OUTER JOIN `orderInfo` oi ON oi.statementId = s.id
         where s.vendorId = #{vendorId}
-        <if test="searchCriteria == '1'">
+          AND s.customerName LIKE '%${customerName}%'
+        <if test='searchCriteria == "1"'>
+            <if test='searchContent != 0'>
               AND oi.id = #{searchContent}
+            </if>
         </if>
-        <if test="searchCriteria == '2'">
-            AND s.salesNo = #{searchContent}
+        <if test='searchCriteria == "2"'>
+            AND s.salesNo LIKE '%${searchContent}%'
         </if>
-        <if test="searchCriteria == '3'">
+        <if test='searchCriteria == "3"'>
             AND 1=1
         </if>
-        <if test="searchCriteria == '4'">
+        <if test='searchCriteria == "4"'>
             AND s.customerName LIKE '%${searchContent}%'
         </if>
-        <if test="orderState == '1'">
+        <if test='orderState == "1"'>
             AND 1=1
         </if>
-        <if test="orderState == '2'">
+        <if test='orderState == "2"'>
             AND oi.id IS NOT NULL -- 주문생성여
         </if>
-        <if test="orderState == '3'">
+        <if test='orderState == "3"'>
         AND oi.id IS NULL
         </if>
     </select>

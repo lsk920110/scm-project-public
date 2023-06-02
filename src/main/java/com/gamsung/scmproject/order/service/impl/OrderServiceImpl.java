@@ -29,7 +29,6 @@ public class OrderServiceImpl implements OrderService {
             productCord.setOrderSeq(orderSeq);
             orderSeq ++;
         }
-
         //제품 생성
         orderMapper.insertOrderProducts(params.getOrderProductCordArray());
     }
@@ -37,8 +36,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderInfoForListVo> selectOrderList(OrderSearchParamVo params) {
         return orderMapper.selectOrderList(params);
-
-//        return null;
     }
 
 
