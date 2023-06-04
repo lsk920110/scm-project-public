@@ -3,7 +3,9 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head th:replace="common/fragments/config-fragment :: ConfigFragment">
+
 <body>
+
 <th:block th:replace="common/fragments/left-navbar" :: LeftNavbarFragment></th:block>
 <th:block th:replace="common/fragments/header-fragment" :: headerFragment></th:block>
 <div class="content-area">
@@ -66,29 +68,76 @@
             <input type="button" class="btn btn-primary" value="주문생성"/>
             <input type="button" class="btn btn-secondary" value="주문삭제"/>
         </div>
-        <table class="table">
-            <thead>
-            <tr>
-                <th><input type="checkbox"></th>
-                <th>발주번호</th>
-                <th>주문번호</th>
-                <th>판매번호</th>
-                <th>상품코드</th>
-                <th>모델코드</th>
-                <th>수량</th>
-                <th>공급가</th>
-                <th>고객명</th>
-                <th>연락처</th>
-                <th>TC</th>
-                <th>주문생성일</th>
-                <th>요구납기일</th>
-                <th>배송예정일</th>
-                <th>납품번호</th>
-                <th>배송여부</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <style>
+            .container-table {
+                width: 1000px; /* 원하는 너비 */
+                height: 200px; /* 원하는 높이 */
+                overflow-x: auto; /* 스크롤바 표시 */
+            }
+
+            table {
+                width: 3000px;
+                /*width: 100%; !* 부모 컨테이너에 맞게 테이블 너비 조정 *!*/
+            }
+
+            td, th {
+                white-space: nowrap; /* 줄 바꿈 방지 */
+            }
+
+            th {
+                z-index: 1;
+            }
+
+            thead {
+                position: sticky;
+                top: 0;
+                background-color: white;
+            }
+        </style>
+        <div class="container-table">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th><input id="all-check" class="form-check-input" type="checkbox"></th>
+                    <script>
+                        $(document).ready(function () {
+                            $('#all-check').click(function(){
+                                if ($(this).is(':checked')) {
+                                    $('.checkbox-input').attr('checked', true);
+                                } else {
+                                    $('.checkbox-input').attr('checked', false);
+                                }
+                            });
+                            $('#all-check').change(function(){
+                                if ($(this).is(':checked')) {
+                                    $('.checkbox-input').prop('checked', true);
+                                } else {
+                                    $('.checkbox-input').prop('checked', false);
+                                }
+                            })
+                        })
+                    </script>
+                    <th>발주번호</th>
+                    <th>주문번호</th>
+                    <th>판매번호</th>
+                    <th>상품코드</th>
+                    <th>모델코드</th>
+                    <th>수량</th>
+                    <th>공급가</th>
+                    <th>고객명</th>
+                    <th>연락처</th>
+                    <th>TC</th>
+                    <th>주문생성일</th>
+                    <th>요구납기일</th>
+                    <th>배송예정일</th>
+                    <th>납품번호</th>
+                    <th>배송여부</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
     </div>
 
 </div>
@@ -97,23 +146,23 @@
 <script>
 
     const searchOrder = () => {
-        let vendorId            = $('select[name="vendorId"]').val();
-        let searchCriteria      = $('select[name="searchCriteria"]').val();
-        let searchContent       = $('input[name="searchContent"]').val();
-        let orderCreateStartDt  = $('input[name="orderCreateStartDt"]').val();
-        let orderCreateEndDt    = $('input[name="orderCreateEndDt"]').val();
-        let orderState          = $('select[name="orderState"]').val();
-        let modelCord           = $('input[name="modelCord"]').val();
-        let customerName        = $('input[name="customerName"]').val();
+        let vendorId = $('select[name="vendorId"]').val();
+        let searchCriteria = $('select[name="searchCriteria"]').val();
+        let searchContent = $('input[name="searchContent"]').val();
+        let orderCreateStartDt = $('input[name="orderCreateStartDt"]').val();
+        let orderCreateEndDt = $('input[name="orderCreateEndDt"]').val();
+        let orderState = $('select[name="orderState"]').val();
+        let modelCord = $('input[name="modelCord"]').val();
+        let customerName = $('input[name="customerName"]').val();
         const params = {
-            vendorId            : vendorId,
-            searchCriteria      : searchCriteria,
-            searchContent       : searchContent,
-            orderCreateStartDt  : orderCreateStartDt,
-            orderCreateEndDt    : orderCreateEndDt,
-            orderState          : orderState,
-            modelCord           : modelCord,
-            customerName        : customerName
+            vendorId: vendorId,
+            searchCriteria: searchCriteria,
+            searchContent: searchContent,
+            orderCreateStartDt: orderCreateStartDt,
+            orderCreateEndDt: orderCreateEndDt,
+            orderState: orderState,
+            modelCord: modelCord,
+            customerName: customerName
         }
         if (vendorId === '0') {
             alert('거래선을 선택하세요');
@@ -144,8 +193,8 @@
                     })
 
                     txt += `<tr>`;
-                    txt += `<td><input type="checkbox"/></td>`
-                    txt += `<td><a href="/order/update?statementId=${item.statementId}" onclick="window.open(this.href , 'window_name' , 'width=430,height=500,location=no,status=no,scrollbars=yes'); return false;">${item.statementId}</a></td>`;
+                    txt += `<td><input class="form-check-input checkbox-input" type="checkbox"/></td>`
+                    txt += `<td><a href="/order/update?statementId=${item.statementId}" onclick="window.open(this.href , 'window_name' , 'width=1000,height=500,location=no,status=no,scrollbars=yes'); return false;">${item.statementId}</a></td>`;
                     txt += `<td>${item.orderId === null ? '미생성건' : item.orderId}</td>`;
                     txt += `<td>${item.salesNo}</td>`;
                     txt += `<td>${productCordTxt}</td>`;
@@ -163,6 +212,7 @@
                     txt += `</tr>`;
                 })
                 $('tbody').empty().append(txt);
+
             }
             ,
             error: (err) => console.log

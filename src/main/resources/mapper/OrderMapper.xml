@@ -150,7 +150,10 @@
         AND oi.id IS NULL
         </if>
     </select>
-    <select id="selectProductList" parameterType="int" resultType="com.gamsung.scmproject.order.vo.OrderProductCordInfoVo">
+    <select
+            id="selectProductList"
+            parameterType="int"
+            resultType="com.gamsung.scmproject.order.vo.OrderProductCordInfoVo">
         SELECT
             spc.id,
             spc.productCord,
@@ -166,4 +169,93 @@
                 INNER JOIN productModel pm ON pm.id = pc.productModelId
         WHERE spc.statementId = #{statementId}
     </select>
+
+
+
+    <resultMap id="statementInfo" type="com.gamsung.scmproject.order.vo.StatementInfoVo">
+        <result column="id" property="id"/>
+        <result column="salesNo" property="salesNo"/>
+        <result column="vendorId" property="vendorId"/>
+        <result column="customerName" property="customerName"/>
+        <result column="customerPhoneNumber" property="customerPhoneNumber"/>
+        <result column="customerAddressFirst" property="customerAddressFirst"/>
+        <result column="customerAddressSecond" property="customerAddressSecond"/>
+        <result column="customerAddressThird" property="customerAddressThird"/>
+        <result column="customerAddressDetail" property="customerAddressDetail"/>
+        <result column="deliveryReqDt" property="deliveryReqDt"/>
+        <result column="statementState" property="statementState"/>
+        <collection column="id"
+                    property="productCordList"
+                    ofType="com.gamsung.scmproject.order.vo.OrderProductCordInfoVo"
+                    select="selectProductList"
+        >
+            <result property="statementId" column="id"/>
+            <result property="productCord" column="productCord"/>
+            <result property="statementId" column="statementId"/>
+            <result property="orderSeq" column="orderSeq"/>
+            <result property="orderQuantity" column="orderQuantity"/>
+            <result property="supplyPrice" column="supplyPrice"/>
+            <result property="supplyPriceVat" column="supplyPriceVat"/>
+            <result property="modelCord" column="modelCord"/>
+        </collection>
+    </resultMap>
+
+
+
+
+    <select
+            id="selectStatementInfo"
+            resultType="com.gamsung.scmproject.order.vo.StatementInfoVo"
+            resultMap="statementInfo">
+        SELECT
+            s.id,
+            salesNo,
+            vendorId,
+            vi.vendorName,
+            DATE_FORMAT(deliveryReqDt,'%Y-%m-%d') AS deliveryReqDt,
+            s.state,
+            customerName,
+            customerPhoneNumber,
+            customerAddressFirst,
+            customerAddressSecond,
+            customerAddressThird,
+            customerAddressDetail,
+            remarks
+        FROM
+            statement s
+        INNER JOIN vendorInfo vi on vi.id = s.vendorId
+        WHERE
+            s.id = #{statementId}
+    </select>
+    <select id="checkSalesNo" resultType="int">
+        SELECT
+            count(statementId) count
+        FROM `orderInfo` oi
+        INNER JOIN
+        `statement` s ON s.id = oi.statementId
+        WHERE s.salesNo = #{id}
+    </select>
+
+    <delete id="deleteProductCordListAboutStatement">
+    DELETE FROM statementProductCord WHERE statementId = #{statementId}
+
+    </delete>
+    <update id="updateStatement"
+    parameterType="com.gamsung.scmproject.order.vo.OrderRegistrationInfoVo">
+        UPDATE statement
+        SET salesNo = #{salesNo}
+        , customerName = #{customerName}
+        , customerAddressFirst = #{customerAddressFirst}
+        , customerAddressSecond = #{customerAddressSecond}
+        , customerAddressThird = #{customerAddressThird}
+        , customerAddressDetail = #{customerAddressDetail}
+        , customerName = #{customerName}
+        , customerPhoneNumber = #{customerPhoneNumber}
+        , deliveryReqDt = #{deliveryReqDt}
+        , remarks = #{remarks}
+        WHERE id = #{id}
+
+    </update>
+
+
 </mapper>

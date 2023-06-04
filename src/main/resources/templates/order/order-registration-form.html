@@ -61,12 +61,36 @@
         </div>
     </form>
     <div style="padding-top: 20px; text-align: right;">
-        <input type="button" value="삭제">
+        <input onclick="deleteCord()" class="btn btn-secondary" type="button" value="삭제">
+        <script>
+            function deleteCord(){
+                $('.checkbox-input:checked').parent().parent().remove();
+                $('#all-check').prop('checked',false)
+            }
+        </script>
     </div>
     <table class="table">
         <thead>
         <tr>
-            <th><input class="form-check" type="checkbox"></th>
+            <th><input id="all-check" class="form-check-input" type="checkbox"></th>
+            <script>
+                $(document).ready(function () {
+                    $('#all-check').click(function(){
+                        if ($(this).is(':checked')) {
+                            $('.checkbox-input').attr('checked', true);
+                        } else {
+                            $('.checkbox-input').attr('checked', false);
+                        }
+                    });
+                    $('#all-check').change(function(){
+                        if ($(this).is(':checked')) {
+                            $('.checkbox-input').prop('checked', true);
+                        } else {
+                            $('.checkbox-input').prop('checked', false);
+                        }
+                    })
+                })
+            </script>
             <th>상품코드</th>
             <th>모델코드</th>
             <th>수량</th>
@@ -78,7 +102,7 @@
         <tfoot>
         <tr>
             <td></td>
-            <td><input type="text" id="productCordEnter"></td>
+            <td><input class="form-control" type="text" id="productCordEnter"></td>
             <td></td>
             <td></td>
             <td></td>
@@ -90,18 +114,9 @@
             if (event.keyCode != 13) {
                 return
             }
-            // console.log(event.value);
-            // console.log(this);
-            // console.log($(this));
-
-
             const productCord = $('#productCordEnter').val();
-            // console.log(productCord)
             const vendorId = $('#vendor-select').val();
-            // const params = JSON.stringify({
-            //     productCord : productCord,
-            //     vendorId : vendorId
-            // });
+
             console.log(productCord, vendorId)
             $.ajax({
                 type: 'GET',
@@ -116,7 +131,7 @@
                     let txt = '';
                     txt +=
                         `<tr class="productCord-info">
-                            <td><input class="form-check" type="checkbox"/></td>
+                            <td><input class="form-check-input checkbox-input" type="checkbox"/></td>
                             <td class="productCord">
 <!--                            <input name="productCordId" type="hidden" value="${result.result.productCordId}"/>-->
                             <input name="productCord" disabled class="form-control productCord" type="text" value="${result.result.productCord}">
@@ -173,7 +188,7 @@
             console.log(JSON.stringify(orderInfo));
             $.ajax({
                 type : 'post',
-                url : '/api/order/registration?callback='+callback,
+                url : '/api/statement/insert?callback='+callback,
                 data : JSON.stringify(orderInfo),
                 dataType : 'json',
                 contentType : 'application/json',

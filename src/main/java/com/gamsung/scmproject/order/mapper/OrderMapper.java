@@ -1,10 +1,8 @@
 package com.gamsung.scmproject.order.mapper;
 
-import com.gamsung.scmproject.order.vo.OrderInfoForListVo;
-import com.gamsung.scmproject.order.vo.OrderProductCordVo;
-import com.gamsung.scmproject.order.vo.OrderRegistrationInfoVo;
-import com.gamsung.scmproject.order.vo.OrderSearchParamVo;
+import com.gamsung.scmproject.order.vo.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 
@@ -17,4 +15,12 @@ public interface OrderMapper {
     void insertOrderInfo(OrderRegistrationInfoVo params);
 
     List<OrderInfoForListVo> selectOrderList(OrderSearchParamVo params);
+
+    StatementInfoVo selectStatementInfo(@Qualifier("statementId") Long statementId);
+
+    void deleteProductCordListAboutStatement(@Qualifier("statementId") Long statementId);
+
+    void updateStatement(OrderRegistrationInfoVo params);
+
+    int checkSalesNo(@Qualifier("salesNo") String salesNo);
 }

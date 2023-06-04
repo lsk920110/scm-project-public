@@ -6,6 +6,7 @@ import com.gamsung.scmproject.order.service.OrderService;
 import com.gamsung.scmproject.order.vo.OrderInfoForListVo;
 import com.gamsung.scmproject.order.vo.OrderRegistrationInfoVo;
 import com.gamsung.scmproject.order.vo.OrderSearchParamVo;
+import com.gamsung.scmproject.order.vo.StatementInfoVo;
 import com.gamsung.scmproject.vendor.service.VendorService;
 import com.gamsung.scmproject.vendor.vo.VendorWithMemberNameVo;
 import jakarta.servlet.http.HttpSession;
@@ -47,14 +48,13 @@ public class OrderController extends BaseController {
     @GetMapping("order/update")
     public String orderManagementUpdateForm(Model model , @RequestParam Long statementId){
         menuBarInfo(model);
-        List<VendorWithMemberNameVo> vendorList = vendorService.selectVendorList("1");
-        model.addAttribute("vendorList",vendorList);
-
+        StatementInfoVo statementInfo = orderService.orderInfoByStatementId(statementId);
+        model.addAttribute("statement",statementInfo);
 
         return "order/order-registration-update-form";
     }
 
-    @PostMapping("/api/order/registration")
+    @PostMapping("/api/statement/insert")
     @ResponseBody
     public ResultVo<?> orderRegistration(
             @RequestBody OrderRegistrationInfoVo params,
@@ -64,16 +64,50 @@ public class OrderController extends BaseController {
         log.info("params : {}",params.toString());
         sessionLoginInfo(session,params);
 
-        orderService.statementRegistration(params);
-        if(callback.equals("orderRegistration")){
-            orderService.orderRegistration(params);
-        }
+        orderService.statementRegistration(params,callback);
+
 
         ResultVo<Object> resultVo = new ResultVo<>();
         resultVo.setErrorCode("0000");
         resultVo.setErrorMessage("success");
         return resultVo;
     }
+
+    @PostMapping("/api/statement/update")
+    @ResponseBody
+    public ResultVo<?> updateStatement(
+            @RequestBody OrderRegistrationInfoVo params,
+            @RequestParam(value="callback" , required = false) String callback,
+            HttpSession session
+    ){
+        log.info("params : {}",params.toString());
+        orderService.updateStatement(params,callback);
+
+        ResultVo<Object> resultVo = new ResultVo<>();
+        resultVo.setErrorCode("0000");
+        resultVo.setErrorMessage("success");
+        return resultVo;    }
+//
+//    @PostMapping("/api/order/insert")
+//    @ResponseBody
+//    public ResultVo<?> insertOrder(@RequestBody OrderRegistrationInfoVo params){
+//
+//        return null;
+//    }
+//
+//    @PostMapping("/api/order/byStatementId")
+//    @ResponseBody
+//    public ResultVo<?> insertOrderByStatementId(List<Long> statementId){
+//
+//        return null;
+//    }
+//
+//    @PatchMapping("/api/order/update")
+//    @ResponseBody
+//    public ResultVo<?> updateOrder(){
+//        return null;
+//    }
+//
 
     @PostMapping("/api/order/list")
     @ResponseBody
@@ -87,11 +121,6 @@ public class OrderController extends BaseController {
         return resultVo;
     }
 
-//    @PostMapping("/api/order")
-//    @ResponseBody
-//    public ResultVo<?> insertOrder(@RequestBody ){
-//
-//        return null;
-//    }
+
 
 }
