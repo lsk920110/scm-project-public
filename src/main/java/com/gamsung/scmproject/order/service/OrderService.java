@@ -1,21 +1,23 @@
 package com.gamsung.scmproject.order.service;
 
-import com.gamsung.scmproject.common.vo.ResultVo;
-import com.gamsung.scmproject.order.vo.OrderInfoForListVo;
-import com.gamsung.scmproject.order.vo.OrderRegistrationInfoVo;
-import com.gamsung.scmproject.order.vo.OrderSearchParamVo;
-import com.gamsung.scmproject.order.vo.StatementInfoVo;
+import com.gamsung.scmproject.order.vo.*;
 
 import java.util.List;
 
 public interface OrderService {
-    void orderRegistration(OrderRegistrationInfoVo params);
+    OrderInsertVo orderInsert(Long statementId);
 
-    ResultVo<?> statementRegistration(OrderRegistrationInfoVo params , String callback);
+    Long statementRegistration(OrderRegistrationInfoVo params);
 
     StatementInfoVo orderInfoByStatementId(Long statementId);
 
     List<OrderInfoForListVo> selectOrderList(OrderSearchParamVo params);
 
-    ResultVo<?> updateStatement(OrderRegistrationInfoVo params , String callback);
+    int updateStatement(OrderRegistrationInfoVo params);
+
+    List<OrderInsertVo> insertOrderList(List<Long> statementIds);
+
+    void statementListDelete(List<Long> statementIdList);
+
+    void orderListDelete(List<Long> orderIdList);
 }

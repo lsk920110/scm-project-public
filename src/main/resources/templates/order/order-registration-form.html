@@ -10,10 +10,7 @@
     <h2>발주등록</h2>
     <hr>
     <form action="/productCord" method="post">
-        거래선 , 판매번호 ,
-        이름 , 연락처1,2 , 주소, 비고,
-        상품코드 , 수량
-        요구납기일
+
         <div style="padding-bottom: 5px;">
             <select name="vendorId" id="vendor-select" class="form-select">
                 <option th:each="vendor : ${vendorList}"
@@ -160,10 +157,10 @@
     </script>
     <div class="d-grid gap-2 d-md-block" style="text-align : right;">
         <button class="btn btn-primary" type="button" onclick="createStatement()">전표생성</button>
-        <button class="btn btn-secondary" type="button" onclick="createStatement('orderRegistration')">주문생성</button>
+        <button class="btn btn-secondary" type="button" onclick="createStatement('orderInsert')">주문생성</button>
     </div>
     <script>
-        function createStatement(callback) {
+        function createStatement(callback=undefined) {
             const form = $('form').serializeArray();
             let orderInfo = {}
             for (let i = 0; i < form.length; i++) {
@@ -188,17 +185,39 @@
             console.log(JSON.stringify(orderInfo));
             $.ajax({
                 type : 'post',
-                url : '/api/statement/insert?callback='+callback,
+                url : '/api/statement/insert',
                 data : JSON.stringify(orderInfo),
                 dataType : 'json',
                 contentType : 'application/json',
-                success : (result)=>{console.log(result)},
+                success : (result)=>{
+                    console.log(result);
+                    if(callback === 'orderInsert'){
+                        console.log(callback);
+                        createOrder(result.result);
+                    }
+                },
                 error : (error)=>{console.log(error)}
             })
         }
 
-        function createOrder() {
-
+        function createOrder(statementId) {
+            $.ajax({
+                type : 'post',
+                url : '/api/order/insert',
+                data : JSON.stringify({statementIdList : [statementId]}),
+                dataType : 'json',
+                contentType: 'application/json',
+                success : (result)=>{
+                    console.log(result);
+                    if(result.result[0].orderId === null){
+                        alert(result.result[0].failedReason);
+                    } else {
+                        alert('주문생성완료');
+                        location.reload();
+                    }
+                },
+                error : (err) =>console.log
+            })
         }
     </script>
 </div>

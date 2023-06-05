@@ -8,19 +8,25 @@ import java.util.List;
 
 @Mapper
 public interface OrderMapper {
-    void insertStatement(OrderRegistrationInfoVo params);
+    int insertStatement(OrderRegistrationInfoVo params);
 
-    void insertOrderProducts(List<OrderProductCordVo> params);
+    int insertOrderProducts(List<OrderProductCordVo> params);
 
-    void insertOrderInfo(OrderRegistrationInfoVo params);
+    int insertOrderInfo(OrderInsertVo statementId);
 
     List<OrderInfoForListVo> selectOrderList(OrderSearchParamVo params);
 
     StatementInfoVo selectStatementInfo(@Qualifier("statementId") Long statementId);
 
-    void deleteProductCordListAboutStatement(@Qualifier("statementId") Long statementId);
+    int deleteProductCordListAboutStatement(@Qualifier("statementId") Long statementId);
 
-    void updateStatement(OrderRegistrationInfoVo params);
+    int updateStatement(OrderRegistrationInfoVo params);
 
     int checkSalesNo(@Qualifier("salesNo") String salesNo);
+
+    void deleteStatement(@Qualifier("statementId") Long statementId);
+
+    Long selectOrderInfoByOrderId(@Qualifier("orderId") Long orderId);
+
+    void deleteOrder(Long orderId);
 }

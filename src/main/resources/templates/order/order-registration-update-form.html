@@ -14,6 +14,28 @@
 <div class="content-area">
     <h2>발주등록</h2>
     <hr>
+    <div style="text-align: right; padding-bottom: 10px;">
+        <input type="button" value="삭제" class="btn btn-secondary" th:statementId="${statement.id}" th:onclick="deleteStatement([[${statement.id}]])"/>
+        <script>
+            function deleteStatement(statementId){
+                console.log(statementId);
+                $.ajax({
+                    url : '/api/delete/statement',
+                    type : 'delete',
+                    data : JSON.stringify({statementIdList:[statementId]}),
+                    dataType : 'json',
+                    contentType : 'application/json',
+                    success : (result)=>{
+                        console.log(result);
+                        alert(result.result);
+                    },
+                    error : (error)=>{
+                        console.log(error);
+                    }
+                })
+            }
+        </script>
+    </div>
     <form action="/productCord" method="post">
         <input type="hidden" name="id" th:value="${statement.id}"/>
         <input type="hidden" name="vendorId" th:value="${statement.vendorId}"/>
@@ -162,10 +184,10 @@
     </script>
     <div class="d-grid gap-2 d-md-block" style="text-align : right;">
         <button class="btn btn-primary" type="button" onclick="createStatement()">전표수정</button>
-        <button class="btn btn-secondary" type="button" onclick="createStatement('orderRegistration')">주문생성</button>
+        <button class="btn btn-secondary" type="button" onclick="createStatement('orderInsert')">주문생성</button>
     </div>
     <script>
-        function createStatement(callback) {
+        function createStatement(callback='') {
             const form = $('form').serializeArray();
             let orderInfo = {}
             for (let i = 0; i < form.length; i++) {
@@ -193,17 +215,42 @@
             console.log(JSON.stringify(orderInfo));
             $.ajax({
                 type : 'post',
-                url : '/api/statement/update?callback='+callback,
+                url : '/api/statement/update',
                 data : JSON.stringify(orderInfo),
                 dataType : 'json',
                 contentType : 'application/json',
-                success : (result)=>{console.log(result)},
+                success : (result)=>{
+                    console.log(result);
+                    if(callback === ''){
+                        alert('수정완료')
+                    }
+                    if(callback === 'orderInsert'){
+                        const statementId = new URLSearchParams(window.location.search).get('statementId');
+                        createOrder(statementId);
+                    }
+                },
                 error : (error)=>{console.log(error)}
             })
         }
 
-        function createOrder() {
-
+        function createOrder(statementId) {
+            $.ajax({
+                type : 'post',
+                url : '/api/order/insert',
+                data : JSON.stringify({statementIdList : [statementId]}),
+                dataType : 'json',
+                contentType: 'application/json',
+                success : (result)=>{
+                    console.log(result);
+                    if(result.result[0].orderId === null){
+                        alert(result.result[0].failedReason);
+                    } else {
+                        alert('주문생성완료');
+                        location.reload();
+                    }
+                },
+                error : (err) =>console.log
+            })
         }
     </script>
 </div>

@@ -3,10 +3,7 @@ package com.gamsung.scmproject.order.controller;
 import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.order.service.OrderService;
-import com.gamsung.scmproject.order.vo.OrderInfoForListVo;
-import com.gamsung.scmproject.order.vo.OrderRegistrationInfoVo;
-import com.gamsung.scmproject.order.vo.OrderSearchParamVo;
-import com.gamsung.scmproject.order.vo.StatementInfoVo;
+import com.gamsung.scmproject.order.vo.*;
 import com.gamsung.scmproject.vendor.service.VendorService;
 import com.gamsung.scmproject.vendor.vo.VendorWithMemberNameVo;
 import jakarta.servlet.http.HttpSession;
@@ -58,18 +55,19 @@ public class OrderController extends BaseController {
     @ResponseBody
     public ResultVo<?> orderRegistration(
             @RequestBody OrderRegistrationInfoVo params,
-            @RequestParam(value="callback" , required = false) String callback,
+//            @RequestParam(value="callback" , required = false) String callback,
             HttpSession session
             ){
         log.info("params : {}",params.toString());
         sessionLoginInfo(session,params);
 
-        orderService.statementRegistration(params,callback);
+        Long statementId = orderService.statementRegistration(params);
 
 
-        ResultVo<Object> resultVo = new ResultVo<>();
+        ResultVo<Long> resultVo = new ResultVo<>();
         resultVo.setErrorCode("0000");
         resultVo.setErrorMessage("success");
+        resultVo.setResult(statementId);
         return resultVo;
     }
 
@@ -77,37 +75,31 @@ public class OrderController extends BaseController {
     @ResponseBody
     public ResultVo<?> updateStatement(
             @RequestBody OrderRegistrationInfoVo params,
-            @RequestParam(value="callback" , required = false) String callback,
+//            @RequestParam(value="callback" , required = false) String callback,
             HttpSession session
     ){
         log.info("params : {}",params.toString());
-        orderService.updateStatement(params,callback);
+        orderService.updateStatement(params);
 
         ResultVo<Object> resultVo = new ResultVo<>();
         resultVo.setErrorCode("0000");
         resultVo.setErrorMessage("success");
-        return resultVo;    }
-//
-//    @PostMapping("/api/order/insert")
-//    @ResponseBody
-//    public ResultVo<?> insertOrder(@RequestBody OrderRegistrationInfoVo params){
-//
-//        return null;
-//    }
-//
-//    @PostMapping("/api/order/byStatementId")
-//    @ResponseBody
-//    public ResultVo<?> insertOrderByStatementId(List<Long> statementId){
-//
-//        return null;
-//    }
-//
-//    @PatchMapping("/api/order/update")
-//    @ResponseBody
-//    public ResultVo<?> updateOrder(){
-//        return null;
-//    }
-//
+        return resultVo;
+    }
+
+
+    @PostMapping("/api/order/insert")
+    @ResponseBody
+    public ResultVo<?> insertOrder(@RequestBody StatementListParamVo params){
+        List<OrderInsertVo> orderInsertVos = orderService.insertOrderList(params.getStatementIdList());
+        ResultVo<List<OrderInsertVo>> resultVo = new ResultVo<>();
+        resultVo.setErrorCode("0000");
+        resultVo.setErrorMessage("success");
+        resultVo.setResult(orderInsertVos);
+        return resultVo;
+    }
+
+
 
     @PostMapping("/api/order/list")
     @ResponseBody
@@ -118,6 +110,28 @@ public class OrderController extends BaseController {
         resultVo.setErrorMessage("success");
         resultVo.setErrorCode("0000");
         resultVo.setResult(list);
+        return resultVo;
+    }
+
+    @DeleteMapping("/api/delete/statement")
+    @ResponseBody
+    public ResultVo<?> statementDelete(@RequestBody StatementListParamVo statementIdList){
+        orderService.statementListDelete(statementIdList.getStatementIdList());
+        ResultVo<String> resultVo = new ResultVo<>();
+        resultVo.setErrorMessage("success");
+        resultVo.setErrorCode("0000");
+        resultVo.setResult("delete complete");
+        return resultVo;
+    }
+
+    @DeleteMapping("/api/delete/order")
+    @ResponseBody
+    public ResultVo<?> orderDelete(@RequestBody OrderListParamVo orderIdList){
+        orderService.orderListDelete(orderIdList.getOrderIdList());
+        ResultVo<Object> resultVo = new ResultVo<>();
+        resultVo.setErrorMessage("success");
+        resultVo.setErrorCode("0000");
+        resultVo.setResult("delete complete");
         return resultVo;
     }
 

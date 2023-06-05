@@ -67,18 +67,17 @@
 
     </insert>
     <insert id="insertOrderInfo"
-    parameterType="com.gamsung.scmproject.order.vo.OrderRegistrationInfoVo">
+    parameterType="com.gamsung.scmproject.order.vo.OrderInsertVo"
+    useGeneratedKeys="true" keyProperty="orderId" keyColumn="id">
         INSERT INTO orderInfo
             (statementId,
              orderState,
              regDt,
-             deliveryReqDt,
              state)
         VALUES
-            (#{id},
+            (#{statementId},
             '1',
             now(),
-            #{deliveryReqDt},
             '1')
     </insert>
 
@@ -235,6 +234,13 @@
         `statement` s ON s.id = oi.statementId
         WHERE s.salesNo = #{id}
     </select>
+    <select id="selectOrderInfoByOrderId" resultType="java.lang.Long">
+        SELECT
+             statementId
+        FROM
+            orderInfo
+        WHERE id = #{orderId}
+    </select>
 
     <delete id="deleteProductCordListAboutStatement">
     DELETE FROM statementProductCord WHERE statementId = #{statementId}
@@ -256,6 +262,17 @@
         WHERE id = #{id}
 
     </update>
+    <delete id="deleteStatement"
+    parameterType="java.lang.Long">
+        UPDATE statement
+        SET state = '2'
+        WHERE id = #{statementId}
+    </delete>
+    <delete id="deleteOrder">
+        UPDATE orderInfo
+        SET state = '2'
+        WHERE id = #{orderId}
+    </delete>
 
 
 </mapper>
