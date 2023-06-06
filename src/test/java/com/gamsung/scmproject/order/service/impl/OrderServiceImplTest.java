@@ -39,7 +39,7 @@ class OrderServiceImplTest {
 
     @Test
     void statementIdDuplicatedCheck(){
-        int count = orderMapper.checkSalesNo(2500000000L);
+        int count = orderMapper.checkSalesNo("2500000000L");
         System.out.println("count : "+count);
     }
 }

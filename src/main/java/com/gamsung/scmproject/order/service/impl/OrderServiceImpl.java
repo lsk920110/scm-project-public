@@ -107,9 +107,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     public void orderDelete(Long orderId){
-        Long statementId = orderMapper.selectOrderInfoByOrderId(orderId);
+//        Long statementId = orderMapper.selectOrderInfoByOrderId(orderId);
         orderMapper.deleteOrder(orderId);
-        statementDelete(statementId);
+//        statementDelete(statementId);
     }
 
 
