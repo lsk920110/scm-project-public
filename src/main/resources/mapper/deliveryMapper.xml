@@ -38,4 +38,11 @@
      #{deliveryStaffId}
     )
     </insert>
+
+    <select id="selectDeliveryList"
+            parameterType="com.gamsung.scmproject.delivery.vo.DeliveryInfoVo"
+            resultType="com.gamsung.scmproject.delivery.vo.DeliveryInfoVo">
+        SELECT * FROM delieryInfo
+    </select>
+
 </mapper>

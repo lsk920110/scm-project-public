@@ -6,6 +6,8 @@ import com.gamsung.scmproject.delivery.mapper.DeliveryStaffMapper;
 import com.gamsung.scmproject.delivery.service.DeliveryService;
 import com.gamsung.scmproject.delivery.vo.AvailableStaffInfoVo;
 import com.gamsung.scmproject.delivery.vo.DeliveryAssignVo;
+import com.gamsung.scmproject.delivery.vo.DeliveryInfoVo;
+import com.gamsung.scmproject.delivery.vo.DeliverySearchCriteriaVo;
 import com.gamsung.scmproject.order.mapper.OrderMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,8 @@ public class DeliveryServiceImpl implements DeliveryService {
         return success;
     }
 
+
+
     @Transactional
     public int assignDelivery(DeliveryAssignVo param) {
         //주소 정보를 가져와서 어느 tc에 할당될 것인지를 확인한다.
@@ -60,5 +64,11 @@ public class DeliveryServiceImpl implements DeliveryService {
         int row = deliveryMapper.insertAssignDelivery(param);
         orderMapper.updateOrderState(param.getId(),"2");
         return row;
+    }
+
+
+    @Override
+    public List<DeliveryInfoVo> selectDeliveryList(DeliverySearchCriteriaVo params) {
+        return deliveryMapper.selectDeliveryList(params);
     }
 }

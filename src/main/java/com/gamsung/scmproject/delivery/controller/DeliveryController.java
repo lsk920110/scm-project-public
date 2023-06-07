@@ -4,6 +4,7 @@ import com.gamsung.scmproject.common.constant.State;
 import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.delivery.service.DeliveryService;
+import com.gamsung.scmproject.delivery.vo.DeliveryInfoVo;
 import com.gamsung.scmproject.delivery.vo.DeliverySearchCriteriaVo;
 import com.gamsung.scmproject.vendor.service.VendorService;
 import com.gamsung.scmproject.vendor.vo.VendorWithMemberNameVo;
@@ -54,7 +55,7 @@ public class DeliveryController extends BaseController {
     @GetMapping("/delivery/list/search")
     @ResponseBody
     public ResultVo<?> deliveryListSearch(@RequestBody DeliverySearchCriteriaVo params){
-
+        List<DeliveryInfoVo> list =deliveryService.selectDeliveryList(params);
 
 
 
