@@ -274,6 +274,11 @@
         SET state = '2'
         WHERE id = #{orderId}
     </delete>
+    <update id="updateOrderState">
+        UPDATE orderInfo
+        SET orderState = #{orderState}
+        WHERE id = #{orderId}
+    </update>
 
 
 </mapper>

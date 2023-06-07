@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gamsung.scmproject.delivery.mapper.DeliveryStaffMapper">
+
+
+    <insert id="insertDeliveryStaff"
+            parameterType="com.gamsung.scmproject.delivery.vo.DeliveryStaffRegistrationVo">
+    INSERT INTO deliveryInstallationStaff
+    (`tc`,`staffName`,`staffPhoneNum`,`state`)
+    VALUES
+    (#{tc},#{staffName},#{staffPhoneNum},'1')
+    </insert>
+    <select id="selectTcInfoList" resultType="com.gamsung.scmproject.delivery.vo.TransportCenterVo">
+        SELECT tc,deliveryArea,telephone,state
+        FROM transportCenterInfo
+        WHERE state = '1'
+    </select>
+    <select id="selectDeliveryStaffList" resultType="com.gamsung.scmproject.delivery.vo.DeliveryStaffInfoVo">
+        SELECT
+            id,
+            dis.tc,
+            tci.deliveryArea ,
+            dis.staffName ,
+            dis.staffPhoneNum ,
+            dis.state
+        FROM
+            deliveryInstallationStaff dis
+                INNER JOIN transportCenterInfo tci using (tc)
+    </select>
+    <select id="selectAvailableDeliveryStaffOne" resultType="com.gamsung.scmproject.delivery.vo.AvailableStaffInfoVo">
+        SELECT
+            dis.id
+            ,CASE
+                WHEN
+                cnt IS NULL THEN 0
+            ELSE
+                cnt
+                END AS cnt
+        FROM deliveryInstallationStaff dis
+        LEFT OUTER JOIN
+        (SELECT
+            deliveryStaffId
+            , count(id) AS cnt
+        FROM deliveryInfo
+        WHERE tc='100'
+            AND expectedDeliveryDt =#{expectedDt}
+            GROUP BY deliveryStaffId) AS B
+        ON B.deliveryStaffId = dis.id
+        WHERE B.cnt <![CDATA[<]]> 5 OR B.cnt IS NULL
+        LIMIT 1
+    </select>
+</mapper>

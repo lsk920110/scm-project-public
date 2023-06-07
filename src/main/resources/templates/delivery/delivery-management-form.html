@@ -26,11 +26,8 @@
 <th:block th:replace="common/fragments/left-navbar" :: LeftNavbarFragment></th:block>
 <th:block th:replace="common/fragments/header-fragment" :: headerFragment></th:block>
 <div class="content-area">
-    <h2>주문관리</h2>
+    <h2>배송조회</h2>
     <hr>
-    <!--    <div>-->
-    <!--        <span style="float: left; width : 50%;"></span>-->
-    <!--    </div>-->
     <div>
         <div class="input-group" style="width : 60%; float: left;">
             <select style="width : 25%;"
@@ -43,17 +40,18 @@
             <select style="width : 25%;"
                     name="searchCriteria" class="form-select" id="inputGroupSelect04"
                     aria-label="Example select with button addon">
-                <option selected value="1">주문번호</option>
-                <option value="2">판매번호</option>
-                <option value="3">납품번호</option>
+                <option value="1">주문번호</option>
+<!--                <option value="2">판매번호</option>-->
+                <option selected value="3">납품번호</option>
+
             </select>
             <input style="width : 50%;"
                    name="searchContent" class="form-control" type="text" value="">
         </div>
         <div class="input-group" style="width : 35%; float: left; left: 5%;">
-            <span class="input-group-text">주문생성일*</span>
-            <input name="orderCreateStartDt" max="9999-12-31" type="date" class="form-control">
-            <input name="orderCreateEndDt" max="9999-12-31" type="date" class="form-control">
+            <span class="input-group-text">배송예정일*</span>
+            <input name="deliveryExpectedDtFirst" max="9999-12-31" type="date" class="form-control">
+            <input name="deliveryExpectedDtSecond" max="9999-12-31" type="date" class="form-control">
             <script>
                 $('input[type="date"]')[0].valueAsDate = new Date();
                 $('input[type="date"]')[1].valueAsDate = new Date();
@@ -63,12 +61,8 @@
     <div style="height : 30px;"></div>
     <div style="margin-top : 20px;">
         <div class="input-group" style="width : 25%; margin-right: 4%; float: left;">
-            <span class="input-group-text">주문상태</span>
-            <select name="orderState" class="form-select">
-                <option value="1" selected>전체</option>
-                <option value="2">생성</option>
-                <option value="3">미생성</option>
-            </select>
+            <span class="input-group-text">기사명</span>
+            <input name="deliveryStaffName" type="text" class="form-control">
         </div>
         <div class="input-group" style="width : 25%; margin-right: 4%; float: left;">
             <span class="input-group-text">모델코드</span>
@@ -82,21 +76,20 @@
     </div>
     <div style="margin-top : 50px;">
         <div style="text-align: right;">
-            <input type="button" class="btn btn-primary" onclick="createOrderAll()" value="주문생성"/>
+            <input type="button" class="btn btn-primary" onclick="assignDelivery()" value="배송할당"/>
             <script>
-                function createOrderAll(){
-                    const statementIdList = checkedStatementIdList();
-                    console.log(statementIdList);
+                function assignDelivery(){
+
                     $.ajax({
-                        type : 'post',
-                        url : '/api/order/insert',
-                        data : JSON.stringify({statementIdList : statementIdList}),
-                        dataType : 'json',
-                        contentType: 'application/json',
+                        type : 'GET',
+                        url : '/api/batch/delivery/test',
+                        // data : JSON.stringify({statementIdList : statementIdList}),
+                        // dataType : 'json',
+                        // contentType: 'application/json',
                         success : (result)=>{
-                            console.log(result);
-                            searchOrder();
-                            $('input:checked').prop('checked',false);
+                            if(result.errorCode ==='0000'){
+                                alert(`총 ${result.result} 건이 완료됬습니다.`)
+                            }
                         },
                         error : (err) =>console.log
                     })
@@ -158,21 +151,18 @@
                             })
                         })
                     </script>
-                    <th>발주번호</th>
                     <th>주문번호</th>
-                    <th>판매번호</th>
-                    <th>상품코드</th>
-                    <th>모델코드</th>
-                    <th>수량</th>
-                    <th>공급가</th>
-                    <th>고객명</th>
-                    <th>연락처</th>
-                    <th>TC</th>
-                    <th>주문생성일</th>
-                    <th>요구납기일</th>
-                    <th>배송예정일</th>
                     <th>납품번호</th>
-                    <th>상태</th>
+                    <th>고객명</th>
+                    <th>모델명</th>
+                    <th>수량</th>
+                    <th>TC</th>
+                    <th>출고일</th>
+                    <th>배송예정일</th>
+                    <th>배송완료일</th>
+                    <th aria-description="출고,반품,배송완료">배송상태</th>
+                    <th>기사명</th>
+                    <th>기사연락처</th>
                 </tr>
                 </thead>
                 <tbody></tbody>
@@ -190,18 +180,18 @@
         let vendorId = $('select[name="vendorId"]').val();
         let searchCriteria = $('select[name="searchCriteria"]').val();
         let searchContent = $('input[name="searchContent"]').val();
-        let orderCreateStartDt = $('input[name="orderCreateStartDt"]').val();
-        let orderCreateEndDt = $('input[name="orderCreateEndDt"]').val();
-        let orderState = $('select[name="orderState"]').val();
+        let deliveryExpectedDtFirst = $('input[name="deliveryExpectedDtFirst"]').val();
+        let deliveryExpectedDtSecond = $('input[name="deliveryExpectedDtSecond"]').val();
+        let deliveryStaffName = $('input[name="deliveryStaffName"]').val();
         let modelCord = $('input[name="modelCord"]').val();
         let customerName = $('input[name="customerName"]').val();
         const params = {
             vendorId: vendorId,
             searchCriteria: searchCriteria,
             searchContent: searchContent,
-            orderCreateStartDt: orderCreateStartDt,
-            orderCreateEndDt: orderCreateEndDt,
-            orderState: orderState,
+            deliveryExpectedDtFirst: deliveryExpectedDtFirst,
+            deliveryExpectedDtSecond: deliveryExpectedDtSecond,
+            deliveryStaffName: deliveryStaffName,
             modelCord: modelCord,
             customerName: customerName
         }
@@ -220,19 +210,6 @@
                 console.log(result);
                 let txt = '';
                 result.result.forEach((item, idx) => {
-                    const orderState = item.orderState;
-                    let stateMessage = '';
-                    switch (orderState){
-                        case '1':
-                            stateMessage = '정상';
-                            break
-                        case '2':
-                            stateMessage = '삭제'
-                            break
-                        case null:
-                            stateMessage = ''
-                            break
-                    }
 
                     let productCordList = item.productList;
                     let productCordSize = productCordList.length;

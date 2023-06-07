@@ -29,4 +29,6 @@ public interface OrderMapper {
     Long selectOrderInfoByOrderId(@Qualifier("orderId") Long orderId);
 
     void deleteOrder(Long orderId);
+
+    int updateOrderState(@Qualifier("orderId") Long orderId,@Qualifier("orderState") String orderState);
 }

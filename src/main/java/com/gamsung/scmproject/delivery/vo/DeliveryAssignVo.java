@@ -13,6 +13,7 @@ public class DeliveryAssignVo {
     private Long id;
     private String orderState;
     private String state;
+    private String deliveryReqDt;
     private Long statementId;
     //statement 정보
     private String customerAddressFirst;
