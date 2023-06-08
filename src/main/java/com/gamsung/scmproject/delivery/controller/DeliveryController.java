@@ -8,6 +8,7 @@ import com.gamsung.scmproject.delivery.vo.DeliveryInfoVo;
 import com.gamsung.scmproject.delivery.vo.DeliverySearchCriteriaVo;
 import com.gamsung.scmproject.vendor.service.VendorService;
 import com.gamsung.scmproject.vendor.vo.VendorWithMemberNameVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.xml.transform.Result;
 import java.util.List;
 
+@Slf4j
 @Controller
 public class DeliveryController extends BaseController {
 
@@ -52,14 +54,17 @@ public class DeliveryController extends BaseController {
         return resultVo;
     }
 
-    @GetMapping("/delivery/list/search")
+    @PostMapping("/api/delivery/list/search")
     @ResponseBody
     public ResultVo<?> deliveryListSearch(@RequestBody DeliverySearchCriteriaVo params){
+        log.info("params : {}",params.toString());
         List<DeliveryInfoVo> list =deliveryService.selectDeliveryList(params);
+        ResultVo<List<DeliveryInfoVo>> resultVo = new ResultVo<>();
+        resultVo.setErrorCode("0000");
+        resultVo.setErrorMessage("success");
+        resultVo.setResult(list);
 
-
-
-        return null;
+        return resultVo;
     }
 
 

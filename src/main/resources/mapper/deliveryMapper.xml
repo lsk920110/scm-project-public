@@ -41,8 +41,96 @@
 
     <select id="selectDeliveryList"
             parameterType="com.gamsung.scmproject.delivery.vo.DeliveryInfoVo"
-            resultType="com.gamsung.scmproject.delivery.vo.DeliveryInfoVo">
-        SELECT * FROM delieryInfo
+            resultMap="deliverySearchInfo">
+<!--            resultType="com.gamsung.scmproject.delivery.vo.DeliveryInfoVo"-->
+
+        SELECT
+            di.id AS id,
+            oi.id AS orderId,
+            s.id AS statementId,
+            s.customerName AS customerName,
+            di.tc,
+            dis.staffName ,
+            dis.staffPhoneNum ,
+            CASE
+                WHEN di.state = '1' THEN '출고대기'
+                WHEN di.state = '2' THEN '출고'
+                WHEN di.state = '3' THEN '배송완료'
+                WHEN di.state = '4' THEN '취소'
+                WHEN di.state = '5' THEN '반품'
+            END AS deliveryState,
+            di.expectedDeliveryDt ,
+            di.deliveryCompletionDt
+        FROM `deliveryInfo` di
+            INNER JOIN `orderInfo` oi on oi.id = di.orderId
+            INNER JOIN `statement` s on s.id = oi.statementId
+            INNER JOIN `statementProductCord` spc on spc.statementId = oi.statementId
+            INNER JOIN `productCord` pc on spc.productCord = pc.productCord
+            INNER JOIN `productModel` pm on pm.id = pc.productModelId
+            INNER JOIN `deliveryInstallationStaff` dis on dis.id = di.deliveryStaffId
+        WHERE
+            1=1
+            AND s.vendorId = #{vendorId}
+          <if test='deliveryId != null and !deliveryId.equals("")'>
+            AND di.id = #{deliveryId}
+          </if>
+            AND expectedDeliveryDt <![CDATA[>=]]> #{expectedDeliveryDt_start}
+            AND expectedDeliveryDt <![CDATA[<=]]> #{expectedDeliveryDt_end}
+          <if test='modelCord != null and !modelCord.equals("")'>
+            AND pm.modelCord = #{modelCord}
+          </if>
+          <if test='deliveryStaffName != null'>
+            AND dis.staffName LIKE '%${deliveryStaffName}%'
+          </if>
+          <if test='customerName != null'>
+            AND customerName LIKE '%${customerName}%'
+          </if>
+    </select>
+
+    <resultMap id="deliverySearchInfo" type="com.gamsung.scmproject.delivery.vo.DeliveryInfoVo">
+        <result column="id" property="id"/>
+        <result column="orderId" property="orderId"/>
+        <result column="statementId" property="statementId"/>
+        <result column="customerName" property="customerName"/>
+        <result column="tc" property="tc"/>
+        <result column="staffName" property="staffName"/>
+        <result column="staffPhoneNum" property="staffPhoneNum"/>
+        <result column="deliveryState" property="deliveryState"/>
+        <result column="expectedDeliveryDt" property="expectedDeliveryDt"/>
+        <result column="deliveryCompletionDt" property="deliveryCompletionDt"/>
+        <collection column="statementId"
+                    property="productList"
+                    ofType="com.gamsung.scmproject.order.vo.OrderProductCordInfoVo"
+                    select="selectProductList"
+        >
+            <result property="id" column="id"/>
+            <result property="productCord" column="productCord"/>
+            <result property="statementId" column="statementId"/>
+            <result property="orderSeq" column="orderSeq"/>
+            <result property="orderQuantity" column="orderQuantity"/>
+            <result property="supplyPrice" column="supplyPrice"/>
+            <result property="supplyPriceVat" column="supplyPriceVat"/>
+            <result property="modelCord" column="modelCord"/>
+        </collection>
+    </resultMap>
+    <select
+            id="selectProductList"
+            parameterType="int"
+            resultType="com.gamsung.scmproject.order.vo.OrderProductCordInfoVo">
+        SELECT
+            spc.id,
+            spc.productCord,
+            spc.statementId ,
+            spc.orderSeq,
+            spc.orderQuantity ,
+            pc.supplyPrice ,
+            pc.supplyPriceVat ,
+            pm.modelCord
+        FROM
+            `statementProductCord` spc
+                INNER JOIN productCord pc ON spc.productCord = pc.productCord
+                INNER JOIN productModel pm ON pm.id = pc.productModelId
+        WHERE spc.statementId = #{statementId}
     </select>
 
 </mapper>

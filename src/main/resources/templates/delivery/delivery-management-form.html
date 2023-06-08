@@ -37,16 +37,16 @@
                 <option th:each="vendor : ${vendorList}" th:value="${vendor.id}"
                         th:text="${vendor.vendorName}"></option>
             </select>
-            <select style="width : 25%;"
-                    name="searchCriteria" class="form-select" id="inputGroupSelect04"
-                    aria-label="Example select with button addon">
-                <option value="1">주문번호</option>
-<!--                <option value="2">판매번호</option>-->
-                <option selected value="3">납품번호</option>
-
-            </select>
-            <input style="width : 50%;"
-                   name="searchContent" class="form-control" type="text" value="">
+<!--            <select style="width : 25%;"-->
+<!--                    name="searchCriteria" class="form-select" id="inputGroupSelect04"-->
+<!--                    aria-label="Example select with button addon">-->
+<!--                <option value="1">주문번호</option>-->
+<!--                <option selected value="3">납품번호</option>-->
+<!--            </select>-->
+<!--            <label for="searchContent" >-->
+<!--            </label>-->
+            <input style="width : 75%;" id="searchContent"
+                   name="searchContent" placeholder="납품번호" class="form-control" type="text" value="">
         </div>
         <div class="input-group" style="width : 35%; float: left; left: 5%;">
             <span class="input-group-text">배송예정일*</span>
@@ -72,7 +72,7 @@
             <span class="input-group-text">고객명</span>
             <input name="customerName" type="text" class="form-control">
         </div>
-        <button style="width : 13%;" onclick="searchOrder()" class="btn btn-primary">검색</button>
+        <button style="width : 13%;" onclick="searchDelivery()" class="btn btn-primary">검색</button>
     </div>
     <div style="margin-top : 50px;">
         <div style="text-align: right;">
@@ -132,7 +132,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th><input id="all-check" class="form-check-input" type="checkbox"></th>
+<!--                    <th><input id="all-check" class="form-check-input" type="checkbox"></th>-->
                     <script>
                         $(document).ready(function () {
                             $('#all-check').click(function(){
@@ -157,7 +157,7 @@
                     <th>모델명</th>
                     <th>수량</th>
                     <th>TC</th>
-                    <th>출고일</th>
+<!--                    <th>출고일</th>-->
                     <th>배송예정일</th>
                     <th>배송완료일</th>
                     <th aria-description="출고,반품,배송완료">배송상태</th>
@@ -176,39 +176,40 @@
 </body>
 <script>
 
-    const searchOrder = () => {
+    const searchDelivery = () => {
         let vendorId = $('select[name="vendorId"]').val();
-        let searchCriteria = $('select[name="searchCriteria"]').val();
         let searchContent = $('input[name="searchContent"]').val();
         let deliveryExpectedDtFirst = $('input[name="deliveryExpectedDtFirst"]').val();
         let deliveryExpectedDtSecond = $('input[name="deliveryExpectedDtSecond"]').val();
         let deliveryStaffName = $('input[name="deliveryStaffName"]').val();
         let modelCord = $('input[name="modelCord"]').val();
         let customerName = $('input[name="customerName"]').val();
+        // let deliveryId = $('input[name="sear"]')
         const params = {
             vendorId: vendorId,
-            searchCriteria: searchCriteria,
+            deliveryId : searchContent,
             searchContent: searchContent,
-            deliveryExpectedDtFirst: deliveryExpectedDtFirst,
-            deliveryExpectedDtSecond: deliveryExpectedDtSecond,
+            expectedDeliveryDt_start: deliveryExpectedDtFirst,
+            expectedDeliveryDt_end: deliveryExpectedDtSecond,
             deliveryStaffName: deliveryStaffName,
             modelCord: modelCord,
             customerName: customerName
         }
+        console.log(params);
         if (vendorId === '0') {
             alert('거래선을 선택하세요');
             return;
         }
 
         $.ajax({
-            type: 'post',
-            url: '/api/order/list',
+            type: 'POST',
+            url: '/api/delivery/list/search',
             dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify(params),
             success: (result) => {
                 console.log(result);
-                let txt = '';
+                let txt = 'test';
                 result.result.forEach((item, idx) => {
 
                     let productCordList = item.productList;
@@ -223,25 +224,22 @@
                         quantity += `<div>${productCord.orderQuantity}</div>`;
                         price += `<div>${productCord.supplyPrice}</div>`;
                     })
-
-                    txt += `<tr class="${orderState === '2' ? 'delete':'normal'}">`;
-                    txt += `<td><input value="${item.statementId}" name="check-statement" class="form-check-input checkbox-input" type="checkbox"/></td>`
-                    txt += `<td><a href="/order/update?statementId=${item.statementId}" onclick="window.open(this.href , 'window_name' , 'width=1000,height=500,location=no,status=no,scrollbars=yes'); return false;">${item.statementId}</a></td>`;
-                    txt += `<td>${item.orderId === null ? '미생성건' : item.orderId}</td>`;
-                    txt += `<td>${item.salesNo}</td>`;
-                    txt += `<td>${productCordTxt}</td>`;
+                    //
+                    txt += `<tr>`;
+                    //txt += `<!--<td><input value="${item.del}" name="check-statement" class="form-check-input checkbox-input" type="checkbox"/></td>-->`
+                    txt += `<td>${item.orderId}</td>`;
+                    txt += `<td>${item.id}</td>`;
+                    txt += `<td>${item.customerName}</td>`;
+                    // txt += `<td>${productCordTxt}</td>`;
                     txt += `<td>${modelCordTxt}</td>`;
                     txt += `<td>${quantity}</td>`;
-                    txt += `<td>${price}</td>`;
-                    txt += `<td>${item.customerName}</td>`;
-                    txt += `<td>${item.customerPhoneNumber}</td>`;
-                    txt += `<td>TC영역</td>`;
-                    txt += `<td>${item.orderRegDt === null ? '' : item.orderRegDt}</td>`;
-                    txt += `<td>${item.deliveryReqDt}</td>`;
-                    txt += `<td>배송예정일영역</td>`;
-                    txt += `<td>납품번호영역</td>`;
-                    // txt += `<td>${item.orderState === null ? '' : item.orderState}</td>`;
-                    txt += `<td>${stateMessage}</td>`;
+                    //txt += `<td>${price}</td>`;
+                    txt += `<td>${item.tc}</td>`;
+                    txt += `<td>${item.expectedDeliveryDt}</td>`;
+                    txt += `<td>${item.deliveryCompletionDt === null ? '' : item.deliveryCompletionDt}</td>`;
+                    txt += `<td>${item.deliveryState}</td>`;
+                    txt += `<td>${item.staffName}</td>`;
+                    txt += `<td>${item.staffPhoneNum}</td>`;
                     txt += `</tr>`;
                 })
                 $('tbody').empty().append(txt);
