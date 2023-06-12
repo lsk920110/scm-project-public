@@ -105,7 +105,21 @@
             <input th:onclick="deleteStatement()" type="button" class="btn btn-secondary" value="주문삭제"/>
             <script>
                 function deleteStatement(){
+                    const statementIdList = checkedStatementIdList();
+                    $.ajax({
+                        url : '/api/delete/order',
+                        type : 'POST',
+                        data : JSON.stringify({statementIdList:statementIdList}),
+                        dataType : 'json',
+                        contentType : 'application/json',
+                        success : (result)=>{
+                            console.log(result);
+                            searchOrder();
+                        },
+                        error : (err)=>console.log(err)
 
+
+                    })
                 }
             </script>
         </div>
@@ -258,11 +272,11 @@
                     txt += `<td>${price}</td>`;
                     txt += `<td>${item.customerName}</td>`;
                     txt += `<td>${item.customerPhoneNumber}</td>`;
-                    txt += `<td>TC영역</td>`;
+                    txt += `<td>${item.tc}</td>`;
                     txt += `<td>${item.orderRegDt === null ? '' : item.orderRegDt}</td>`;
                     txt += `<td>${item.deliveryReqDt}</td>`;
-                    txt += `<td>배송예정일영역</td>`;
-                    txt += `<td>납품번호영역</td>`;
+                    txt += `<td>${item.expectedDeliveryDt}</td>`;
+                    txt += `<td>${item.deliveryId === null ? '' : item.deliveryId}</td>`;
                     // txt += `<td>${item.orderState === null ? '' : item.orderState}</td>`;
                     txt += `<td>${stateMessage}</td>`;
                     txt += `</tr>`;

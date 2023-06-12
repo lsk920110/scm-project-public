@@ -119,10 +119,15 @@
             s.state AS statementState,
             DATE_FORMAT(oi.regDt,'%Y-%m-%d') AS orderRegDt,
             oi.id AS orderId,
-            oi.state AS orderState
+            oi.state AS orderState,
+            CASE WHEN di.tc IS NULL THEN '' ELSE di.tc END AS tc,
+            CASE WHEN di.expectedDeliveryDt IS NULL THEN '' ELSE di.expectedDeliveryDt END AS expectedDeliveryDt ,
+            CASE WHEN di.deliveryCompletionDt  IS NULL THEN '' ELSE di.deliveryCompletionDt END AS deliveryCompletionDt,
+            di.id AS deliveryId
         FROM
             `statement` s
                 LEFT OUTER JOIN `orderInfo` oi ON oi.statementId = s.id
+                LEFT OUTER JOIN `deliveryInfo` di ON di.ORDERID = oi.id
         where s.vendorId = #{vendorId}
           AND s.state = '1'
           AND s.customerName LIKE '%${customerName}%'

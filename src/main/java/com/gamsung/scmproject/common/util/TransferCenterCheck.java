@@ -29,6 +29,16 @@ public class TransferCenterCheck {
             tc = "109";
         } else if (firstAddress.contains("제주")) {
             tc = "110";
+        } else if (firstAddress.contains("부산")) {
+            tc = "111";
+        } else if (firstAddress.contains("대구")) {
+            tc = "112";
+        } else if (firstAddress.contains("울산")) {
+            tc = "113";
+        } else if (firstAddress.contains("광주")) {
+            tc = "114";
+        } else if (firstAddress.contains("대전")) {
+            tc = "115";
         }
 
         return tc;

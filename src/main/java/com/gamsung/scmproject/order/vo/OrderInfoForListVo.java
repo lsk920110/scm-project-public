@@ -20,6 +20,10 @@ public class OrderInfoForListVo {
     private String orderRegDt;
     private Long orderId;
     private String orderState;
+    private String tc;
+    private String expectedDeliveryDt;
+    private String deliveryCompletionDt;
+    private Long deliveryId;
     private List<OrderProductCordInfoVo> productList;
 
 }

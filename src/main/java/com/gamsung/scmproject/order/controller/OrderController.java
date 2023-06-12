@@ -124,10 +124,10 @@ public class OrderController extends BaseController {
         return resultVo;
     }
 
-    @DeleteMapping("/api/delete/order")
+    @PostMapping("/api/delete/order")
     @ResponseBody
-    public ResultVo<?> orderDelete(@RequestBody OrderListParamVo orderIdList){
-        orderService.orderListDelete(orderIdList.getOrderIdList());
+    public ResultVo<?> orderDelete(@RequestBody StatementListParamVo statementListParamVo){
+//        orderService.orderListDelete(statementListParamVo.getOrderIdList());
         ResultVo<Object> resultVo = new ResultVo<>();
         resultVo.setErrorMessage("success");
         resultVo.setErrorCode("0000");

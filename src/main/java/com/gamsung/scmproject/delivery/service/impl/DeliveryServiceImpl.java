@@ -62,7 +62,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         param.setExpectedDeliveryDt(expectedDt);
         param.setState("2");
         int row = deliveryMapper.insertAssignDelivery(param);
-        orderMapper.updateOrderState(param.getId(),"2");
+//        orderMapper.updateOrderState(param.getId(),"2");
         return row;
     }
 
