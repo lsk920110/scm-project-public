@@ -4,14 +4,17 @@ import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.salesInfo.service.SalesInfoService;
 import com.gamsung.scmproject.salesInfo.vo.SalesInfoVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 public class SalesInfoController extends BaseController {
 
@@ -35,6 +38,15 @@ public class SalesInfoController extends BaseController {
         return makeResultVo("0000",list);
     }
 
+
+    @GetMapping("/api/salesInfo")
+    @ResponseBody
+    public ResultVo<?> salesInfo(@RequestParam Long vendorId,@RequestParam String startDt, @RequestParam String endDt){
+        log.info("vendorId : {} , startDt : {} , endDt : {}",vendorId,startDt,endDt);
+        List<SalesInfoVo> list = salesInfoService.selectInfo(vendorId,startDt,endDt);
+
+        return makeResultVo("0000",list);
+    }
 
 
 }

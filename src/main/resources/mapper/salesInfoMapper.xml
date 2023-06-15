@@ -162,5 +162,35 @@
      #{orderSeq}
     )
     </insert>
+    <select id="selectInfoListFromSalesInfo"
+            resultType="com.gamsung.scmproject.salesInfo.vo.SalesInfoFromSalesInfoVo">
+        SELECT
+            si.id,
+            si.deliveryId ,
+            si.orderId,
+            si.statementId ,
+            si.tc,
+            si.vendorId ,
+            si.vendorName ,
+            si.salesNo,
+            si.orderRegDt,
+            si.deliveryCompletionDt ,
+            si.salesRegDt ,
+            si.customerName ,
+            spc.productCord,
+            spc.modelCord ,
+            spc.orderQuantity,
+            spc.supplyPrice ,
+            spc.supplyPriceVat ,
+            spc.orderSeq
+        FROM salesInfo si
+            INNER JOIN salesProductCord spc ON si.id = spc.salesId
+        WHERE 1=1
+          AND si.vendorId = #{vendorId}
+        AND
+        deliveryCompletionDt <![CDATA[<=]]> #{endDt}
+        AND deliveryCompletionDt <![CDATA[>=]]> #{startDt}
+
+    </select>
 
 </mapper>

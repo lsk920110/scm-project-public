@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface SalesInfoService {
     List<SalesInfoVo> batchSalesInfo();
+
+    List<SalesInfoVo> selectInfo(Long vendorId, String startDt, String endDt);
 }

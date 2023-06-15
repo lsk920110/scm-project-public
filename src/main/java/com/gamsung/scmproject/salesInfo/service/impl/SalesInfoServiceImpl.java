@@ -41,4 +41,9 @@ public class SalesInfoServiceImpl implements SalesInfoService {
     }
 
 
+    @Override
+    public List<SalesInfoVo> selectInfo(Long vendorId, String startDt, String endDt) {
+        return salesInfoMapper.selectInfoListFromSalesInfo(vendorId,startDt,endDt);
+    }
+
 }
