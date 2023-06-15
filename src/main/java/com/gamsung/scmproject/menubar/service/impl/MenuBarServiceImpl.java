@@ -39,12 +39,27 @@ public class MenuBarServiceImpl implements MenuBarService {
     }
 
     @Override
-    public List<MenubarInfoVo> selectMenubarAllForManagement() {
-        return menuBarMapper.selectMenubarAllForManagement();
+    public List<MenubarInfoVo> selectMenubarAllForManagement(String position) {
+
+        return menuBarMapper.selectMenubarAllForManagement(position);
     }
 
     @Override
     public void updateMenuBar(MenubarInfoVo params) {
         menuBarMapper.updateMenuBar(params);
+    }
+
+    @Override
+    public void updateMenuOrderSeq(List<Long> menuIdList) {
+        int cnt = 1;
+        for(Long menuId : menuIdList){
+            menuBarMapper.updateMenuOrderSeq(menuId , cnt);
+            cnt ++;
+        }
+    }
+
+    @Override
+    public void deleteMenu(Long menuId) {
+        menuBarMapper.deleteMenu(menuId);
     }
 }

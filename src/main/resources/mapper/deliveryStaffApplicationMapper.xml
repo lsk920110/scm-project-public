@@ -2,5 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gamsung.scmproject.deliveryStaffApplication.mapper.DeliveryStaffApplicationMapper">
+    <select id="deliveryStaffInfoById">
+
+
+    </select>
+
+    <select id="selectDeliveryListByStaffId"
+    resultType="com.gamsung.scmproject.deliveryStaffApplication.vo.DeliveryInfoVo">
+        SELECT
+            B.deliveryId ,
+            s.customerName,
+            B.expectedDeliveryDt ,
+            CASE
+                WHEN B.deliveryCompletionDt IS NULL THEN ''
+                    ELSE B.deliveryCompletionDt
+                        END AS deliveryCompletionDt,
+            CASE
+                WHEN B.deliveryState = '1' THEN '배송준비'
+                WHEN B.deliveryState = '2' THEN '출고'
+                WHEN B.deliveryState = '3' THEN '배송완료'
+                WHEN B.deliveryState = '4' THEN '연기'
+                WHEN B.deliveryState = '5' THEN '반품'
+                        END AS deliveryState
+        FROM
+            (SELECT
+                 A.deliveryId ,
+                 oi.statementId ,
+                 expectedDeliveryDt ,
+                 deliveryCompletionDt ,
+                 A.deliveryState
+             FROM (
+                      SELECT
+                          di.id AS deliveryId,
+                          di.expectedDeliveryDt,
+                          di.deliveryCompletionDt,
+                          di.state AS deliveryState,
+                          orderId
+                      FROM deliveryInfo di
+                      WHERE di.deliveryStaffId = #{staffId}) A
+                      INNER JOIN orderInfo oi ON oi.id = A.orderId) B
+                INNER JOIN `statement` s ON s.id = B.statementId
+    </select>
+    <update id="updateDeliveryState" parameterType="com.gamsung.scmproject.deliveryStaffApplication.vo.DeliveryStateUpdateParamVo">
+        UPDATE deliveryInfo
+        SET
+            state = #{reqState}
+        <if test='reqState == "3" or reqState == "5"'>
+            , deliveryCompletionDt = CURDATE()
+        </if>
+        <if test='reqState == "1" or reqState == "2" or reqState == "4"'>
+            , deliveryCompletionDt = null
+        </if>
+        WHERE id = #{deliveryId}
+    </update>
+
 
 </mapper>

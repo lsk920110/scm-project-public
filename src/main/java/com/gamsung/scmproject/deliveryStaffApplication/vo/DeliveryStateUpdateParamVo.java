@@ -7,4 +7,5 @@ public class DeliveryStateUpdateParamVo {
 
     private Long deliveryStaffId;
     private Long deliveryId;
+    private String reqState;
 }

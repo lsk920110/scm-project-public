@@ -50,4 +50,17 @@
         WHERE B.cnt <![CDATA[<]]> 5 OR B.cnt IS NULL
         LIMIT 1
     </select>
+    <select id="selectDeliveryStaffListByTc" resultType="com.gamsung.scmproject.delivery.vo.DeliveryInfoVo">
+        SELECT
+            id ,
+            tc ,
+            staffName ,
+            staffPhoneNum
+        FROM deliveryInstallationStaff
+        WHERE
+            tc = #{tc}
+        AND
+            state = '1'
+
+    </select>
 </mapper>

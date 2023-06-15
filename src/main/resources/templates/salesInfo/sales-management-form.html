@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="common/fragments/config-fragment :: ConfigFragment">
+
+<body>
+<style>
+    .delete{
+        color: red;
+    }
+</style>
+<script>
+<!--    common function-->
+    function checkedStatementIdList(){
+        let $checked = $('.checkbox-input:checked');
+        let statementIdList = [];
+        for (let i = 0; i < $checked.length; i++) {
+            statementIdList.push($checked[i].value);
+        }
+        return statementIdList;
+    }
+
+
+</script>
+<th:block th:replace="common/fragments/left-navbar" :: LeftNavbarFragment></th:block>
+<th:block th:replace="common/fragments/header-fragment" :: headerFragment></th:block>
+<div class="content-area">
+    <h2>매출조회</h2>
+    <hr>
+
+        <style>
+            .container-table {
+                min-width: 1000px; /* 원하는 너비 */
+                min-height: 200px; /* 원하는 높이 */
+                overflow-x: auto; /* 스크롤바 표시 */
+            }
+
+            table {
+                width: 3000px;
+                /*width: 100%; !* 부모 컨테이너에 맞게 테이블 너비 조정 *!*/
+            }
+
+            td, th {
+                white-space: nowrap; /* 줄 바꿈 방지 */
+            }
+
+            th {
+                z-index: 1;
+            }
+
+            thead {
+                position: sticky;
+                top: 0;
+                background-color: white;
+            }
+        </style>
+
+        <div class="container-table">
+
+            <table class="table">
+                <thead>
+                <tr>
+<!--                    <th><input id="all-check" class="form-check-input" type="checkbox"></th>-->
+
+                    <th>주문번호</th>
+                    <th>납품번호</th>
+                    <th>고객명</th>
+                    <th>모델명</th>
+                    <th>수량</th>
+                    <th>TC</th>
+<!--                    <th>출고일</th>-->
+                    <th>배송예정일</th>
+                    <th>배송완료일</th>
+                    <th aria-description="출고,반품,배송완료">배송상태</th>
+                    <th>기사명</th>
+                    <th>기사연락처</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script>
+
+    const searchDelivery = () => {
+        let vendorId = $('select[name="vendorId"]').val();
+        let searchContent = $('input[name="searchContent"]').val();
+        let deliveryExpectedDtFirst = $('input[name="deliveryExpectedDtFirst"]').val();
+        let deliveryExpectedDtSecond = $('input[name="deliveryExpectedDtSecond"]').val();
+        let deliveryStaffName = $('input[name="deliveryStaffName"]').val();
+        let modelCord = $('input[name="modelCord"]').val();
+        let customerName = $('input[name="customerName"]').val();
+        // let deliveryId = $('input[name="sear"]')
+        const params = {
+            vendorId: vendorId,
+            deliveryId : searchContent,
+            searchContent: searchContent,
+            expectedDeliveryDt_start: deliveryExpectedDtFirst,
+            expectedDeliveryDt_end: deliveryExpectedDtSecond,
+            deliveryStaffName: deliveryStaffName,
+            modelCord: modelCord,
+            customerName: customerName
+        }
+        console.log(params);
+        if (vendorId === '0') {
+            alert('거래선을 선택하세요');
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/delivery/list/search',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(params),
+            success: (result) => {
+                console.log(result);
+                let txt = 'test';
+                result.result.forEach((item, idx) => {
+
+                    let productCordList = item.productList;
+                    let productCordSize = productCordList.length;
+                    let modelCordTxt = '';
+                    let productCordTxt = '';
+                    let quantity = '';
+                    let price = '';
+                    productCordList.forEach((productCord, seq) => {
+                        modelCordTxt += `<div>${productCord.modelCord}</div>`;
+                        productCordTxt += `<div>${productCord.productCord}</div>`;
+                        quantity += `<div>${productCord.orderQuantity}</div>`;
+                        price += `<div>${productCord.supplyPrice}</div>`;
+                    })
+                    //
+                    txt += `<tr>`;
+                    //txt += `<!--<td><input value="${item.del}" name="check-statement" class="form-check-input checkbox-input" type="checkbox"/></td>-->`
+                    txt += `<td>${item.orderId}</td>`;
+                    txt += `<td>${item.id}</td>`;
+                    txt += `<td>${item.customerName}</td>`;
+                    // txt += `<td>${productCordTxt}</td>`;
+                    txt += `<td>${modelCordTxt}</td>`;
+                    txt += `<td>${quantity}</td>`;
+                    //txt += `<td>${price}</td>`;
+                    txt += `<td>${item.tc}</td>`;
+                    txt += `<td>${item.expectedDeliveryDt}</td>`;
+                    txt += `<td>${item.deliveryCompletionDt === null ? '' : item.deliveryCompletionDt}</td>`;
+                    txt += `<td>${item.deliveryState}</td>`;
+                    txt += `<td>${item.staffName}</td>`;
+                    txt += `<td>${item.staffPhoneNum}</td>`;
+                    txt += `</tr>`;
+                })
+                $('tbody').empty().append(txt);
+
+            },
+            error: (err) => console.log
+        })
+    }
+
+
+</script>
+
+
+</html>

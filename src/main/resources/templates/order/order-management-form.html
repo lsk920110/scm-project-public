@@ -20,7 +20,23 @@
         }
         return statementIdList;
     }
+    function checkedOrderIdList(){
+        let $checked = $('.checkbox-input:checked').parent().next().next();
+        let statementIdList = [];
+        for (let i = 0; i < $checked.length; i++) {
+            if($checked[i].innerText === '미생성건'){
+                alert('주문 미생성건이 존재합니다.');
+                return false;
+            }
+            if($($checked[i]).siblings('.expectedDeliveryDt') !== ''){
+                alert('출고 주문건이 있습니다.')
+                return false;
+            }
+            statementIdList.push($checked[i].innerText);
 
+        }
+        return statementIdList;
+    }
 
 </script>
 <th:block th:replace="common/fragments/left-navbar" :: LeftNavbarFragment></th:block>
@@ -87,6 +103,7 @@
                 function createOrderAll(){
                     const statementIdList = checkedStatementIdList();
                     console.log(statementIdList);
+
                     $.ajax({
                         type : 'post',
                         url : '/api/order/insert',
@@ -96,20 +113,24 @@
                         success : (result)=>{
                             console.log(result);
                             searchOrder();
-                            $('input:checked').prop('checked',false);
+                            // $('input:checked').prop('checked',false);
                         },
                         error : (err) =>console.log
                     })
                 }
             </script>
-            <input th:onclick="deleteStatement()" type="button" class="btn btn-secondary" value="주문삭제"/>
+            <input th:onclick="deleteOrder()" type="button" class="btn btn-secondary" value="주문삭제"/>
             <script>
-                function deleteStatement(){
-                    const statementIdList = checkedStatementIdList();
+                function deleteOrder(){
+                    const orderIdList = checkedOrderIdList();
+                    console.log(orderIdList);
+                    if(!orderIdList){
+                        return
+                    }
                     $.ajax({
                         url : '/api/delete/order',
                         type : 'POST',
-                        data : JSON.stringify({statementIdList:statementIdList}),
+                        data : JSON.stringify({orderIdList:orderIdList}),
                         dataType : 'json',
                         contentType : 'application/json',
                         success : (result)=>{
@@ -275,13 +296,15 @@
                     txt += `<td>${item.tc}</td>`;
                     txt += `<td>${item.orderRegDt === null ? '' : item.orderRegDt}</td>`;
                     txt += `<td>${item.deliveryReqDt}</td>`;
-                    txt += `<td>${item.expectedDeliveryDt}</td>`;
+                    txt += `<td class="exptectedDeliveryDt">${item.expectedDeliveryDt}</td>`;
                     txt += `<td>${item.deliveryId === null ? '' : item.deliveryId}</td>`;
                     // txt += `<td>${item.orderState === null ? '' : item.orderState}</td>`;
                     txt += `<td>${stateMessage}</td>`;
                     txt += `</tr>`;
                 })
                 $('tbody').empty().append(txt);
+                $('input:checked').prop('checked',false);
+
 
             },
             error: (err) => console.log

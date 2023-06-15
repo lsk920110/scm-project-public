@@ -126,8 +126,8 @@ public class OrderController extends BaseController {
 
     @PostMapping("/api/delete/order")
     @ResponseBody
-    public ResultVo<?> orderDelete(@RequestBody StatementListParamVo statementListParamVo){
-//        orderService.orderListDelete(statementListParamVo.getOrderIdList());
+    public ResultVo<?> orderDelete(@RequestBody OrderIdListVo orderIdListVo){
+        orderService.orderListDelete(orderIdListVo.getOrderIdList());
         ResultVo<Object> resultVo = new ResultVo<>();
         resultVo.setErrorMessage("success");
         resultVo.setErrorCode("0000");

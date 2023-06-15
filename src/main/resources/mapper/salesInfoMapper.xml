@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gamsung.scmproject.salesInfo.mapper.SalesInfoMapper">
+
+    <!--    <select id=""-->
+<!--            resultType="com.gamsung.scmproject.salesInfo.vo.SalesInfoVo">-->
+<!--        SELECT-->
+<!--                di.id AS deliveryId,-->
+<!--                di.orderId,-->
+<!--                di.tc,-->
+<!--                di.deliveryCompletionDt,-->
+<!--                oi.regDt AS orderRegDt,-->
+<!--                di.state AS deliveryState,-->
+<!--                oi.statementId,-->
+<!--                s.salesNo,-->
+<!--                s.customerName,-->
+<!--                s.vendorId,-->
+<!--                vi.vendorName,-->
+<!--                spc.productCord,-->
+<!--                spc.orderSeq,-->
+<!--                spc.orderQuantity,-->
+<!--                pc.supplyPrice,-->
+<!--                pc.supplyPriceVat,-->
+<!--                pm.modelCord-->
+<!--        FROM deliveryInfo di-->
+<!--                 INNER JOIN orderInfo oi ON oi.id = di.orderId-->
+<!--                 INNER JOIN `statement` s ON oi.statementId = s.id-->
+<!--                 INNER JOIN vendorInfo vi ON vi.id = s.vendorId-->
+<!--                 INNER JOIN statementProductCord spc ON spc.statementId = oi.statementId-->
+<!--                 INNER JOIN productCord pc ON pc.productCord  = spc.productCord-->
+<!--                 INNER JOIN productModel pm ON pm.id = pc.productModelId-->
+<!--        WHERE di.state = '3'-->
+<!--    </select>-->
+
+    <select
+            id="selectTodayDeliveryCompletionList"
+            resultMap="deliveryCompletionList">
+        SELECT
+            di.id AS deliveryId,
+            di.orderId,
+            di.tc,
+            di.deliveryCompletionDt,
+            oi.regDt AS orderRegDt,
+            oi.statementId,
+            s.salesNo,
+            s.customerName,
+            s.vendorId,
+            vi.vendorName
+        FROM deliveryInfo di
+                 INNER JOIN orderInfo oi ON oi.id = di.orderId
+                 INNER JOIN `statement` s ON oi.statementId = s.id
+                 INNER JOIN vendorInfo vi ON vi.id = s.vendorId
+        WHERE di.state = '3'
+    </select>
+
+
+
+    <resultMap id="deliveryCompletionList" type="com.gamsung.scmproject.salesInfo.vo.SalesInfoVo">
+        <result column="deliveryId" property="deliveryId"/>
+        <result column="orderId" property="orderId"/>
+        <result column="statementId" property="statementId"/>
+        <result column="tc" property="tc"/>
+        <result column="vendorId" property="vendorId"/>
+        <result column="vendorName" property="vendorName"/>
+        <result column="salesNo" property="salesNo"/>
+        <result column="orderRegDt" property="orderRegDt"/>
+        <result column="deliveryCompletionDt" property="deliveryCompletionDt"/>
+        <result column="customerName" property="customerName"/>
+        <collection column="statementId"
+                    property="productCordList"
+                    ofType="com.gamsung.scmproject.salesInfo.vo.SalesProductCordVo"
+                    select="productCordListByStatementId">
+            <result column="id" property="id"/>
+            <result column="productCord" property="productCord"/>
+            <result column="statementId" property="statementId"/>
+            <result column="orderSeq" property="orderSeq"/>
+            <result column="orderQuantity" property="orderQuantity"/>
+            <result column="supplyPrice" property="supplyPrice"/>
+            <result column="supplyVatPrice" property="supplyVatPrice"/>
+        </collection>
+    </resultMap>
+
+    <select
+            id="productCordListByStatementId"
+            parameterType="int"
+            resultType="com.gamsung.scmproject.salesInfo.vo.SalesProductCordVo">
+        SELECT
+            spc.id,
+            spc.productCord,
+            spc.statementId ,
+            spc.orderSeq,
+            spc.orderQuantity ,
+            pc.supplyPrice ,
+            pc.supplyPriceVat ,
+            pm.modelCord
+        FROM
+            `statementProductCord` spc
+                INNER JOIN productCord pc ON spc.productCord = pc.productCord
+                INNER JOIN productModel pm ON pm.id = pc.productModelId
+        WHERE spc.statementId = #{statementId}
+        ORDER BY spc.orderSeq ASC
+    </select>
+
+    <insert
+            id="insertSalesInfo"
+            parameterType="com.gamsung.scmproject.salesInfo.vo.SalesInfoVo"
+            useGeneratedKeys="true"
+            keyColumn="id"
+            keyProperty="id">
+        INSERT INTO salesInfo
+        (
+         deliveryId ,
+         orderId ,
+         statementId ,
+         tc ,
+         vendorId ,
+         vendorName ,
+         salesNo ,
+         orderRegDt ,
+         deliveryCompletionDt ,
+         customerName ,
+         salesRegDt
+         )
+        VALUES
+        (
+         #{deliveryId},
+         #{orderId},
+         #{statementId},
+         #{tc},
+         #{vendorId},
+         #{vendorName},
+         #{salesNo},
+         #{orderRegDt},
+         #{deliveryCompletionDt},
+         #{customerName},
+         CURDATE()
+        )
+
+    </insert>
+    <insert id="insertSalesProductCord" parameterType="com.gamsung.scmproject.salesInfo.vo.SalesProductCordVo">
+    INSERT INTO salesProductCord
+    (
+     salesId ,
+     statementId ,
+     productCord ,
+     modelCord ,
+     orderQuantity ,
+     supplyPrice ,
+     supplyPriceVat ,
+     orderSeq
+     )
+    VALUES
+    (
+     #{salesId},
+     #{statementId},
+     #{productCord},
+     #{modelCord},
+     #{orderQuantity},
+     #{supplyPrice},
+     #{supplyPriceVat},
+     #{orderSeq}
+    )
+    </insert>
+
+</mapper>

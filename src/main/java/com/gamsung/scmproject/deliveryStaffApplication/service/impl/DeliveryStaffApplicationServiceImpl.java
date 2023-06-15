@@ -1,12 +1,14 @@
 package com.gamsung.scmproject.deliveryStaffApplication.service.impl;
 
+import com.gamsung.scmproject.delivery.vo.DeliveryInfoVo;
 import com.gamsung.scmproject.deliveryStaffApplication.mapper.DeliveryStaffApplicationMapper;
 import com.gamsung.scmproject.deliveryStaffApplication.service.DeliveryStaffApplicationService;
-import com.gamsung.scmproject.deliveryStaffApplication.vo.DeliveryListCallByStaffIdParamVo;
 import com.gamsung.scmproject.deliveryStaffApplication.vo.DeliveryStaffLoginVo;
 import com.gamsung.scmproject.deliveryStaffApplication.vo.DeliveryStateUpdateParamVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DeliveryStaffApplicationServiceImpl implements DeliveryStaffApplicationService {
@@ -21,12 +23,14 @@ public class DeliveryStaffApplicationServiceImpl implements DeliveryStaffApplica
     }
 
     @Override
-    public void deliveryListByStaffId(DeliveryListCallByStaffIdParamVo params) {
+    public List<DeliveryInfoVo> deliveryListByStaffId(String staffId) {
 
+        return deliveryStaffApplicationMapper.selectDeliveryListByStaffId(staffId);
+//        return null;
     }
 
     @Override
-    public void deliveryStateUpdate(DeliveryStateUpdateParamVo params) {
-
+    public void updateDeliveryState(DeliveryStateUpdateParamVo params) {
+        deliveryStaffApplicationMapper.updateDeliveryState(params);
     }
 }

@@ -27,7 +27,8 @@
                     contentType : 'application/json',
                     success : (result)=>{
                         console.log(result);
-                        alert(result.result);
+                        alert(result.result+'\n'+'전표가 삭제되었습니다.');
+                        window.close();
                     },
                     error : (error)=>{
                         console.log(error);

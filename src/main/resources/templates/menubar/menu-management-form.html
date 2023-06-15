@@ -9,7 +9,57 @@
 <body>
 <th:block th:replace="common/fragments/left-navbar" :: LeftNavbarFragment></th:block>
 <th:block th:replace="common/fragments/header-fragment" :: headerFragment></th:block>
-
+<script>
+    const updateOrderNum =()=>{
+        const $menuId = $('.menuId');
+        let menuIdList = [];
+        for (let i = 0; i < $menuId.length; i++) {
+            menuIdList.push($menuId[i].innerText)
+        }
+        console.log(menuIdList);
+        $.ajax({
+            type : 'post',
+            url : '/api/menubar/orderSeq',
+            data : JSON.stringify({menuIdList : menuIdList}),
+            dataType : 'json',
+            contentType : 'application/json',
+            success : (result)=>{
+                console.log(result);
+            },
+            error : (err)=>{
+                console.log(err)
+            }
+        })
+    }
+    const moveUp =(e)=>{
+        let $tr = $(e).parent().parent().parent();
+        $tr.prev().before($tr);
+        updateOrderNum();
+    }
+    const moveDown =(e)=>{
+        let $tr = $(e).parent().parent().parent();
+        $tr.next().after($tr);
+        updateOrderNum();
+    }
+    const deleteMenu=(id)=>{
+        if(confirm('해당 메뉴를 삭제하시겠습니까?')){
+            $.ajax({
+                type : 'post',
+                contentType : 'application/json',
+                url : '/api/menubar/delete',
+                data : JSON.stringify({
+                    menuId : id
+                }),
+                dataType : 'json',
+                success : function(result){
+                    alert('삭제완료');
+                    location.reload();
+                },
+                error : function(e){console.log(e)}
+            })
+        }
+    }
+</script>
 <div class="content-area">
     <h2>메뉴관리</h2>
     <hr>
@@ -42,6 +92,14 @@
         </div>
     </form>
     <div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a th:class="'nav-link '+${position == '1' ? 'active' : ''}" class="nav-link active" aria-current="page" href="/menubar/management?position=1">사이드바</a>
+            </li>
+            <li class="nav-item">
+                <a th:class="'nav-link '+${position == '2' ? 'active' : ''}" class="nav-link" href="/menubar/management?position=2">헤더</a>
+            </li>
+        </ul>
         <table class="table">
             <thead>
             <tr>
@@ -50,12 +108,14 @@
                 <th>URL</th>
                 <th>위치</th>
                 <th>상태</th>
-                <th>수정</th>
+                <th>순서</th>
+                <th>삭제</th>
+<!--                <th>수정</th>-->
             </tr>
             </thead>
             <tbody>
             <tr th:each="menu : ${menubars}">
-                <td th:text="${menu.id}"></td>
+                <td class="menuId" th:text="${menu.id}"></td>
                 <td th:text="${menu.menuTitle}"></td>
                 <td th:text="${menu.link}"></td>
                 <td>
@@ -78,8 +138,21 @@
 <!--                    </label>-->
                 </td>
                 <td>
-                    <button class="btn btn-primary" th:onclick="|update(${menu.id})|">저장</button>
+
+                    <div class="btn-group" role="group" aria-label="Default button group">
+                        <button type="button" onclick="moveUp(this)" class="btn btn-outline-primary">⬆</button>
+                        <button type="button" onclick="moveDown(this)" class="btn btn-outline-primary">⬇</button>
+                    </div>
                 </td>
+                <td>
+                    <button class="btn btn-primary" type="button" th:onclick="|deleteMenu(${menu.id})|">
+                    삭제
+                    </button>
+                </td>
+
+<!--                <td>-->
+<!--                    <button class="btn btn-primary" th:onclick="|update(${menu.id})|">저장</button>-->
+<!--                </td>-->
             </tr>
             </tbody>
             <tfoot></tfoot>

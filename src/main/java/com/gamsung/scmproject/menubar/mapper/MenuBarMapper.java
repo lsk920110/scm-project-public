@@ -12,7 +12,11 @@ public interface MenuBarMapper {
 
     List<MenubarInfoVo> selectMenubar(@Qualifier("position") String position);
 
-    List<MenubarInfoVo> selectMenubarAllForManagement();
+    List<MenubarInfoVo> selectMenubarAllForManagement(@Qualifier("position") String position);
 
     void updateMenuBar(MenubarInfoVo params);
+
+    void updateMenuOrderSeq(@Qualifier("menuId") Long menuId, @Qualifier("cnt") int cnt);
+
+    void deleteMenu(@Qualifier("menuId") Long menuId);
 }

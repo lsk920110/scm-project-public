@@ -1,5 +1,6 @@
 package com.gamsung.scmproject.delivery.service;
 
+import com.gamsung.scmproject.delivery.vo.DeliveryInfoVo;
 import com.gamsung.scmproject.delivery.vo.DeliveryStaffInfoVo;
 import com.gamsung.scmproject.delivery.vo.DeliveryStaffRegistrationVo;
 import com.gamsung.scmproject.delivery.vo.TransportCenterVo;
@@ -12,4 +13,6 @@ public interface DeliveryStaffService {
     List<TransportCenterVo> tcInfoList();
 
     List<DeliveryStaffInfoVo> selectDeliveryStaffList();
+
+    List<DeliveryInfoVo> selectDeliveryStaffListByTc(String tc);
 }

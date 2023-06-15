@@ -16,7 +16,11 @@ public interface MenuBarService {
     List<MenubarInfoVo> selectHeaderMenubarAll();
 
 
-    List<MenubarInfoVo> selectMenubarAllForManagement();
+    List<MenubarInfoVo> selectMenubarAllForManagement(String position);
 
     void updateMenuBar(MenubarInfoVo params);
+
+    void updateMenuOrderSeq(List<Long> menuIdList);
+
+    void deleteMenu(Long menuId);
 }

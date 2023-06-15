@@ -1,9 +1,6 @@
 package com.gamsung.scmproject.delivery.mapper;
 
-import com.gamsung.scmproject.delivery.vo.AvailableStaffInfoVo;
-import com.gamsung.scmproject.delivery.vo.DeliveryStaffInfoVo;
-import com.gamsung.scmproject.delivery.vo.DeliveryStaffRegistrationVo;
-import com.gamsung.scmproject.delivery.vo.TransportCenterVo;
+import com.gamsung.scmproject.delivery.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -19,4 +16,6 @@ public interface DeliveryStaffMapper {
     List<DeliveryStaffInfoVo> selectDeliveryStaffList();
 
     AvailableStaffInfoVo selectAvailableDeliveryStaffOne(@Qualifier("tc") String tc, @Qualifier("expectedDt") String expectedDt);
+
+    List<DeliveryInfoVo> selectDeliveryStaffListByTc(@Qualifier("tc") String tc);
 }

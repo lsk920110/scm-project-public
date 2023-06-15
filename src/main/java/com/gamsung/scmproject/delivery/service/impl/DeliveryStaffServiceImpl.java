@@ -2,6 +2,7 @@ package com.gamsung.scmproject.delivery.service.impl;
 
 import com.gamsung.scmproject.delivery.mapper.DeliveryStaffMapper;
 import com.gamsung.scmproject.delivery.service.DeliveryStaffService;
+import com.gamsung.scmproject.delivery.vo.DeliveryInfoVo;
 import com.gamsung.scmproject.delivery.vo.DeliveryStaffInfoVo;
 import com.gamsung.scmproject.delivery.vo.DeliveryStaffRegistrationVo;
 import com.gamsung.scmproject.delivery.vo.TransportCenterVo;
@@ -32,5 +33,10 @@ public class DeliveryStaffServiceImpl implements DeliveryStaffService {
     @Override
     public List<DeliveryStaffInfoVo> selectDeliveryStaffList() {
         return deliveryStaffMapper.selectDeliveryStaffList();
+    }
+
+    @Override
+    public List<DeliveryInfoVo> selectDeliveryStaffListByTc(String tc) {
+        return deliveryStaffMapper.selectDeliveryStaffListByTc(tc);
     }
 }

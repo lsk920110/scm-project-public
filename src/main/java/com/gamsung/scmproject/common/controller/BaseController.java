@@ -1,6 +1,7 @@
 package com.gamsung.scmproject.common.controller;
 
 import com.gamsung.scmproject.common.constant.SessionKeys;
+import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.member.vo.AuthIf;
 import com.gamsung.scmproject.member.vo.MemberForSessionVo;
 import com.gamsung.scmproject.member.vo.MemberVo;
@@ -46,5 +47,24 @@ public class BaseController {
         params.setLoginId(memberVo.getId());
         log.info("logniId : {}", params.getLoginId());
     }
+
+    public <T> ResultVo<?> makeResultVo(String ErrorCode , T result){
+
+        ResultVo<T> resultVo = new ResultVo<>();
+        resultVo.setErrorCode(ErrorCode);
+        resultVo.setErrorMessage("success");
+        resultVo.setResult(result);
+        return resultVo;
+    }
+
+    public <T> ResultVo<?> makeResultVo(String ErrorCode){
+        ResultVo<T> resultVo = new ResultVo<>();
+        resultVo.setErrorCode(ErrorCode);
+        resultVo.setErrorMessage("success");
+        return resultVo;
+
+    }
+
+
 
 }
