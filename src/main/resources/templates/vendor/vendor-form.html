@@ -33,13 +33,19 @@
         </script>
         <div class="d-grid gap-2">
             <input placeholder="거래시작일" class="form-control" name="contractStartDt" id="contractStartDt"
+                   max="9999-12-31"
                    type="date">
             <label for="contractStartDt"></label>
         </div>
         <div class="d-grid gap-2">
             <input placeholder="거래종료일" class="form-control" name="contractEndDt" id="contractEndDt"
+                   max="9999-12-31"
                    type="date">
             <label for="contractEndDt"></label>
+            <script>
+                $('input[type="date"]')[0].valueAsDate = new Date();
+                $('input[type="date"]')[1].valueAsDate = new Date();
+            </script>
         </div>
         <div class="d-grid gap-2">
             <button class="btn btn-primary">저장</button>

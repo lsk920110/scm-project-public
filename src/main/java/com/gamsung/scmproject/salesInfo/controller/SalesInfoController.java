@@ -26,7 +26,7 @@ public class SalesInfoController extends BaseController {
     public ModelAndView salesInfoManagement(){
         ModelAndView modelAndView = new ModelAndView("salesInfo/sales-management-form");
         menuBarInfo(modelAndView);
-
+        vendorList(modelAndView);
         return modelAndView;
     }
 

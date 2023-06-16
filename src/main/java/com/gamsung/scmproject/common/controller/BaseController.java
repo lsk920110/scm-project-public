@@ -7,6 +7,9 @@ import com.gamsung.scmproject.member.vo.MemberForSessionVo;
 import com.gamsung.scmproject.member.vo.MemberVo;
 import com.gamsung.scmproject.menubar.service.MenuBarService;
 import com.gamsung.scmproject.menubar.vo.MenubarInfoVo;
+import com.gamsung.scmproject.vendor.service.VendorService;
+import com.gamsung.scmproject.vendor.vo.VendorVo;
+import com.gamsung.scmproject.vendor.vo.VendorWithMemberNameVo;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.Session;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +24,7 @@ public class BaseController {
 
 
     @Autowired private MenuBarService menuBarService;
+    @Autowired private VendorService vendorService;
 
     public void menuBarInfo(ModelAndView mav){
         List<MenubarInfoVo> header = menuBarService.selectHeaderMenubarAll();
@@ -63,6 +67,15 @@ public class BaseController {
         resultVo.setErrorMessage("success");
         return resultVo;
 
+    }
+
+    public void vendorList(Model model){
+        List<VendorWithMemberNameVo> vendorList = vendorService.selectVendorList("1");
+        model.addAttribute("vendorList",vendorList);
+    }
+    public void vendorList(ModelAndView mav){
+        List<VendorWithMemberNameVo> vendorList = vendorService.selectVendorList("1");
+        mav.addObject("vendorList",vendorList);
     }
 
 
