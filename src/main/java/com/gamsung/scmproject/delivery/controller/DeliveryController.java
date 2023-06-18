@@ -1,5 +1,6 @@
 package com.gamsung.scmproject.delivery.controller;
 
+import com.gamsung.scmproject.common.constant.ErrorCode;
 import com.gamsung.scmproject.common.constant.State;
 import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.ResultVo;
@@ -33,9 +34,7 @@ public class DeliveryController extends BaseController {
     @GetMapping("/delivery/management")
     public String deliveryForm(Model model){
         menuBarInfo(model);
-        List<VendorWithMemberNameVo> vendorList = vendorService.selectVendorList(State.VENDOR_STATE_NORMAL);
-        model.addAttribute("vendorList",vendorList);
-
+        vendorList(model);
 
         return "delivery/delivery-management-form";
     }
@@ -46,12 +45,7 @@ public class DeliveryController extends BaseController {
 
         int successRows = deliveryService.batchAssignDelivery();
 
-        ResultVo<Integer> resultVo = new ResultVo<>();
-        resultVo.setErrorCode("0000");
-        resultVo.setErrorMessage("success");
-        resultVo.setResult(successRows);
-
-        return resultVo;
+        return makeResultVo(ErrorCode.SUCCESS,successRows);
     }
 
     @PostMapping("/api/delivery/list/search")
@@ -59,12 +53,8 @@ public class DeliveryController extends BaseController {
     public ResultVo<?> deliveryListSearch(@RequestBody DeliverySearchCriteriaVo params){
         log.info("params : {}",params.toString());
         List<DeliveryInfoVo> list =deliveryService.selectDeliveryList(params);
-        ResultVo<List<DeliveryInfoVo>> resultVo = new ResultVo<>();
-        resultVo.setErrorCode("0000");
-        resultVo.setErrorMessage("success");
-        resultVo.setResult(list);
 
-        return resultVo;
+        return makeResultVo(ErrorCode.SUCCESS,list);
     }
 
 

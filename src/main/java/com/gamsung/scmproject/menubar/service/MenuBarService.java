@@ -1,7 +1,9 @@
 package com.gamsung.scmproject.menubar.service;
 
+import com.gamsung.scmproject.common.vo.ListTypeParamVo;
 import com.gamsung.scmproject.menubar.vo.MenubarInfoVo;
 import com.gamsung.scmproject.menubar.vo.MenubarSideAndHeaderVo;
+import com.gamsung.scmproject.menubar.vo.MenubarUpdateV2ParamVo;
 
 import java.util.List;
 
@@ -23,4 +25,6 @@ public interface MenuBarService {
     void updateMenuOrderSeq(List<Long> menuIdList);
 
     void deleteMenu(Long menuId);
+
+    void updateMenuBarV2(ListTypeParamVo<MenubarUpdateV2ParamVo> params);
 }

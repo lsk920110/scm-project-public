@@ -31,4 +31,6 @@ public interface OrderMapper {
     void deleteOrder(Long orderId);
 
     int updateOrderState(@Qualifier("orderId") Long orderId,@Qualifier("orderState") String orderState);
+
+    List<String> selectDeliveryAreaList();
 }

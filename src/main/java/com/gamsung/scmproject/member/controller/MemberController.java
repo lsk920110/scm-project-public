@@ -1,6 +1,9 @@
 package com.gamsung.scmproject.member.controller;
 
+import com.gamsung.scmproject.common.constant.ErrorCode;
+import com.gamsung.scmproject.common.constant.ModelObjectKey;
 import com.gamsung.scmproject.common.constant.SessionKeys;
+import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.DepartmentVo;
 import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.member.service.MemberService;
@@ -19,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-public class MemberController {
+public class MemberController extends BaseController {
 
 
     @Autowired
@@ -33,15 +36,11 @@ public class MemberController {
 
     @GetMapping(value = "/member")
     public String memberManagement(Model model) {
-        MenubarSideAndHeaderVo menubars = menuBarService.selectMenubarAll();
-//        List<MenubarInfoVo> list = menuBarService.selectMenubarAllForManagement();
-        model.addAttribute(SessionKeys.SIDEBAR, menubars.getSidebarList());
-        model.addAttribute(SessionKeys.HEADER, menubars.getHeaderList());
-
+        menuBarInfo(model);
         List<DepartmentVo> departmentList = memberService.selectDepartmentList();
-        model.addAttribute("departmentList", departmentList);
+        model.addAttribute(ModelObjectKey.DEPARTMENT_LIST, departmentList);
         List<MemberVo> memberList = memberService.selectMemberList();
-        model.addAttribute("memberList", memberList);
+        model.addAttribute(ModelObjectKey.MEMBER_LIST, memberList);
         return "member/member-management";
     }
 
@@ -57,7 +56,7 @@ public class MemberController {
     public ResultVo memberJoinApi(@RequestBody MemberVo memberVo) {
         memberService.joinMember(memberVo);
 
-        return ResultVo.successResult();
+        return makeResultVo(ErrorCode.SUCCESS);
     }
 
     @PostMapping("/api/member/login")
@@ -73,13 +72,9 @@ public class MemberController {
             loginResultVo.setLoginSuccess(lrv.getLoginSuccess());
             loginResultVo.setId(memberVo.getId());
 
-            resultVo.setErrorCode("0000");
-            resultVo.setErrorMessage("success");
-            resultVo.setResult(loginResultVo);
-//            resultVo.setResult();
-            return resultVo;
+            return makeResultVo(ErrorCode.SUCCESS,loginResultVo);
         } else {
-            return ResultVo.failedLogin();
+            return makeResultVo(ErrorCode.LOGIN_FAILED);
         }
     }
 
@@ -88,16 +83,11 @@ public class MemberController {
     public ResultVo<?> emailDuplicatedCheck(@RequestParam String email) {
 
         Boolean result = memberService.emailDuplicatedCheck(email);
-        ResultVo<Boolean> resultVo = (ResultVo<Boolean>) ResultVo.successResult();
-        resultVo.setResult(result);
-
-        return resultVo;
+        return makeResultVo(ErrorCode.SUCCESS,result);
     }
 
     @GetMapping("/login")
     public String loginPage() {
-
-
         return "loginPage";
     }
 

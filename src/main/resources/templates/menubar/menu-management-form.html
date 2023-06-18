@@ -25,6 +25,8 @@
             contentType : 'application/json',
             success : (result)=>{
                 console.log(result);
+                alert('순서변경이 완료됬습니다.');
+                location.reload();
             },
             error : (err)=>{
                 console.log(err)
@@ -34,12 +36,10 @@
     const moveUp =(e)=>{
         let $tr = $(e).parent().parent().parent();
         $tr.prev().before($tr);
-        updateOrderNum();
     }
     const moveDown =(e)=>{
         let $tr = $(e).parent().parent().parent();
         $tr.next().after($tr);
-        updateOrderNum();
     }
     const deleteMenu=(id)=>{
         if(confirm('해당 메뉴를 삭제하시겠습니까?')){
@@ -63,34 +63,54 @@
 <div class="content-area">
     <h2>메뉴관리</h2>
     <hr>
-    <form action="/menubar/registration" method="post">
+    <div style="text-align: right;">
+        <input class="btn btn-primary" onclick="updateOrderNum()" type="button" value="순서저장">
+        <input class="btn btn-primary" onclick="updateMenu()" type="button" value="변경사항 저장">
+    </div>
+    <script>
+        function updateMenu(){
+            const $tbody = $('tbody tr');
+            let menuParamList = [];
+            for (let i = 0; i < $tbody.length; i++) {
+                const id = $($tbody[i]).children('td')[0].innerText;//id
+                const menuTitle     = $($tbody[i]).children('td')[1].children[0].value//function
+                const menuLink      = $($tbody[i]).children('td')[2].children[0].value;//url
+                const position      = $($tbody[i]).children('td')[3].children[0].value;//position
+                // const state         = $($tbody[i]).children('td')[4].children[0].value;//state
+                const orderSeq      =  i+1//order
+                const obj = {
+                    id          : id,
+                    menuTitle   : menuTitle,
+                    menuLink    : menuLink,
+                    position    : position,
+                    // state       : state,
+                    orderSeq    : orderSeq
+                }
+                menuParamList.push(obj);
+            }
+            console.log(menuParamList);
 
-        <div style="width : 500px;" class="input-group mb-3">
-            <span style="width : 100px;" class="input-group-text" id="basic-addon1">기 능 명</span>
-            <input name="menuTitle" type="text" class="form-control" placeholder="ex) 발주관리 , 주문관리"
-                   aria-label="function-name" aria-describedby="basic-addon1">
-        </div>
-        <div style="width : 500px;" class="input-group mb-3">
-            <span style="width : 100px;" class="input-group-text" id="basic-addon2">상대 URL</span>
-            <input name="link" type="text" class="form-control" placeholder="ex) /api/user , /order/registration"
-                   aria-label="relative-url" aria-describedby="basic-addon2">
-        </div>
-        <div class="form-check">
-            <input value="1" class="form-check-input" type="radio" name="position" id="flexRadioDefault1" checked>
-            <label class="form-check-label" for="flexRadioDefault1">
-                사이드바
-            </label>
-        </div>
-        <input value="2" class="form-check-input" type="radio" name="position" id="flexRadioDefault2">
-        <label class="form-check-label" for="flexRadioDefault2">
-            헤더
-        </label>
-        <div class="form-check">
-        </div>
-        <div class="d-grid gap-2 col-6 mx-auto">
-            <button class="btn btn-primary" type="submit">저장</button>
-        </div>
-    </form>
+            $.ajax({
+                type        : 'POST',
+                url         : '/menubar/update/v2',
+                data        : JSON.stringify({list : menuParamList}),
+                dataType    : 'json',
+                contentType : 'application/json',
+                success     : (result)=>{
+                    if(result.errorCode === '0000'){
+                        alert('수정이 완료되었습니다.');
+                        location.reload();
+                    }
+                },
+                error       : (err)=>{}
+
+
+            })
+
+        }
+
+
+    </script>
     <div>
         <ul class="nav nav-tabs">
             <li class="nav-item">
@@ -110,49 +130,35 @@
                 <th>상태</th>
                 <th>순서</th>
                 <th>삭제</th>
-<!--                <th>수정</th>-->
             </tr>
             </thead>
             <tbody>
             <tr th:each="menu : ${menubars}">
                 <td class="menuId" th:text="${menu.id}"></td>
-                <td th:text="${menu.menuTitle}"></td>
-                <td th:text="${menu.link}"></td>
+                <td><input class="form-control menuTitle" th:value="${menu.menuTitle}"/></td>
+                <td><input class="form-control link" th:value="${menu.link}"/></td>
                 <td>
-                    <label>
-                        <select class="form-select" th:classappend="'position-'+${menu.id}">
+                        <select class="form-select position" th:classappend="'position-'+${menu.id}">
                             <option th:selected="${menu.position == '1'}" th:value="1" th:text="사이드"></option>
                             <option th:selected="${menu.position == '2'}" th:value="2" th:text="상단"></option>
                         </select>
-                    </label>
                 </td>
                 <td>
                     <div class="form-check form-switch">
-                        <input th:checked="${menu.state == '1'}" class="form-check-input" th:classappend="'state-'+${menu.id}" type="checkbox" role="switch">
+                        <input th:checked="${menu.state == '1'}" class="form-check-input state" th:classappend="'state-'+${menu.id}" type="checkbox" role="switch">
                     </div>
-<!--                    <label>-->
-<!--                        <select class="form-select" th:classappend="'state-'+${menu.id}">-->
-<!--                            <option th:selected="${menu.state == '1'}" th:value="1" th:text="사용"></option>-->
-<!--                            <option th:selected="${menu.state == '2'}" th:value="2" th:text="미사용"></option>-->
-<!--                        </select>-->
-<!--                    </label>-->
                 </td>
                 <td>
-
                     <div class="btn-group" role="group" aria-label="Default button group">
-                        <button type="button" onclick="moveUp(this)" class="btn btn-outline-primary">⬆</button>
-                        <button type="button" onclick="moveDown(this)" class="btn btn-outline-primary">⬇</button>
+                        <button style="width : 10%;" type="button" onclick="moveUp(this)" class="btn btn-outline-primary">⬆</button>
+                        <button style="width : 10%;" type="button" onclick="moveDown(this)" class="btn btn-outline-primary">⬇</button>
                     </div>
                 </td>
                 <td>
-                    <button class="btn btn-primary" type="button" th:onclick="|deleteMenu(${menu.id})|">
-                    삭제
+                    <button class="btn btn-outline-secondary" type="button" th:onclick="|deleteMenu(${menu.id})|">
+                        삭제
                     </button>
                 </td>
-
-<!--                <td>-->
-<!--                    <button class="btn btn-primary" th:onclick="|update(${menu.id})|">저장</button>-->
-<!--                </td>-->
             </tr>
             </tbody>
             <tfoot></tfoot>

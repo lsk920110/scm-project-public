@@ -4,9 +4,18 @@
 <mapper namespace="com.gamsung.scmproject.productCategory.mapper.ProductCategoryMapper">
     <select id="selectProductCategoryList"
             resultType="com.gamsung.scmproject.productCategory.vo.ProductCategoryVo">
-        SELECT * FROM productCategory
+
+        SELECT
+        pc.id,
+        pc.productCategory ,
+        pc.memberId ,
+        m.name,
+        pc.state,
+        pc.regDt
+        FROM productCategory pc
+        INNER JOIN `member` m ON pc.memberId = m.id
         <if test="state eq '1'.toString()">
-            WHERE state = 1
+            WHERE pc.state = 1
         </if>
     </select>
     <select id="selectProductStatusList" resultType="com.gamsung.scmproject.productModel.vo.ProductStatusVo">

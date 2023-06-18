@@ -1,6 +1,7 @@
 package com.gamsung.scmproject.productCategory.controller;
 
 
+import com.gamsung.scmproject.common.constant.ModelObjectKey;
 import com.gamsung.scmproject.common.constant.SessionKeys;
 import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.ResultVo;
@@ -33,7 +34,7 @@ public class ProductCategoryController extends BaseController {
     public String productCategoryManagementForm(Model model){
         menuBarInfo(model);
         List<ProductCategoryVo> productCategoryList = productCategoryService.selectProductCategoryList(null);
-        model.addAttribute("productCategoryList",productCategoryList);
+        model.addAttribute(ModelObjectKey.PRODUCT_CATEGORY_LIST,productCategoryList);
         return "category/category-form";
     }
 
@@ -60,12 +61,5 @@ public class ProductCategoryController extends BaseController {
         return resultVo;
     }
 
-
-
-//    @PostMapping("")
-//    public ModelAndView insertCategory(@ModelAttribute ProductCategoryVo params){
-//        productCategoryService.registrationProductCategory(params);
-//        return new ModelAndView("redirect:/product/category");
-//    }
 
 }

@@ -1,5 +1,7 @@
 package com.gamsung.scmproject.vendor.controller;
 
+import com.gamsung.scmproject.common.constant.ErrorCode;
+import com.gamsung.scmproject.common.constant.ModelObjectKey;
 import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.vendor.vo.VendorVo;
@@ -23,7 +25,7 @@ public class VendorController extends BaseController {
     public String vendorManagement(Model model){
         menuBarInfo(model);
         List<VendorWithMemberNameVo> list = vendorService.selectVendorList(null);
-        model.addAttribute("vendorList",list);
+        model.addAttribute(ModelObjectKey.VENDOR_LIST,list);
 
         return "vendor/vendor-form";
     }
@@ -31,7 +33,6 @@ public class VendorController extends BaseController {
     @PostMapping("/vendor/registration")
     public String vendorRegistration(@ModelAttribute VendorVo params , HttpSession session){
         sessionLoginInfo(session,params);
-
         vendorService.insertVendorInfo(params);
 
         return "redirect:/vendor/management";
@@ -41,15 +42,7 @@ public class VendorController extends BaseController {
     @ResponseBody
     public ResultVo<?> vendorNameById(@RequestParam long vendorId){
         VendorVo vendorVo = vendorService.selectVendorNameById(vendorId);
-
-
-        ResultVo<VendorVo> resultVo = new ResultVo<>();
-        resultVo.setErrorCode("0000");
-        resultVo.setErrorMessage("success");
-        resultVo.setResult(vendorVo);
-
-
-        return resultVo;
+        return makeResultVo(ErrorCode.SUCCESS,vendorVo);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.gamsung.scmproject.common.controller;
 
+import com.gamsung.scmproject.common.constant.ErrorCode;
+import com.gamsung.scmproject.common.constant.ModelObjectKey;
 import com.gamsung.scmproject.common.constant.SessionKeys;
 import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.member.vo.AuthIf;
@@ -25,6 +27,8 @@ public class BaseController {
 
     @Autowired private MenuBarService menuBarService;
     @Autowired private VendorService vendorService;
+
+
 
     public void menuBarInfo(ModelAndView mav){
         List<MenubarInfoVo> header = menuBarService.selectHeaderMenubarAll();
@@ -52,30 +56,30 @@ public class BaseController {
         log.info("logniId : {}", params.getLoginId());
     }
 
-    public <T> ResultVo<?> makeResultVo(String ErrorCode , T result){
+    public <T> ResultVo<?> makeResultVo(ErrorCode ErrorCode , T result){
 
         ResultVo<T> resultVo = new ResultVo<>();
-        resultVo.setErrorCode(ErrorCode);
-        resultVo.setErrorMessage("success");
+        resultVo.setErrorCode(ErrorCode.getCode());
+        resultVo.setErrorMessage(ErrorCode.getMessage());
         resultVo.setResult(result);
         return resultVo;
     }
 
-    public <T> ResultVo<?> makeResultVo(String ErrorCode){
+    public <T> ResultVo<?> makeResultVo(ErrorCode ErrorCode){
         ResultVo<T> resultVo = new ResultVo<>();
-        resultVo.setErrorCode(ErrorCode);
-        resultVo.setErrorMessage("success");
+        resultVo.setErrorCode(ErrorCode.getCode());
+        resultVo.setErrorMessage(ErrorCode.getMessage());
         return resultVo;
 
     }
 
     public void vendorList(Model model){
         List<VendorWithMemberNameVo> vendorList = vendorService.selectVendorList("1");
-        model.addAttribute("vendorList",vendorList);
+        model.addAttribute(ModelObjectKey.VENDOR_LIST,vendorList);
     }
     public void vendorList(ModelAndView mav){
         List<VendorWithMemberNameVo> vendorList = vendorService.selectVendorList("1");
-        mav.addObject("vendorList",vendorList);
+        mav.addObject(ModelObjectKey.VENDOR_LIST,vendorList);
     }
 
 

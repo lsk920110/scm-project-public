@@ -1,5 +1,7 @@
 package com.gamsung.scmproject.productModel.controller;
 
+import com.gamsung.scmproject.common.constant.ErrorCode;
+import com.gamsung.scmproject.common.constant.ModelObjectKey;
 import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.productCategory.service.ProductCategoryService;
@@ -30,11 +32,11 @@ public class ProductModelController extends BaseController {
         ModelAndView mav = new ModelAndView("productModel/productModel-form");
         menuBarInfo(mav);
         List<ProductModelForListVo> list = productModelService.selectProductModelAll();
-        mav.addObject("productModelList",list);
+        mav.addObject(ModelObjectKey.PRODUCT_MODEL_LIST,list);
         List<ProductCategoryVo> productCategoryList = productCategoryService.selectProductCategoryList("1");
-        mav.addObject("productCategoryList",productCategoryList);
+        mav.addObject(ModelObjectKey.PRODUCT_CATEGORY_LIST,productCategoryList);
         List<ProductStatusVo> productStatusList = productCategoryService.selectProductStatusList();
-        mav.addObject("productStatusList",productStatusList);
+        mav.addObject(ModelObjectKey.PRODUCT_STATUS_LIST,productStatusList);
         return mav;
     }
 
@@ -52,12 +54,7 @@ public class ProductModelController extends BaseController {
     ){
         List<ProductModelVo> productModelList
                 = productModelService.selectProductModelByProductCategoryId(productCategoryId);
-        ResultVo<List<ProductModelVo>> resultVo = new ResultVo<>();
-
-        resultVo.setErrorCode("0000");
-        resultVo.setErrorMessage("success");
-        resultVo.setResult(productModelList);
-        return resultVo;
+        return makeResultVo(ErrorCode.SUCCESS,productModelList);
     }
 
 

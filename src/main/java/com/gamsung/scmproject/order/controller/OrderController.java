@@ -1,5 +1,7 @@
 package com.gamsung.scmproject.order.controller;
 
+import com.gamsung.scmproject.common.constant.ErrorCode;
+import com.gamsung.scmproject.common.constant.ModelObjectKey;
 import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.order.service.OrderService;
@@ -29,16 +31,18 @@ public class OrderController extends BaseController {
     @GetMapping("order/registration")
     public String orderRegistrationForm(Model model){
         menuBarInfo(model);
-        List<VendorWithMemberNameVo> vendorList = vendorService.selectVendorList("1");
-        model.addAttribute("vendorList",vendorList);
+        vendorList(model);
+        List<String> deliveryAreaList = orderService.deliveryAreaList();
+        model.addAttribute(ModelObjectKey.DELIVERY_AREA_LIST,deliveryAreaList);
         return "order/order-registration-form";
     }
 
     @GetMapping("order/management")
     public String orderManagementForm(Model model){
         menuBarInfo(model);
-        List<VendorWithMemberNameVo> vendorList = vendorService.selectVendorList("1");
-        model.addAttribute("vendorList",vendorList);
+        vendorList(model);
+        List<String> deliveryAreaList = orderService.deliveryAreaList();
+        model.addAttribute(ModelObjectKey.DELIVERY_AREA_LIST,deliveryAreaList);
         return "order/order-management-form";
     }
 
@@ -46,8 +50,9 @@ public class OrderController extends BaseController {
     public String orderManagementUpdateForm(Model model , @RequestParam Long statementId){
         menuBarInfo(model);
         StatementInfoVo statementInfo = orderService.orderInfoByStatementId(statementId);
-        model.addAttribute("statement",statementInfo);
-
+        model.addAttribute(ModelObjectKey.STATEMENT,statementInfo);
+        List<String> deliveryAreaList = orderService.deliveryAreaList();
+        model.addAttribute(ModelObjectKey.DELIVERY_AREA_LIST,deliveryAreaList);
         return "order/order-registration-update-form";
     }
 
@@ -63,12 +68,7 @@ public class OrderController extends BaseController {
 
         Long statementId = orderService.statementRegistration(params);
 
-
-        ResultVo<Long> resultVo = new ResultVo<>();
-        resultVo.setErrorCode("0000");
-        resultVo.setErrorMessage("success");
-        resultVo.setResult(statementId);
-        return resultVo;
+        return makeResultVo(ErrorCode.SUCCESS,statementId);
     }
 
     @PostMapping("/api/statement/update")
@@ -80,11 +80,7 @@ public class OrderController extends BaseController {
     ){
         log.info("params : {}",params.toString());
         orderService.updateStatement(params);
-
-        ResultVo<Object> resultVo = new ResultVo<>();
-        resultVo.setErrorCode("0000");
-        resultVo.setErrorMessage("success");
-        return resultVo;
+        return makeResultVo(ErrorCode.SUCCESS);
     }
 
 
@@ -92,11 +88,8 @@ public class OrderController extends BaseController {
     @ResponseBody
     public ResultVo<?> insertOrder(@RequestBody StatementListParamVo params){
         List<OrderInsertVo> orderInsertVos = orderService.insertOrderList(params.getStatementIdList());
-        ResultVo<List<OrderInsertVo>> resultVo = new ResultVo<>();
-        resultVo.setErrorCode("0000");
-        resultVo.setErrorMessage("success");
-        resultVo.setResult(orderInsertVos);
-        return resultVo;
+        return makeResultVo(ErrorCode.SUCCESS,orderInsertVos);
+
     }
 
 
@@ -106,33 +99,23 @@ public class OrderController extends BaseController {
     public ResultVo<?> orderList(@RequestBody OrderSearchParamVo params){
         log.info("params : {}", params.toString());
         List<OrderInfoForListVo> list = orderService.selectOrderList(params);
-        ResultVo<List<OrderInfoForListVo>> resultVo = new ResultVo<>();
-        resultVo.setErrorMessage("success");
-        resultVo.setErrorCode("0000");
-        resultVo.setResult(list);
-        return resultVo;
+        return makeResultVo(ErrorCode.SUCCESS,list);
+
     }
 
     @DeleteMapping("/api/delete/statement")
     @ResponseBody
     public ResultVo<?> statementDelete(@RequestBody StatementListParamVo statementIdList){
         orderService.statementListDelete(statementIdList.getStatementIdList());
-        ResultVo<String> resultVo = new ResultVo<>();
-        resultVo.setErrorMessage("success");
-        resultVo.setErrorCode("0000");
-        resultVo.setResult("delete complete");
-        return resultVo;
+        return makeResultVo(ErrorCode.SUCCESS,"삭제완료");
     }
 
     @PostMapping("/api/delete/order")
     @ResponseBody
     public ResultVo<?> orderDelete(@RequestBody OrderIdListVo orderIdListVo){
         orderService.orderListDelete(orderIdListVo.getOrderIdList());
-        ResultVo<Object> resultVo = new ResultVo<>();
-        resultVo.setErrorMessage("success");
-        resultVo.setErrorCode("0000");
-        resultVo.setResult("delete complete");
-        return resultVo;
+        return makeResultVo(ErrorCode.SUCCESS,"삭제완료");
+
     }
 
 

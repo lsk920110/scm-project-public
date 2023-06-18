@@ -1,6 +1,7 @@
 package com.gamsung.scmproject.menubar.mapper;
 
 import com.gamsung.scmproject.menubar.vo.MenubarInfoVo;
+import com.gamsung.scmproject.menubar.vo.MenubarUpdateV2ParamVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -19,4 +20,6 @@ public interface MenuBarMapper {
     void updateMenuOrderSeq(@Qualifier("menuId") Long menuId, @Qualifier("cnt") int cnt);
 
     void deleteMenu(@Qualifier("menuId") Long menuId);
+
+    void updateMenubarV2(MenubarUpdateV2ParamVo param);
 }

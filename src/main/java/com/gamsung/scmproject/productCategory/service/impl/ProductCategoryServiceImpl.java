@@ -19,16 +19,13 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Override
     public List<ProductCategoryVo>selectProductCategoryList(String state) {
         List<ProductCategoryVo> list = productCategoryMapper.selectProductCategoryList(state);
-//        List<ProductCategoryEntity> all = productCategoryRepository.findAll();
         return list;
     }
 
     @Override
     public void registrationProductCategory(ProductCategoryVo params) {
         productCategoryMapper.insertProductCategory(params);
-//        ProductCategoryEntity categoryEntity = params.parseProductCategoryEntity();
-//        ProductCategoryEntity save = productCategoryRepository.save(categoryEntity);
-    }
+   }
 
     @Override
     public List<ProductStatusVo> selectProductStatusList() {

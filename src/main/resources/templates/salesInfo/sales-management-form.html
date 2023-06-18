@@ -51,10 +51,19 @@
             <button style="width : 50%;" onclick="searchSalesInfo()" class="btn btn-primary">검색</button>
         </div>
     </div>
-    <div>
-        <input type="text" id="supplyPrice" disabled/>
-        <input type="text" id="supplyPriceVat" disabled/>
-        <input type="text" id="totalPrice" disabled/>
+    <div style="padding-top : 50px;">
+        <div style="float :left; width : 25%; margin-right: 5%;" class="input-group input-group-sm mb-3">
+            <span id="supply-price-span" class="input-group-text">공급가</span>
+            <input aria-describedby="supply-price-span" class="form-control" type="text" id="supplyPrice" disabled/>
+        </div>
+        <div style="float :left; width : 25%; margin-right: 5%;" class="input-group input-group-sm mb-3">
+            <span class="input-group-text">부가세</span>
+            <input class="form-control" type="text" id="supplyPriceVat" disabled/>
+        </div>
+        <div style="float :left; width : 25%;" class="input-group input-group-sm mb-3">
+            <span class="input-group-text">총합</span>
+            <input class="form-control" type="text" id="totalPrice" disabled/>
+        </div>
     </div>
     <style>
         .container-table {
@@ -114,6 +123,9 @@
 
 </body>
 <script>
+    const numberComa = (numbar) => {
+        return numbar.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    }
 
     const searchSalesInfo = () => {
         let vendorId = $('select[name="vendorId"]').val();
@@ -150,14 +162,14 @@
                     txt += `<td>${item.productCord}</td>`;
                     txt += `<td>${item.modelCord}</td>`;
                     txt += `<td>${item.orderQuantity}</td>`;
-                    txt += `<td>${supplyPrice}</td>`;
-                    txt += `<td>${supplyPriceVat}</td>`;
+                    txt += `<td>${numberComa(supplyPrice)}</td>`;
+                    txt += `<td>${numberComa(supplyPriceVat)}</td>`;
                     txt += `</tr>`;
                 })
                 $('tbody').empty().append(txt);
-                $('#supplyPrice').val(totalSupplyPrice);
-                $('#supplyPriceVat').val(totalSupplyPriceVat);
-                $('#totalPrice').val(totalSupplyPrice+totalSupplyPriceVat);
+                $('#supplyPrice').val(numberComa(totalSupplyPrice));
+                $('#supplyPriceVat').val(numberComa(totalSupplyPriceVat));
+                $('#totalPrice').val(numberComa(totalSupplyPrice + totalSupplyPriceVat));
             },
             error: (err) => console.log
         })

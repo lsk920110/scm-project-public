@@ -20,4 +20,6 @@ public interface OrderService {
     void statementListDelete(List<Long> statementIdList);
 
     void orderListDelete(List<Long> orderIdList);
+
+    List<String> deliveryAreaList();
 }

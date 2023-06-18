@@ -22,13 +22,18 @@
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="sales-no">판매번호</span>
-            <input type="text" name="salesNo" class="form-control" value="2500000000" aria-label="Sizing example input"
+            <input type="text" name="salesNo" class="form-control" value="" aria-label="Sizing example input"
                    aria-describedby="inputGroup-sizing-default">
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="delivery-req-dt">배송요청일</span>
-            <input type="date" name="deliveryReqDt" class="form-control" value="2023-05-31" aria-label="Sizing example input"
+            <input type="date" name="deliveryReqDt" class="form-control" value="" aria-label="Sizing example input"
                    aria-describedby="inputGroup-sizing-default">
+            <script>
+                const today = new Date();
+                const tomorrow = new Date(today.setDate(today.getDate() + 1));
+                $('input[name="deliveryReqDt"]')[0].valueAsDate = tomorrow;
+            </script>
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="customer-name">고객명</span>
@@ -42,18 +47,21 @@
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text">주소</span>
-            <input type="text" name="customerAddressFirst" value="서울" aria-label="시/도" class="form-control" placeholder="시/도">
-            <input type="text" name="customerAddressSecond" value="영등포구" aria-label="군/구" class="form-control" placeholder="군/구">
-            <input type="text" name="customerAddressThird" value="여의대방로" aria-label="읍/면/동" class="form-control" placeholder="읍/면/동">
+            <input list="addressList" type="text" name="customerAddressFirst" value="" aria-label="시/도" class="form-control" placeholder="시/도">
+            <datalist id="addressList">
+                <option th:each="deliveryArea : ${deliveryAreaList}" th:value="${deliveryArea}"></option>
+            </datalist>
+            <input type="text" name="customerAddressSecond" value="" aria-label="군/구" class="form-control" placeholder="군/구">
+            <input type="text" name="customerAddressThird" value="" aria-label="읍/면/동" class="form-control" placeholder="읍/면/동">
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="customer-address-detail">상세주소</span>
-            <input type="text" name="customerAddressDetail" value="전철apt" class="form-control" aria-label="Sizing example input"
+            <input type="text" name="customerAddressDetail" value="" class="form-control" aria-label="Sizing example input"
                    aria-describedby="inputGroup-sizing-default">
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="remarks">비고사항</span>
-            <input type="text" name="remarks" class="form-control" value="빨리와주세요" aria-label="Sizing example input"
+            <input type="text" name="remarks" class="form-control" value="" aria-label="Sizing example input"
                    aria-describedby="inputGroup-sizing-default">
         </div>
     </form>
@@ -120,6 +128,7 @@
                 url: `/api/productModelInfo?productCord=${productCord}&vendorId=${vendorId}`,
                 dataType: 'json',
                 success: (result) => {
+                    console.log(result);
                     if (result.result === null) {
                         alert('코드를 다시 입력해주세요');
                         return;

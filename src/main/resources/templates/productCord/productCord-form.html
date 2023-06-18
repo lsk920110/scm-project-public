@@ -60,7 +60,15 @@
 
         <div class="input-group mb-3">
             <span class="input-group-text" id="inputGroup-supply-price">공급가</span>
-            <input type="number" name="supplyPrice" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-supply-price">
+            <input type="number" onclick="changePrice()" name="supplyPrice" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-supply-price">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-supply-price-vat">부가세</span>
+            <input onclick="changePrice()" type="number" name="supplyPriceVat" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-supply-price-vat">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="total-price">금액</span>
+            <input disabled type="number" name="total-price" id="total-price-input" class="form-control" aria-label="Sizing example input" aria-describedby="total-price">
         </div>
         <script>
             $('input[name="supplyPrice"]').keyup(function(){
@@ -70,21 +78,17 @@
                 $('input[name="supplyPriceVat"]').attr("max",vat +5);
                 $('input[name="total-price"]').val(parseInt(this.value) + parseInt(vat));
             });
-            $('input[name="supplyPriceVat"]').click(function(){
-                const supply_price = $('input[name="supply-price"]').val();
+            $('input[name="supplyPriceVat"]').bind('keyup mouseup',function(){
+                let supply_price = $('input[name="supplyPrice"]').val();
                 $('#total-price-input').val(parseInt(supply_price) + parseInt(this.value));
             });
-
-
+            function changePrice(){
+                let supply_price = $('input[name="supplyPrice"]').val();
+                let supply_price_vat = $('input[name="supplyPriceVat"]').val();
+                console.log(supply_price,supply_price_vat);
+                $('#total-price-input').val(parseInt(supply_price) + parseInt(supply_price_vat));
+            }
         </script>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="inputGroup-supply-price-vat">부가세</span>
-            <input type="number" name="supplyPriceVat" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-supply-price-vat">
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="total-price">금액</span>
-            <input disabled type="number" id="total-price-input" class="form-control" aria-label="Sizing example input" aria-describedby="total-price">
-        </div>
         <div class="form-floating mb-3">
             <input name="productCord" id="productCord" class="form-control" type="text">
             <label for="productCord">제품코드를 입력하세요</label>

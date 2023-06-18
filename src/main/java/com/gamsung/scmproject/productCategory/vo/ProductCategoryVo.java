@@ -17,6 +17,7 @@ public class ProductCategoryVo {
     private String state;
     private long memberId;
     private LocalDateTime regDt;
+    private String name;
 
 
 

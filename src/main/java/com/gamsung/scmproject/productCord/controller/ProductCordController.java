@@ -1,5 +1,7 @@
 package com.gamsung.scmproject.productCord.controller;
 
+import com.gamsung.scmproject.common.constant.ErrorCode;
+import com.gamsung.scmproject.common.constant.ModelObjectKey;
 import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.productCategory.service.ProductCategoryService;
@@ -35,13 +37,18 @@ public class ProductCordController extends BaseController {
     @GetMapping("/productCord/management")
     public String productCordManagement(Model model){
         menuBarInfo(model);
-        List<VendorWithMemberNameVo> vendorList = vendorService.selectVendorList("1");
-        model.addAttribute("vendorList",vendorList);
+        vendorList(model);
         List<ProductCategoryVo> productCategoryList = productCategoryService.selectProductCategoryList("1");
-        model.addAttribute("productCategoryList",productCategoryList);
+        model.addAttribute(ModelObjectKey.PRODUCT_CATEGORY_LIST,productCategoryList);
         List<ProductCordVoForList> productCordList = productCordService.productCordList(null);
-        model.addAttribute("productCordList",productCordList);
+        model.addAttribute(ModelObjectKey.PRODUCT_CORD_LIST,productCordList);
         return "productCord/productCord-form";
+    }
+
+    @GetMapping("/productCord/registration")
+    public String productCordRegistrationForm(Model model){
+
+        return "";
     }
 
     @PostMapping("/productCord")
@@ -59,12 +66,6 @@ public class ProductCordController extends BaseController {
             @RequestParam("productCord") String productCord, @RequestParam("vendorId") Long vendorId
     ){
         ProductCordWithVendorAndProductModelVo productModelInfo = productCordService.selectProductModelInfoByVendorIdAndProductCord(productCord,vendorId);
-
-        ResultVo<ProductCordWithVendorAndProductModelVo> resultVo = new ResultVo<>();
-        resultVo.setErrorCode("0000");
-        resultVo.setErrorMessage("success");
-        resultVo.setResult(productModelInfo);
-
-        return resultVo;
+        return makeResultVo(ErrorCode.SUCCESS,productModelInfo);
     }
 }

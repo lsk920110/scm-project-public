@@ -1,5 +1,6 @@
 package com.gamsung.scmproject.salesInfo.controller;
 
+import com.gamsung.scmproject.common.constant.ErrorCode;
 import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.salesInfo.service.SalesInfoService;
@@ -35,7 +36,7 @@ public class SalesInfoController extends BaseController {
     public ResultVo<?> batchTest(){
         List<SalesInfoVo> list = salesInfoService.batchSalesInfo();
 
-        return makeResultVo("0000",list);
+        return makeResultVo(ErrorCode.SUCCESS,list);
     }
 
 
@@ -45,7 +46,7 @@ public class SalesInfoController extends BaseController {
         log.info("vendorId : {} , startDt : {} , endDt : {}",vendorId,startDt,endDt);
         List<SalesInfoVo> list = salesInfoService.selectInfo(vendorId,startDt,endDt);
 
-        return makeResultVo("0000",list);
+        return makeResultVo(ErrorCode.SUCCESS,list);
     }
 
 

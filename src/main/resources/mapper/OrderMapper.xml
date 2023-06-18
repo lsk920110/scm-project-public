@@ -131,6 +131,8 @@
         where s.vendorId = #{vendorId}
           AND s.state = '1'
           AND s.customerName LIKE '%${customerName}%'
+          AND DATE_FORMAT(oi.regDt,'%Y-%m-%d') <![CDATA[>=]]> #{orderCreateStartDt}
+          AND DATE_FORMAT(oi.regDt,'%Y-%m-%d') <![CDATA[<=]]> #{orderCreateEndDt}
         <if test='searchCriteria == "1"'>
             <if test='searchContent != 0'>
               AND oi.id = #{searchContent}
@@ -246,6 +248,9 @@
         FROM
             orderInfo
         WHERE id = #{orderId}
+    </select>
+    <select id="selectDeliveryAreaList" resultType="java.lang.String">
+        SELECT deliveryArea FROM transportCenterInfo WHERE state = '1'
     </select>
 
     <delete id="deleteProductCordListAboutStatement">

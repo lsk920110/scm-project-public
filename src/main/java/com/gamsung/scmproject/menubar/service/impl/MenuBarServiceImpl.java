@@ -1,11 +1,14 @@
 package com.gamsung.scmproject.menubar.service.impl;
 
+import com.gamsung.scmproject.common.vo.ListTypeParamVo;
 import com.gamsung.scmproject.menubar.mapper.MenuBarMapper;
 import com.gamsung.scmproject.menubar.service.MenuBarService;
 import com.gamsung.scmproject.menubar.vo.MenubarInfoVo;
 import com.gamsung.scmproject.menubar.vo.MenubarSideAndHeaderVo;
+import com.gamsung.scmproject.menubar.vo.MenubarUpdateV2ParamVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -61,5 +64,15 @@ public class MenuBarServiceImpl implements MenuBarService {
     @Override
     public void deleteMenu(Long menuId) {
         menuBarMapper.deleteMenu(menuId);
+    }
+
+    @Transactional
+    @Override
+    public void updateMenuBarV2(ListTypeParamVo<MenubarUpdateV2ParamVo> params) {
+//        menuBarMapper.updateMenuBarV2(params);
+        for (MenubarUpdateV2ParamVo param: params.getList()) {
+            menuBarMapper.updateMenubarV2(param);
+        }
+
     }
 }

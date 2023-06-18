@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:replace="common/fragments/config-fragment :: ConfigFragment">
+    <!--    <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">공통 타이틀</title>-->
+</head>
+<body>
+<th:block th:replace="common/fragments/left-navbar" :: LeftNavbarFragment></th:block>
+<th:block th:replace="common/fragments/header-fragment" :: headerFragment></th:block>
+<div class="content-area">
+    <h2>메뉴등록</h2>
+    <hr>
+    <form action="/menubar/registration" method="post">
+        <div class="input-group mb-3">
+            <span style="width : 100px;" class="input-group-text" id="basic-addon1">기 능 명</span>
+            <input name="menuTitle" type="text" class="form-control" placeholder="ex) 발주관리 , 주문관리"
+                   aria-label="function-name" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+            <span style="width : 100px;" class="input-group-text" id="basic-addon2">상대 URL</span>
+            <input name="link" type="text" class="form-control" placeholder="ex) /api/user , /order/registration"
+                   aria-label="relative-url" aria-describedby="basic-addon2">
+        </div>
+        <div class="form-check">
+            <input value="1" class="form-check-input" type="radio" name="position" id="flexRadioDefault1" checked>
+            <label class="form-check-label" for="flexRadioDefault1">
+                사이드바
+            </label>
+        </div>
+        <input value="2" class="form-check-input" type="radio" name="position" id="flexRadioDefault2">
+        <label class="form-check-label" for="flexRadioDefault2">
+            헤더
+        </label>
+        <div class="form-check">
+        </div>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <button class="btn btn-primary" type="submit">저장</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

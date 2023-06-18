@@ -33,5 +33,15 @@
     DELETE FROM menubar
     WHERE id = #{menuId}
     </delete>
+    <update id="updateMenubarV2" parameterType="com.gamsung.scmproject.menubar.vo.MenubarUpdateV2ParamVo">
+        UPDATE menubar
+        SET
+            menuTitle   = #{menuTitle},
+            link        = #{menuLink},
+            position    = #{position},
+            orderSeq    = #{orderSeq}
+        WHERE
+            id = #{id}
+    </update>
 
 </mapper>

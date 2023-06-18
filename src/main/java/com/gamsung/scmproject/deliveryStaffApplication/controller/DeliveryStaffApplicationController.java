@@ -1,5 +1,6 @@
 package com.gamsung.scmproject.deliveryStaffApplication.controller;
 
+import com.gamsung.scmproject.common.constant.ErrorCode;
 import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.delivery.service.DeliveryService;
@@ -40,12 +41,7 @@ public class DeliveryStaffApplicationController extends BaseController {
     @ResponseBody
     public ResultVo<?> deliveryStaffLogin(@RequestBody DeliveryStaffLoginVo params){
         deliveryStaffApplicationService.deliveryStaffLogin(params);
-
-        ResultVo<Object> resultVo = new ResultVo<>();
-        resultVo.setErrorCode("0000");
-        resultVo.setErrorMessage("success");
-
-        return resultVo;
+        return makeResultVo(ErrorCode.SUCCESS);
     }
 
     @GetMapping("/api/deliveryStaff/list")
@@ -53,7 +49,7 @@ public class DeliveryStaffApplicationController extends BaseController {
     public ResultVo<?> deliveryStaffList(@RequestParam String tc){
 
         List<DeliveryInfoVo> list = deliveryStaffService.selectDeliveryStaffListByTc(tc);
-        return makeResultVo("0000",list);
+        return makeResultVo(ErrorCode.SUCCESS,list);
     }
 
     
@@ -64,9 +60,7 @@ public class DeliveryStaffApplicationController extends BaseController {
 
         //특정기사에게 금일 할당된 배송 리스트를 불러온다.
         List<DeliveryInfoVo> list = deliveryStaffApplicationService.deliveryListByStaffId(staffId);
-
-        ResultVo<List<DeliveryInfoVo>> resultVo = new ResultVo<>();
-        return makeResultVo("0000",list);
+        return makeResultVo(ErrorCode.SUCCESS,list);
     }
 
     @PostMapping("/api/update/delivery/state")
@@ -76,7 +70,7 @@ public class DeliveryStaffApplicationController extends BaseController {
         //특정 고객 주문번호(배송번호)를 배송한후 결과를 전달하고 업데이트한다.
         deliveryStaffApplicationService.updateDeliveryState(params);
 
-        return makeResultVo("0000");
+        return makeResultVo(ErrorCode.SUCCESS);
     }
 
 

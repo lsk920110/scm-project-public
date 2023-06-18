@@ -145,4 +145,12 @@ public class OrderServiceImpl implements OrderService {
         int count = orderMapper.checkSalesNo(salesNo);
         return count > 0;
     }
+
+    @Override
+    public List<String> deliveryAreaList(){
+
+        return orderMapper.selectDeliveryAreaList();
+    }
+
+
 }
