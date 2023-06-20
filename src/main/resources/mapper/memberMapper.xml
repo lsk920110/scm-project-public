@@ -40,13 +40,18 @@
             name,
             email,
             birth,
-            state ,
+            CASE
+                WHEN state = '1' THEN '정상'
+                WHEN state = '2' THEN '퇴사'
+                WHEN state = '3' THEN '휴직'
+                END AS state,
             d.department
-        FROM `member` m INNER JOIN `department` d ON d.id = m.department;
+        FROM `member` m INNER JOIN `department` d ON d.id = m.departmentId
     </select>
     <select id="selectMemberInfoById" resultType="com.gamsung.scmproject.member.vo.MemberVo">
     SELECT
         id,
+        password,
         name,
         departmentId,
         email,
@@ -57,8 +62,8 @@
     </select>
     <update id="updateMemberInfo">
     UPDATE `member`
-    SET departmentId = #{departmentId} , name = #{name} , email = #{email} , birth = #{birth}
-    <if test="password != null">
+    SET departmentId = #{departmentId} , name = #{name} , email = #{email} , birth = #{birth} , state = #{state}
+    <if test="password != null or password != ''">
         , password = #{password}
     </if>
     WHERE id = #{id}

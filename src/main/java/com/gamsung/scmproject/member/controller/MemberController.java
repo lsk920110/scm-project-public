@@ -106,6 +106,9 @@ public class MemberController extends BaseController {
     @PostMapping("/api/member/update")
     @ResponseBody
     public ResultVo<?> updateMemberInfo(@RequestBody MemberVo params){
+        if (params.getState().equals("")) {
+            params.setState(null);
+        }
         memberService.updateMemberInfo(params);
         return makeResultVo(ErrorCode.SUCCESS);
     }

@@ -62,12 +62,12 @@
       <td th:text="${member.name}"></td>
       <td th:text="${member.email}"></td>
       <td th:text="${member.birth}"></td>
-      <td>
-        <select class="form-select"  th:classappend="'state-'+${member.id}">
-          <option th:checked="${member.state == '1'}" th:text="정상" th:value="1"></option>
-          <option th:checked="${member.state == '2'}"  th:text="퇴사" th:value="2"></option>
-          <option th:checked="${member.state == '3'}"  th:text="휴직" th:value="3"></option>
-        </select>
+      <td th:text="${member.state}">
+<!--        <select class="form-select"  th:classappend="'state-'+${member.id}">-->
+<!--          <option th:checked="${member.state == '1'}" th:text="정상" th:value="1"></option>-->
+<!--          <option th:checked="${member.state == '2'}"  th:text="퇴사" th:value="2"></option>-->
+<!--          <option th:checked="${member.state == '3'}"  th:text="휴직" th:value="3"></option>-->
+<!--        </select>-->
       </td>
     </tr>
     </tbody>

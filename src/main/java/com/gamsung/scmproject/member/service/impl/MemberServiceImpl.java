@@ -61,7 +61,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<MemberVo> selectMemberList() {
-        return memberMapper.selectMemberList();
+        List<MemberVo> list = memberMapper.selectMemberList();
+        return list;
     }
 
     @Override

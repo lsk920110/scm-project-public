@@ -15,8 +15,10 @@
     <hr>
     <div class="input-group mb-3">
         <select name="department" class="form-select" aria-label="Default select example">
-            <option th:each="department : ${departmentList}" th:value="${department.id}"
-                    th:text="${department.department}"></option>
+            <option th:each="department : ${departmentList}"
+                    th:selected="${department.id} == ${memberInfo.departmentId}"
+                    th:value="${department.id}" th:text="${department.department}">
+            </option>
         </select>
     </div>
     <div class="input-group mb-3">
@@ -26,7 +28,7 @@
     </div>
     <div class="input-group mb-3">
         <span style="width : 100px;" class="input-group-text" id="basic-addon2">비밀번호</span>
-        <input name="password" type="text" class="form-control" placeholder="" aria-label="function-name"
+        <input th:text="${memberInfo.password}" name="password" type="text" class="form-control" placeholder="" aria-label="function-name"
                aria-describedby="basic-addon2">
     </div>
     <div class="input-group mb-3">
@@ -40,7 +42,7 @@
                placeholder="ex) 19001231" aria-label="relative-url" aria-describedby="basic-addon4">
     </div>
     <div class="input-group mb-3">
-        <select class="form-select" th:classappend="'state-'+${memberInfo.id}">
+        <select class="form-select" name="state">
             <option th:checked="${memberInfo.state == '1'}" th:text="정상" th:value="1"></option>
             <option th:checked="${memberInfo.state == '2'}" th:text="퇴사" th:value="2"></option>
             <option th:checked="${memberInfo.state == '3'}" th:text="휴직" th:value="3"></option>
@@ -52,21 +54,21 @@
         <input type="hidden" th:value="${memberInfo.id}" name="id">
         <script>
             const updateMemberInfo =()=>{
-                const id = $('input[name="id"]').val();
-                const department = $('select[name="department"]').val();
-                const name = $('input[name="name"]').val();
-                const password = $('input[name="password"]').val();
-                const email = $('input[name="email"]').val();
-                const birth = $('input[name="birth"]').val();
-                const state = $('select[name="state"]').val();
-                const params = {
-                    id : id,
-                    department : department,
-                    name : name,
-                    password : password,
-                    email : email,
-                    birth : birth,
-                    state : state
+                const id            = $('input[name="id"]').val();
+                const departmentId    = $('select[name="department"]').val();
+                const name          = $('input[name="name"]').val();
+                const password      = $('input[name="password"]').val();
+                const email         = $('input[name="email"]').val();
+                const birth         = $('input[name="birth"]').val();
+                const state         = $('select[name="state"]').val();
+                const params        = {
+                    id              : id,
+                    departmentId    : departmentId,
+                    name            : name,
+                    password        : password,
+                    email           : email,
+                    birth           : birth,
+                    state           : state
                 }
                 $.ajax({
                     type : 'post',
