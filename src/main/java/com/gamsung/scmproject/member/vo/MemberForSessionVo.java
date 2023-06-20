@@ -11,6 +11,7 @@ public class MemberForSessionVo {
 
     private Long id;
     private String department;
+    private String departmentId;
     private String email;
     private String role;
     private String name;
@@ -23,6 +24,7 @@ public class MemberForSessionVo {
         this.id = memberVo.getId();
         this.role = memberVo.getRole();
         this.department = memberVo.getDepartment();
+        this.departmentId = memberVo.getDepartmentId();
         this.email = memberVo.getEmail();
         this.name = memberVo.getName();
     }

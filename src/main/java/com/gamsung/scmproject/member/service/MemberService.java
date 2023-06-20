@@ -14,9 +14,11 @@ public interface MemberService {
 
     Boolean emailDuplicatedCheck(String email);
 
-    MemberVo selectMember();
+    MemberVo selectMemberInfoById(Long id);
 
     List<MemberVo> selectMemberList();
 
     List<DepartmentVo> selectDepartmentList();
+
+    void updateMemberInfo(MemberVo params);
 }

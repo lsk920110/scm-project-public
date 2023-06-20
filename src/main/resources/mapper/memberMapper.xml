@@ -34,8 +34,35 @@
         SELECT id , department FROM department
     </select>
     <select id="selectMemberList" resultType="com.gamsung.scmproject.member.vo.MemberVo">
-        SELECT id,department,name,email,birth,state FROM member
+        SELECT
+            m.id,
+            m.departmentId,
+            name,
+            email,
+            birth,
+            state ,
+            d.department
+        FROM `member` m INNER JOIN `department` d ON d.id = m.department;
     </select>
+    <select id="selectMemberInfoById" resultType="com.gamsung.scmproject.member.vo.MemberVo">
+    SELECT
+        id,
+        name,
+        departmentId,
+        email,
+        birth,
+        state
+    FROM `member`
+        WHERE id = #{id}
+    </select>
+    <update id="updateMemberInfo">
+    UPDATE `member`
+    SET departmentId = #{departmentId} , name = #{name} , email = #{email} , birth = #{birth}
+    <if test="password != null">
+        , password = #{password}
+    </if>
+    WHERE id = #{id}
+    </update>
 
 
 </mapper>

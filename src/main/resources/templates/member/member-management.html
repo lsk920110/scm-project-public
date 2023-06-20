@@ -11,7 +11,7 @@
 <th:block th:replace="common/fragments/header-fragment" :: headerFragment></th:block>
 
 <div class="content-area">
-  <h2>직원관리</h2>
+  <h2>직원등록</h2>
   <hr>
   <form action="/member/join" method="post">
     <div class="input-group mb-3">
@@ -40,6 +40,9 @@
       <button class="btn btn-primary" type="submit">저장</button>
     </div>
   </form>
+  <div style="height: 50px;"></div>
+  <h2>직원관리</h2>
+  <hr>
 
   <table class="table">
     <thead>
@@ -54,7 +57,7 @@
     </thead>
     <tbody>
     <tr th:each="member : ${memberList}">
-      <td th:text="${member.id}"></td>
+      <td><a th:href="@{/member/detail(id=${member.id})}" th:text="${member.id}"></a></td>
       <td th:text="${member.department}"></td>
       <td th:text="${member.name}"></td>
       <td th:text="${member.email}"></td>

@@ -4,6 +4,7 @@ import com.gamsung.scmproject.common.constant.ErrorCode;
 import com.gamsung.scmproject.common.constant.ModelObjectKey;
 import com.gamsung.scmproject.common.constant.SessionKeys;
 import com.gamsung.scmproject.common.vo.ResultVo;
+import com.gamsung.scmproject.member.service.MemberService;
 import com.gamsung.scmproject.member.vo.AuthIf;
 import com.gamsung.scmproject.member.vo.MemberForSessionVo;
 import com.gamsung.scmproject.member.vo.MemberVo;
@@ -27,6 +28,7 @@ public class BaseController {
 
     @Autowired private MenuBarService menuBarService;
     @Autowired private VendorService vendorService;
+
 
 
 

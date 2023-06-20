@@ -91,5 +91,23 @@ public class MemberController extends BaseController {
         return "loginPage";
     }
 
+    @GetMapping("/member/detail")
+    public String memberDetailPage(Model model , @RequestParam Long id){
+        menuBarInfo(model);
+        MemberVo memberVo = memberService.selectMemberInfoById(id);
+        model.addAttribute(ModelObjectKey.MEMBER_INFO,memberVo);
+
+        List<DepartmentVo> departmentVos = memberService.selectDepartmentList();
+        model.addAttribute(ModelObjectKey.DEPARTMENT_LIST,departmentVos);
+
+        return "member/member-detail-management";
+    }
+
+    @PostMapping("/api/member/update")
+    @ResponseBody
+    public ResultVo<?> updateMemberInfo(@RequestBody MemberVo params){
+        memberService.updateMemberInfo(params);
+        return makeResultVo(ErrorCode.SUCCESS);
+    }
 
 }

@@ -55,8 +55,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberVo selectMember() {
-        return null;
+    public MemberVo selectMemberInfoById(Long id) {
+        return memberMapper.selectMemberInfoById(id);
     }
 
     @Override
@@ -67,5 +67,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<DepartmentVo> selectDepartmentList() {
         return memberMapper.selectDepartmentList();
+    }
+
+    @Override
+    public void updateMemberInfo(MemberVo params) {
+        memberMapper.updateMemberInfo(params);
     }
 }

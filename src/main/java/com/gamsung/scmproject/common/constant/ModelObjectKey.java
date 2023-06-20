@@ -13,4 +13,5 @@ public class ModelObjectKey {
     public static String PRODUCT_MODEL_LIST = "productModelList";
     public static String PRODUCT_STATUS_LIST = "productStatusList";
     public static String DELIVERY_AREA_LIST = "deliveryAreaList";
+    public static String MEMBER_INFO = "memberInfo";
 }

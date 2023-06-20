@@ -15,7 +15,7 @@ public class BatchSchedulerService {
     @Scheduled(fixedDelay = 10000)
     public void salesInfoRegistration() throws InterruptedException {
         log.info("batch 실행");
-        salesInfoService.batchSalesInfo();
+//        salesInfoService.batchSalesInfo();
         log.info("batch 종료");
     }
 

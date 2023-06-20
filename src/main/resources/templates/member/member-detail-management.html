@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:replace="common/fragments/config-fragment :: ConfigFragment">
+    <!--    <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">공통 타이틀</title>-->
+</head>
+<body>
+<th:block th:replace="common/fragments/left-navbar" :: LeftNavbarFragment></th:block>
+<th:block th:replace="common/fragments/header-fragment" :: headerFragment></th:block>
+
+<div class="content-area">
+    <h2>직원상세</h2>
+    <hr>
+    <div class="input-group mb-3">
+        <select name="department" class="form-select" aria-label="Default select example">
+            <option th:each="department : ${departmentList}" th:value="${department.id}"
+                    th:text="${department.department}"></option>
+        </select>
+    </div>
+    <div class="input-group mb-3">
+        <span style="width : 100px;" class="input-group-text" id="basic-addon1">이름</span>
+        <input th:value="${memberInfo.name}" name="name" type="text" class="form-control" placeholder="ex) 홍길동"
+               aria-label="function-name" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <span style="width : 100px;" class="input-group-text" id="basic-addon2">비밀번호</span>
+        <input name="password" type="text" class="form-control" placeholder="" aria-label="function-name"
+               aria-describedby="basic-addon2">
+    </div>
+    <div class="input-group mb-3">
+        <span style="width : 100px;" class="input-group-text" id="basic-addon3">이메일</span>
+        <input th:value="${memberInfo.email}" name="email" type="text" class="form-control"
+               placeholder="ex) gam@sung.com" aria-label="relative-url" aria-describedby="basic-addon3">
+    </div>
+    <div class="input-group mb-3">
+        <span style="width : 100px;" class="input-group-text" id="basic-addon4">생년월일</span>
+        <input th:value="${memberInfo.birth}" name="birth" type="text" class="form-control"
+               placeholder="ex) 19001231" aria-label="relative-url" aria-describedby="basic-addon4">
+    </div>
+    <div class="input-group mb-3">
+        <select class="form-select" th:classappend="'state-'+${memberInfo.id}">
+            <option th:checked="${memberInfo.state == '1'}" th:text="정상" th:value="1"></option>
+            <option th:checked="${memberInfo.state == '2'}" th:text="퇴사" th:value="2"></option>
+            <option th:checked="${memberInfo.state == '3'}" th:text="휴직" th:value="3"></option>
+        </select>
+
+    </div>
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <button onclick="updateMemberInfo()" class="btn btn-primary" type="button">저장</button>
+        <input type="hidden" th:value="${memberInfo.id}" name="id">
+        <script>
+            const updateMemberInfo =()=>{
+                const id = $('input[name="id"]').val();
+                const department = $('select[name="department"]').val();
+                const name = $('input[name="name"]').val();
+                const password = $('input[name="password"]').val();
+                const email = $('input[name="email"]').val();
+                const birth = $('input[name="birth"]').val();
+                const state = $('select[name="state"]').val();
+                const params = {
+                    id : id,
+                    department : department,
+                    name : name,
+                    password : password,
+                    email : email,
+                    birth : birth,
+                    state : state
+                }
+                $.ajax({
+                    type : 'post',
+                    url : '/api/member/update',
+                    contentType : 'application/json',
+                    data : JSON.stringify(params),
+                    dataType : 'json',
+                    success : function(result){
+                        console.log(result);
+                        alert('수정완료');
+                    },
+                    error : (err)=>console.log(err)
+                })
+            }
+        </script>
+    </div>
+</div>
+</body>
+</html>

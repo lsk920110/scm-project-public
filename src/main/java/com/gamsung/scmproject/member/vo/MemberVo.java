@@ -9,6 +9,7 @@ public class MemberVo {
     private Long id;
     private String name;
     private String department;
+    private String departmentId;
     private String email;
     private String password;
     private String birth;
