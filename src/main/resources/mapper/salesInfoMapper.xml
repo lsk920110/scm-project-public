@@ -192,5 +192,8 @@
         AND deliveryCompletionDt <![CDATA[>=]]> #{startDt}
 
     </select>
+    <select id="selectSalesInfo" resultType="java.lang.Integer" parameterType="com.gamsung.scmproject.salesInfo.vo.SalesInfoVo">
+        SELECT count(1) FROM salesInfo WHERE satementId = #{statementId} AND deliveryId = #{deliveryId} AND orderId = #{orderId}
+    </select>
 
 </mapper>

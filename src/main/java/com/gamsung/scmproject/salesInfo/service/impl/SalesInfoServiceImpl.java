@@ -36,7 +36,10 @@ public class SalesInfoServiceImpl implements SalesInfoService {
 
         for (SalesProductCordVo productInfo: salesInfoVo.getProductCordList()) {
             productInfo.setSalesId(salesInfoVo.getId());
-            salesInfoMapper.insertSalesProductCord(productInfo);
+            int row = salesInfoMapper.selectSalesInfo(productInfo);
+            if(row == 0){
+                salesInfoMapper.insertSalesProductCord(productInfo);
+            }
         }
     }
 

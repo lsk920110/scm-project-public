@@ -20,4 +20,6 @@ public interface SalesInfoMapper {
             @Qualifier("startDt") String startDt,
             @Qualifier("endDt") String endDt
     );
+
+    int selectSalesInfo(SalesProductCordVo productInfo);
 }
