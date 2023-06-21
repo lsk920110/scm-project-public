@@ -41,7 +41,8 @@ public class MemberServiceImpl implements MemberService {
             loginResultVo.setLoginSuccess(result);
             if(result){
                 loginResultVo.setId(loginMember.getId());
-                loginResultVo.setName(loginMember.getName());
+                loginResultVo.setMemberVo(loginMember);
+//                loginResultVo.setName(loginMember.getName());
             }
 
         }

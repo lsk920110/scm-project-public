@@ -65,7 +65,7 @@ public class MemberController extends BaseController {
         LoginResultVo lrv = memberService.loginMember(memberVo);
 
         if (lrv.getLoginSuccess()) {
-            session.setAttribute(SessionKeys.LOGIN_ID_INFO, new MemberForSessionVo(memberVo));
+            session.setAttribute(SessionKeys.LOGIN_ID_INFO, new MemberForSessionVo(lrv.getMemberVo()));
             ResultVo<LoginResultVo> resultVo = new ResultVo<>();
 
             LoginResultVo loginResultVo = new LoginResultVo();

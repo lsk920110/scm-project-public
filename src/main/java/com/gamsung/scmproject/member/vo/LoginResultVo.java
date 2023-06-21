@@ -8,7 +8,8 @@ import lombok.Setter;
 public class LoginResultVo {
 
     private Long id;
-    private String name;
+//    private String name;
+    private MemberVo memberVo;
     private Boolean loginSuccess;
 
 }

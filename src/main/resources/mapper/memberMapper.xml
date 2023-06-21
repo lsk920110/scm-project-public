@@ -21,11 +21,12 @@
     </insert>
     <select id="selectMemberForLogin" resultType="com.gamsung.scmproject.member.vo.MemberVo">
         SELECT
-            `id`,`department`,`email`,`password`,`birth`,`state`,`role`
+            m.id,`department`,`departmentId`,`email`,`password`,`name`,`birth`,`state`,`role`
         FROM
-            member
-        WHERE `id` = #{id} AND `state` = '1'
-        ORDER BY `id` DESC
+            `member` m
+                INNER JOIN department d ON m.departmentId = d.id
+        WHERE m.id = #{id} AND `state` = '1'
+--         ORDER BY `id` DESC
     </select>
     <select id="duplicateEmailCheck" resultType="java.lang.Integer">
     SELECT count(email) FROM member WHERE email = #{param1} AND state = '1'
