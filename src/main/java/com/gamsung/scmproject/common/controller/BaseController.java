@@ -55,7 +55,7 @@ public class BaseController {
         };
         log.info("getId : {}",memberVo.getId());
         params.setLoginId(memberVo.getId());
-        log.info("logniId : {}", params.getLoginId());
+        log.info("loginId : {}", params.getLoginId());
     }
 
     public <T> ResultVo<?> makeResultVo(ErrorCode ErrorCode , T result){
