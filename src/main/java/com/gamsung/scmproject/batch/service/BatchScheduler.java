@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class BatchSchedulerService {
+public class BatchScheduler {
 
 
     @Autowired private SalesInfoService salesInfoService;
     @Scheduled(fixedDelay = 10000)
     public void salesInfoRegistration() throws InterruptedException {
         log.info("batch 실행");
-//        salesInfoService.batchSalesInfo();
+        salesInfoService.batchSalesInfo();
         log.info("batch 종료");
     }
 

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="common/fragments/config-fragment :: ConfigFragment">
+
+<body>
+<style>
+    .delete {
+        color: red;
+    }
+</style>
+<script>
+    <!--    common function-->
+    function checkedStatementIdList() {
+        let $checked = $('.checkbox-input:checked');
+        let statementIdList = [];
+        for (let i = 0; i < $checked.length; i++) {
+            statementIdList.push($checked[i].value);
+        }
+        return statementIdList;
+    }
+
+
+</script>
+<th:block th:replace="common/fragments/left-navbar" :: LeftNavbarFragment></th:block>
+<th:block th:replace="common/fragments/header-fragment" :: headerFragment></th:block>
+<div class="content-area">
+    <h2>콜센터</h2>
+    <hr>
+    <div>
+        <div class="input-group" style="width : 75%; margin-right: 5%; float: left;">
+            <select style="width : 20%;"
+                    name="vendorId" class="form-select" id=""
+                    aria-label="Example select with button addon">
+                <option value="0" selected>거래선*</option>
+                <option th:each="vendor : ${vendorList}" th:value="${vendor.id}"
+                        th:text="${vendor.vendorName}"></option>
+            </select>
+            <select style="width : 20%;"
+                    name="searchCriteria" class="form-select" id="inputGroupSelect04"
+                    aria-label="Example select with button addon">
+                <option selected value="1">주문번호</option>
+                <option value="2">판매번호</option>
+                <option value="3">납품번호</option>
+                <option value="4">고객명</option>
+                <option value="5">전화번호</option>
+            </select>
+            <input style="width : 60%;"
+                   name="searchContent" class="form-control" type="text" value="">
+        </div>
+            <div style="float : left; width : 20%;" class="input-group">
+                <button style="width : 100%;" onclick="searchSalesInfo()" class="btn btn-primary">검색</button>
+            </div>
+        <!--        <div class="input-group" style="width : 35%; float: left; left: 5%;">-->
+        <!--            <span class="input-group-text">주문생성일*</span>-->
+        <!--            <input name="orderCreateStartDt" max="9999-12-31" type="date" class="form-control">-->
+        <!--            <input name="orderCreateEndDt" max="9999-12-31" type="date" class="form-control">-->
+        <!--            <script>-->
+        <!--                $('input[type="date"]')[0].valueAsDate = new Date();-->
+        <!--                $('input[type="date"]')[1].valueAsDate = new Date();-->
+        <!--            </script>-->
+        <!--        </div>-->
+    </div>
+    <style>
+        .container-table {
+            min-width: 1000px; /* 원하는 너비 */
+            min-height: 200px; /* 원하는 높이 */
+            overflow-x: auto; /* 스크롤바 표시 */
+        }
+
+        table {
+            width: 3000px;
+            /*width: 100%; !* 부모 컨테이너에 맞게 테이블 너비 조정 *!*/
+        }
+
+        td, th {
+            white-space: nowrap; /* 줄 바꿈 방지 */
+        }
+
+        th {
+            z-index: 1;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: white;
+        }
+    </style>
+    <div class="container-order-info" style="">
+        <div class="input-group mb-3" style="width : 32%; margin-right : 2%; float: left;">
+            <span class="input-group-text" id="vendor-info">거래선</span>
+            <input type="text" name="salesNo" class="form-control" readonly value="" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3" style="width : 32%; margin-right : 2%; float: left;">
+            <span class="input-group-text" id="sales-no">판매번호</span>
+            <input type="text" name="salesNo" class="form-control" readonly value="" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3" style="width : 32%; margin-left : 0%; float: left;">
+            <span class="input-group-text" id="delivery-req-dt">배송요청일</span>
+            <input type="date" name="deliveryReqDt" class="form-control" readonly value="" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+            <script>
+                const today = new Date();
+                const tomorrow = new Date(today.setDate(today.getDate() + 1));
+                $('input[name="deliveryReqDt"]')[0].valueAsDate = tomorrow;
+            </script>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="customer-name">고객명</span>
+            <input type="text" name="customerName" class="form-control" value="" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="customer-phone-number">연락처</span>
+            <input type="text" name="customerPhoneNumber" value="" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">주소</span>
+            <input list="addressList" type="text" name="customerAddressFirst" value="" aria-label="시/도" class="form-control" placeholder="시/도">
+            <datalist id="addressList">
+                <option th:each="deliveryArea : ${deliveryAreaList}" th:value="${deliveryArea}"></option>
+            </datalist>
+            <input type="text" name="customerAddressSecond" value="" aria-label="군/구" class="form-control" placeholder="군/구">
+            <input type="text" name="customerAddressThird" value="" aria-label="읍/면/동" class="form-control" placeholder="읍/면/동">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="customer-address-detail">상세주소</span>
+            <input type="text" name="customerAddressDetail" value="" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="remarks">비고사항</span>
+            <input type="text" name="remarks" class="form-control" value="" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+    </div>
+    <div class="container-table">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>메모</th>
+                <th>상담자</th>
+                <th>상담일</th>
+                <th>등록일</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+<script>
+    const numberComa = (numbar) => {
+        return numbar.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    const searchSalesInfo = () => {
+        let vendorId = $('select[name="vendorId"]').val();
+        let salesCreateStartDt = $('input[name="salesCreateStartDt"]').val();
+        let salesCreateEndDt = $('input[name="salesCreateEndDt"]').val();
+
+        $.ajax({
+            type: 'GET',
+            url: `/api/salesInfo?vendorId=${vendorId}&startDt=${salesCreateStartDt}&endDt=${salesCreateEndDt}`,
+            dataType: 'json',
+            success: (result) => {
+                console.log(result);
+                let txt = 'test';
+                let totalSupplyPrice = 0;
+                let totalSupplyPriceVat = 0;
+                result.result.forEach((item, idx) => {
+                    let supplyPrice = item.orderQuantity * item.supplyPrice;
+                    let supplyPriceVat = item.orderQuantity * item.supplyPriceVat;
+                    totalSupplyPrice += supplyPrice;
+                    totalSupplyPriceVat += supplyPriceVat;
+                    //
+                    txt += `<tr>`;
+                    txt += `<td>${item.id}</td>`;
+                    txt += `<td>${item.deliveryId}</td>`;
+                    txt += `<td>${item.orderId}</td>`;
+                    txt += `<td>${item.statementId}</td>`;
+                    txt += `<td>${item.orderSeq}</td>`;
+                    txt += `<td>${item.vendorName}</td>`;
+                    txt += `<td>${item.salesNo}</td>`;
+                    txt += `<td>${item.orderRegDt}</td>`;
+                    txt += `<td>${item.deliveryCompletionDt}</td>`;
+                    txt += `<td>${item.salesRegDt}</td>`;
+                    txt += `<td>${item.customerName}</td>`;
+                    txt += `<td>${item.productCord}</td>`;
+                    txt += `<td>${item.modelCord}</td>`;
+                    txt += `<td>${item.orderQuantity}</td>`;
+                    txt += `<td>${numberComa(supplyPrice)}</td>`;
+                    txt += `<td>${numberComa(supplyPriceVat)}</td>`;
+                    txt += `</tr>`;
+                })
+                $('tbody').empty().append(txt);
+                $('#supplyPrice').val(numberComa(totalSupplyPrice));
+                $('#supplyPriceVat').val(numberComa(totalSupplyPriceVat));
+                $('#totalPrice').val(numberComa(totalSupplyPrice + totalSupplyPriceVat));
+            },
+            error: (err) => console.log
+        })
+    }
+
+
+</script>
+
+
+</html>

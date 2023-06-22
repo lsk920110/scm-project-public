@@ -183,17 +183,17 @@
             spc.supplyPrice ,
             spc.supplyPriceVat ,
             spc.orderSeq
-        FROM salesInfo si
-            INNER JOIN salesProductCord spc ON si.id = spc.salesId
+        FROM `salesInfo` si
+            INNER JOIN `salesProductCord` spc ON si.id = spc.salesId
         WHERE 1=1
           AND si.vendorId = #{vendorId}
         AND
-        deliveryCompletionDt <![CDATA[<=]]> #{endDt}
-        AND deliveryCompletionDt <![CDATA[>=]]> #{startDt}
+        si.salesRegDt <![CDATA[<=]]> #{endDt}
+        AND si.salesRegDt <![CDATA[>=]]> #{startDt}
 
     </select>
     <select id="selectSalesInfo" resultType="java.lang.Integer" parameterType="com.gamsung.scmproject.salesInfo.vo.SalesInfoVo">
-        SELECT count(1) FROM salesInfo WHERE satementId = #{statementId} AND deliveryId = #{deliveryId} AND orderId = #{orderId}
+        SELECT count(1) FROM salesInfo WHERE statementId = #{statementId} AND deliveryId = #{deliveryId} AND orderId = #{orderId}
     </select>
 
 </mapper>

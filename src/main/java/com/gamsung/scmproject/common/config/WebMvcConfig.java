@@ -27,6 +27,39 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/deliveryStaff/registration"
                         )
                 .addPathPatterns("/deliveryStaff/management","/deliveryStaff/registration")
+                .addPathPatterns(
+                        "order/registration",
+                        "order/management",
+                        "order/update",
+                        "/api/statement/insert",
+                        "/api/statement/update",
+                        "/api/order/insert",
+                        "/api/order/list",
+                        "/api/delete/statement",
+                        "/api/delete/order")
+                .addPathPatterns("/product/category",
+                        "/api/product/category/list",
+                        "/api/product/category")
+                .addPathPatterns(
+                        "/productCord/management",
+                        "/productCord/registration",
+                        "/productCord","/api/productModelInfo"
+                )
+                .addPathPatterns(
+                        "/product/model/management",
+                        "/product/model",
+                        "/api/product/model"
+                )
+                .addPathPatterns(
+                        "/vendor",
+                        "/vendor/management",
+                        "/vendor/registration"
+                )
+                .addPathPatterns(
+                        "/salesInfo/management",
+                        "/api/salesInfo/batch/test",
+                        "/api/salesInfo"
+                )
         ;
     }
 }

@@ -21,5 +21,5 @@ public interface SalesInfoMapper {
             @Qualifier("endDt") String endDt
     );
 
-    int selectSalesInfo(SalesProductCordVo productInfo);
+    int selectSalesInfo(SalesInfoVo productInfo);
 }

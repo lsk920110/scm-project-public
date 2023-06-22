@@ -43,9 +43,8 @@ public class SalesInfoController extends BaseController {
     @GetMapping("/api/salesInfo")
     @ResponseBody
     public ResultVo<?> salesInfo(@RequestParam Long vendorId,@RequestParam String startDt, @RequestParam String endDt){
-        log.info("vendorId : {} , startDt : {} , endDt : {}",vendorId,startDt,endDt);
-        List<SalesInfoVo> list = salesInfoService.selectInfo(vendorId,startDt,endDt);
 
+        List<SalesInfoVo> list = salesInfoService.selectInfo(vendorId,startDt,endDt);
         return makeResultVo(ErrorCode.SUCCESS,list);
     }
 

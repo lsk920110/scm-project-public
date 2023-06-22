@@ -20,12 +20,15 @@ public class SalesInfoServiceImpl implements SalesInfoService {
     @Override
     public List<SalesInfoVo> batchSalesInfo() {
         List<SalesInfoVo> list = salesInfoMapper.selectTodayDeliveryCompletionList();
-        log.info("{}",list);
+        int success = 0;
         for (SalesInfoVo salesInfo:list) {
-            insertSalesBatch(salesInfo);
+            int row = salesInfoMapper.selectSalesInfo(salesInfo);
+            if(row == 0){
+                insertSalesBatch(salesInfo);
+                success += 1;
+            }
         }
-
-
+        log.info("전체 배송완료건 : {} 건 , 실제 반영건 : {} 건",list.size(),success);
         return list;
     }
 
@@ -33,13 +36,9 @@ public class SalesInfoServiceImpl implements SalesInfoService {
     public void insertSalesBatch(SalesInfoVo salesInfoVo){
 
         salesInfoMapper.insertSalesInfo(salesInfoVo);
-
         for (SalesProductCordVo productInfo: salesInfoVo.getProductCordList()) {
             productInfo.setSalesId(salesInfoVo.getId());
-            int row = salesInfoMapper.selectSalesInfo(productInfo);
-            if(row == 0){
-                salesInfoMapper.insertSalesProductCord(productInfo);
-            }
+            salesInfoMapper.insertSalesProductCord(productInfo);
         }
     }
 

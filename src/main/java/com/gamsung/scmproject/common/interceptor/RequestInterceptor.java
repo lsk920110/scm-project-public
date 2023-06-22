@@ -26,10 +26,8 @@ public class RequestInterceptor implements HandlerInterceptor {
         } else {
             log.info("login session exist");
             log.info("{} : {} {}",loginInfo.getId(),loginInfo.getDepartment(), loginInfo.getName());
-//            log.info("{}",loginInfo.toString());
             return true;
         }
-//        return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
     @Override
