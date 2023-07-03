@@ -3,13 +3,40 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head th:replace="common/fragments/config-fragment :: ConfigFragment">
-
-<body>
 <style>
     .delete {
         color: red;
     }
+    .container-table {
+        min-width: 1000px; /* 원하는 너비 */
+        min-height: 200px; /* 원하는 높이 */
+        overflow-x: auto; /* 스크롤바 표시 */
+    }
+
+    table {
+        /*width: 3000px;*/
+        /*width: 100%; !* 부모 컨테이너에 맞게 테이블 너비 조정 *!*/
+    }
+
+    td, th {
+        white-space: nowrap; /* 줄 바꿈 방지 */
+    }
+
+    th {
+        z-index: 1;
+    }
+
+    thead {
+        position: sticky;
+        top: 0;
+        background-color: white;
+    }
+    .order-list-container{
+        max-height : 500px;
+    }
 </style>
+
+<body>
 <script>
     <!--    common function-->
     function checkedStatementIdList() {
@@ -49,45 +76,28 @@
             <input style="width : 60%;"
                    name="searchContent" class="form-control" type="text" value="">
         </div>
-            <div style="float : left; width : 20%;" class="input-group">
-                <button style="width : 100%;" onclick="searchSalesInfo()" class="btn btn-primary">검색</button>
-            </div>
-        <!--        <div class="input-group" style="width : 35%; float: left; left: 5%;">-->
-        <!--            <span class="input-group-text">주문생성일*</span>-->
-        <!--            <input name="orderCreateStartDt" max="9999-12-31" type="date" class="form-control">-->
-        <!--            <input name="orderCreateEndDt" max="9999-12-31" type="date" class="form-control">-->
-        <!--            <script>-->
-        <!--                $('input[type="date"]')[0].valueAsDate = new Date();-->
-        <!--                $('input[type="date"]')[1].valueAsDate = new Date();-->
-        <!--            </script>-->
-        <!--        </div>-->
+        <div style="float : left; width : 20%;" class="input-group">
+            <button style="width : 100%;" onclick="searchSalesInfo()" class="btn btn-primary">검색</button>
+        </div>
     </div>
-    <style>
-        .container-table {
-            min-width: 1000px; /* 원하는 너비 */
-            min-height: 200px; /* 원하는 높이 */
-            overflow-x: auto; /* 스크롤바 표시 */
-        }
+    <div class="order-list-container">
+        <table class="table overflow-scroll">
+            <thead>
+            <tr>
+                <th>거래선</th>
+                <th>주문번호</th>
+                <th>배송번호</th>
+                <th>고객명</th>
+                <th>연락처</th>
+                <th>주소</th>
+                <th>상태</th>
+            </tr>
+            </thead>
+            <tbody class="order-list"></tbody>
+        </table>
+    </div>
 
-        table {
-            width: 3000px;
-            /*width: 100%; !* 부모 컨테이너에 맞게 테이블 너비 조정 *!*/
-        }
 
-        td, th {
-            white-space: nowrap; /* 줄 바꿈 방지 */
-        }
-
-        th {
-            z-index: 1;
-        }
-
-        thead {
-            position: sticky;
-            top: 0;
-            background-color: white;
-        }
-    </style>
     <div class="container-order-info" style="">
         <div class="input-group mb-3" style="width : 32%; margin-right : 2%; float: left;">
             <span class="input-group-text" id="vendor-info">거래선</span>
@@ -101,14 +111,13 @@
         </div>
         <div class="input-group mb-3" style="width : 32%; margin-left : 0%; float: left;">
             <span class="input-group-text" id="delivery-req-dt">배송요청일</span>
-            <input type="date" name="deliveryReqDt" class="form-control" readonly value="" aria-label="Sizing example input"
+            <input type="date" name="deliveryReqDt" class="form-control" readonly value=""
+                   aria-label="Sizing example input"
                    aria-describedby="inputGroup-sizing-default">
-            <script>
-                const today = new Date();
-                const tomorrow = new Date(today.setDate(today.getDate() + 1));
-                $('input[name="deliveryReqDt"]')[0].valueAsDate = tomorrow;
-            </script>
         </div>
+    </div>
+
+    <div class="container-table">
         <div class="input-group mb-3">
             <span class="input-group-text" id="customer-name">고객명</span>
             <input type="text" name="customerName" class="form-control" value="" aria-label="Sizing example input"
@@ -116,21 +125,26 @@
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="customer-phone-number">연락처</span>
-            <input type="text" name="customerPhoneNumber" value="" class="form-control" aria-label="Sizing example input"
+            <input type="text" name="customerPhoneNumber" value="" class="form-control"
+                   aria-label="Sizing example input"
                    aria-describedby="inputGroup-sizing-default">
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text">주소</span>
-            <input list="addressList" type="text" name="customerAddressFirst" value="" aria-label="시/도" class="form-control" placeholder="시/도">
+            <input list="addressList" type="text" name="customerAddressFirst" value="" aria-label="시/도"
+                   class="form-control" placeholder="시/도">
             <datalist id="addressList">
                 <option th:each="deliveryArea : ${deliveryAreaList}" th:value="${deliveryArea}"></option>
             </datalist>
-            <input type="text" name="customerAddressSecond" value="" aria-label="군/구" class="form-control" placeholder="군/구">
-            <input type="text" name="customerAddressThird" value="" aria-label="읍/면/동" class="form-control" placeholder="읍/면/동">
+            <input type="text" name="customerAddressSecond" value="" aria-label="군/구" class="form-control"
+                   placeholder="군/구">
+            <input type="text" name="customerAddressThird" value="" aria-label="읍/면/동" class="form-control"
+                   placeholder="읍/면/동">
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="customer-address-detail">상세주소</span>
-            <input type="text" name="customerAddressDetail" value="" class="form-control" aria-label="Sizing example input"
+            <input type="text" name="customerAddressDetail" value="" class="form-control"
+                   aria-label="Sizing example input"
                    aria-describedby="inputGroup-sizing-default">
         </div>
         <div class="input-group mb-3">
@@ -139,7 +153,7 @@
                    aria-describedby="inputGroup-sizing-default">
         </div>
     </div>
-    <div class="container-table">
+    <div>
         <table class="table">
             <thead>
             <tr>
@@ -161,49 +175,42 @@
         return numbar.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
     }
 
+    const orderInfoAndCallHistory =(orderId)=>{
+        $.ajax({
+            type : 'GET',
+            url : `/api/callcenter/history?orderId=${orderId}`,
+            success : (result)=>{
+                console.log(result);
+            },
+            error : (err)=>{
+                console.log(err);
+            }
+        })
+    }
     const searchSalesInfo = () => {
         let vendorId = $('select[name="vendorId"]').val();
-        let salesCreateStartDt = $('input[name="salesCreateStartDt"]').val();
-        let salesCreateEndDt = $('input[name="salesCreateEndDt"]').val();
+        let criteria = $('select[name="searchCriteria"]').val();
+        let content = $('input[name="searchContent"]').val();
 
         $.ajax({
             type: 'GET',
-            url: `/api/salesInfo?vendorId=${vendorId}&startDt=${salesCreateStartDt}&endDt=${salesCreateEndDt}`,
+            url: `/api/callcenter/search?vendorId=${vendorId}&criteria=${criteria}&content=${content}`,
             dataType: 'json',
             success: (result) => {
                 console.log(result);
-                let txt = 'test';
-                let totalSupplyPrice = 0;
-                let totalSupplyPriceVat = 0;
+                let txt = '';
                 result.result.forEach((item, idx) => {
-                    let supplyPrice = item.orderQuantity * item.supplyPrice;
-                    let supplyPriceVat = item.orderQuantity * item.supplyPriceVat;
-                    totalSupplyPrice += supplyPrice;
-                    totalSupplyPriceVat += supplyPriceVat;
-                    //
-                    txt += `<tr>`;
-                    txt += `<td>${item.id}</td>`;
-                    txt += `<td>${item.deliveryId}</td>`;
-                    txt += `<td>${item.orderId}</td>`;
-                    txt += `<td>${item.statementId}</td>`;
-                    txt += `<td>${item.orderSeq}</td>`;
-                    txt += `<td>${item.vendorName}</td>`;
-                    txt += `<td>${item.salesNo}</td>`;
-                    txt += `<td>${item.orderRegDt}</td>`;
-                    txt += `<td>${item.deliveryCompletionDt}</td>`;
-                    txt += `<td>${item.salesRegDt}</td>`;
-                    txt += `<td>${item.customerName}</td>`;
-                    txt += `<td>${item.productCord}</td>`;
-                    txt += `<td>${item.modelCord}</td>`;
-                    txt += `<td>${item.orderQuantity}</td>`;
-                    txt += `<td>${numberComa(supplyPrice)}</td>`;
-                    txt += `<td>${numberComa(supplyPriceVat)}</td>`;
-                    txt += `</tr>`;
+                    txt += `<tr>`
+                    txt += `<td>${item.vendorName}</td>`
+                    txt += `<td><a href="#" onclick="orderInfoAndCallHistory(${item.orderId})">${item.orderId}</a></td>`
+                    txt += `<td>${item.deliveryId}</td>`
+                    txt += `<td>${item.customerName}</td>`
+                    txt += `<td>${item.customerPhoneNumber}</td>`
+                    txt += `<td>${item.customerAddressFirst}</td>`
+                    txt += `<td>${item.state}</td>`
+                    txt += `<tr>`
                 })
-                $('tbody').empty().append(txt);
-                $('#supplyPrice').val(numberComa(totalSupplyPrice));
-                $('#supplyPriceVat').val(numberComa(totalSupplyPriceVat));
-                $('#totalPrice').val(numberComa(totalSupplyPrice + totalSupplyPriceVat));
+                $('.order-list').empty().append(txt);
             },
             error: (err) => console.log
         })

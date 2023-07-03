@@ -2,54 +2,78 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gamsung.scmproject.callcenter.mapper.CallcenterMapper">
-    <select id="selectOrderInfoWithCallHistory"
-            resultType="com.gamsung.scmproject.callcenter.vo.OrderInfoWithCallHistoryVo">
-        SELECT * FROM
-            orderInfo
-WHERE 1=1
-AND vendorId = #{vendorId}
-AND orderId = #{content}
-AND statementId = #{content}
-AND deliveryId = #{content}
-AND customerName = #{content}
-AND customerPhoneNum = #{content}
+
+    <select id="selectOrderInfoList"
+            resultType="com.gamsung.scmproject.callcenter.vo.CallcenterSearchResultVo">
+        SELECT
+            vi.vendorName ,
+            oi.id AS orderId,
+            s.salesNo,
+            s.customerName ,
+            s.customerPhoneNumber ,
+            s.customerAddressFirst ,
+            di.id AS deliveryId,
+            di.state
+        FROM
+            orderInfo oi
+                INNER JOIN `statement` s ON oi.statementId  = s.id
+                INNER JOIN vendorInfo vi ON vi.id = s.vendorId
+                INNER JOIN deliveryInfo di ON di.orderId = oi.id
+        WHERE
+            s.vendorId = #{vendorId}
+        <if test="criteria == '1'.toString()">
+            AND oi.id = #{content}
+        </if>
+        <if test="criteria == '2'.toString()">
+            AND salesNo = #{content}
+        </if>
+        <if test="criteria == '3'.toString()">
+            AND deliveryId = #{content}
+        </if>
+        <if test="criteria == '4'.toString()">
+          AND customerName LIKE CONCAT('%',#{content},'%')
+        </if>
+        <if test="criteria == '5'.toString()">
+            AND customerPhoneNumber = #{content}
+        </if>
+    </select>
+    <select id="selectCallHistoryList" resultType="com.gamsung.scmproject.callcenter.vo.HistoryInfoVo">
+        SELECT
+            id,
+            orderId,
+            memo,
+            regDt,
+            state,
+            regMemberId
+            FROM
+        callHistory
+        WHERE 1=1
+        AND orderId = #{orderId}
+    </select>
+    <select id="selectOrderInfo" resultType="com.gamsung.scmproject.callcenter.vo.CallcenterOrderInfoVo">
+        SELECT
+            vi.vendorName ,
+            s.salesNo ,
+            s.deliveryReqDt ,
+            s.customerName ,
+            s.customerPhoneNumber ,
+            s.customerAddressFirst ,
+            s.customerAddressSecond ,
+            s.customerAddressThird ,
+            s.customerAddressDetail ,
+            s.remarks ,
+            di.expectedDeliveryDt ,
+            di.deliveryCompletionDt ,
+            di.tc ,
+            dis.staffName ,
+            dis.staffPhoneNum
+        FROM
+            orderInfo oi
+                INNER JOIN `statement` s ON s.id = oi.statementId
+                INNER JOIN deliveryInfo di ON di.id = oi.statementId
+                INNER JOIN vendorInfo vi ON vi.id = s.vendorId
+                INNER JOIN deliveryInstallationStaff dis ON di.deliveryStaffId = dis.id
+        WHERE oi.id = #{orderId}
 
     </select>
-    <select id="selectCallHistoryList" resultType="com.gamsung.scmproject.callcenter.vo.HistoryInfoVo"></select>
 </mapper>
-
-<!--        SELECT-->
-<!--        vi.id AS vendorId,-->
-<!--        oi.statementId ,-->
-<!--        s.salesNo ,-->
-<!--        s.deliveryReqDt,-->
-<!--        s.customerName ,-->
-<!--        s.customerPhoneNumber ,-->
-<!--        s.customerAddressFirst ,-->
-<!--        s.customerAddressSecond ,-->
-<!--        s.customerAddressThird ,-->
-<!--        s.customerAddressDetail ,-->
-<!--        s.remarks ,-->
-<!--        oi.id AS orderId ,-->
-<!--        di.id AS deliveryId ,-->
-<!--        di.expectedDeliveryDt ,-->
-<!--        di.deliveryCompletionDt ,-->
-<!--        di.state ,-->
-<!--        di.tc ,-->
-<!--        di.deliveryStaffId ,-->
-<!--        dis.tc ,-->
-<!--        dis.staffName ,-->
-<!--        dis.staffPhoneNum-->
-<!--        FROM orderInfo oi-->
-<!--        INNER JOIN `statement` s ON s.id = oi.statementId-->
-<!--        INNER JOIN deliveryInfo di ON di.orderId = oi.id-->
-<!--        INNER JOIN vendorInfo vi ON vi.id = s.vendorId-->
-<!--        INNER JOIN deliveryInstallationStaff dis ON di.deliveryStaffId = dis.id-->
-<!--        WHERE 1=1-->
-<!--        AND s.vendorId = 1000000-->
-<!--        AND orderId = 100000000-->
-<!--        AND statementId = 4-->
-<!--        AND di.id = 1-->
-<!--        AND customerName = '이승규1'-->
-<!--        AND customerPhoneNumber = '01012341234'-->
-<!--        ;-->

@@ -12,7 +12,7 @@ public class BatchScheduler {
 
 
     @Autowired private SalesInfoService salesInfoService;
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 60000)
     public void salesInfoRegistration() throws InterruptedException {
         log.info("batch 실행");
         salesInfoService.batchSalesInfo();

@@ -32,21 +32,21 @@ public class BaseController {
 
 
 
-    public void menuBarInfo(ModelAndView mav){
+    protected void menuBarInfo(ModelAndView mav){
         List<MenubarInfoVo> header = menuBarService.selectHeaderMenubarAll();
         List<MenubarInfoVo> sidebar = menuBarService.selectSideMenubarAll();
         mav.addObject(SessionKeys.HEADER,header);
         mav.addObject(SessionKeys.SIDEBAR,sidebar);
     }
 
-    public void menuBarInfo(Model model){
+    protected void menuBarInfo(Model model){
         List<MenubarInfoVo> header = menuBarService.selectHeaderMenubarAll();
         List<MenubarInfoVo> sidebar = menuBarService.selectSideMenubarAll();
         model.addAttribute(SessionKeys.HEADER,header);
         model.addAttribute(SessionKeys.SIDEBAR,sidebar);
     }
 
-    public void sessionLoginInfo(HttpSession session , AuthIf params){
+    protected void sessionLoginInfo(HttpSession session , AuthIf params){
 
         MemberForSessionVo memberVo = (MemberForSessionVo) session.getAttribute(SessionKeys.LOGIN_ID_INFO);
         if (memberVo == null) {
@@ -58,7 +58,7 @@ public class BaseController {
         log.info("loginId : {}", params.getLoginId());
     }
 
-    public <T> ResultVo<?> makeResultVo(ErrorCode ErrorCode , T result){
+    protected <T> ResultVo<?> makeResultVo(ErrorCode ErrorCode , T result){
 
         ResultVo<T> resultVo = new ResultVo<>();
         resultVo.setErrorCode(ErrorCode.getCode());
@@ -67,7 +67,7 @@ public class BaseController {
         return resultVo;
     }
 
-    public <T> ResultVo<?> makeResultVo(ErrorCode ErrorCode){
+    protected <T> ResultVo<?> makeResultVo(ErrorCode ErrorCode){
         ResultVo<T> resultVo = new ResultVo<>();
         resultVo.setErrorCode(ErrorCode.getCode());
         resultVo.setErrorMessage(ErrorCode.getMessage());
@@ -75,11 +75,11 @@ public class BaseController {
 
     }
 
-    public void vendorList(Model model){
+    protected void vendorList(Model model){
         List<VendorWithMemberNameVo> vendorList = vendorService.selectVendorList("1");
         model.addAttribute(ModelObjectKey.VENDOR_LIST,vendorList);
     }
-    public void vendorList(ModelAndView mav){
+    protected void vendorList(ModelAndView mav){
         List<VendorWithMemberNameVo> vendorList = vendorService.selectVendorList("1");
         mav.addObject(ModelObjectKey.VENDOR_LIST,vendorList);
     }

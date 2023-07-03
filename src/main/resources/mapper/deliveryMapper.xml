@@ -64,9 +64,6 @@
         FROM `deliveryInfo` di
             INNER JOIN `orderInfo` oi on oi.id = di.orderId
             INNER JOIN `statement` s on s.id = oi.statementId
-            INNER JOIN `statementProductCord` spc on spc.statementId = oi.statementId
-            INNER JOIN `productCord` pc on spc.productCord = pc.productCord
-            INNER JOIN `productModel` pm on pm.id = pc.productModelId
             INNER JOIN `deliveryInstallationStaff` dis on dis.id = di.deliveryStaffId
         WHERE
             1=1

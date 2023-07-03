@@ -37,14 +37,6 @@
                 <option th:each="vendor : ${vendorList}" th:value="${vendor.id}"
                         th:text="${vendor.vendorName}"></option>
             </select>
-<!--            <select style="width : 25%;"-->
-<!--                    name="searchCriteria" class="form-select" id="inputGroupSelect04"-->
-<!--                    aria-label="Example select with button addon">-->
-<!--                <option value="1">주문번호</option>-->
-<!--                <option selected value="3">납품번호</option>-->
-<!--            </select>-->
-<!--            <label for="searchContent" >-->
-<!--            </label>-->
             <input style="width : 75%;" id="searchContent"
                    name="searchContent" placeholder="납품번호" class="form-control" type="text" value="">
         </div>
@@ -83,9 +75,6 @@
                     $.ajax({
                         type : 'GET',
                         url : '/api/batch/delivery/test',
-                        // data : JSON.stringify({statementIdList : statementIdList}),
-                        // dataType : 'json',
-                        // contentType: 'application/json',
                         success : (result)=>{
                             if(result.errorCode ==='0000'){
                                 alert(`총 ${result.result} 건이 완료됬습니다.`)
@@ -95,7 +84,6 @@
                     })
                 }
             </script>
-<!--            <input th:onclick="deleteStatement()" type="button" class="btn btn-secondary" value="주문삭제"/>-->
             <script>
                 function deleteStatement(){
 

@@ -203,6 +203,9 @@
                     if(callback === 'orderInsert'){
                         console.log(callback);
                         createOrder(result.result);
+                    } else {
+                        alert('전표생성완료');
+                        location.reload();
                     }
                 },
                 error : (error)=>{console.log(error)}

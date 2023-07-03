@@ -18,15 +18,21 @@
     </select>
     <select id="selectDeliveryStaffList" resultType="com.gamsung.scmproject.delivery.vo.DeliveryStaffInfoVo">
         SELECT
-            id,
+            dis.id,
             dis.tc,
             tci.deliveryArea ,
             dis.staffName ,
             dis.staffPhoneNum ,
-            dis.state
+            dis.state,
+            (SELECT COUNT(1) FROM deliveryInfo di2 WHERE di2.expectedDeliveryDt = ADDDATE(CURDATE(),0) AND di2.deliveryStaffId = dis.id)
+                AS todayDeliveryCnt,
+            (SELECT COUNT(1) FROM deliveryInfo di2 WHERE di2.expectedDeliveryDt = ADDDATE(CURDATE(),1) AND di2.deliveryStaffId = dis.id)
+                AS tommorowDeliveryCnt
         FROM
             deliveryInstallationStaff dis
-                INNER JOIN transportCenterInfo tci using (tc)
+                LEFT JOIN transportCenterInfo tci using (tc)
+                LEFT JOIN deliveryInfo di ON di.deliveryStaffId = dis.id
+                GROUP BY id
     </select>
     <select id="selectAvailableDeliveryStaffOne" resultType="com.gamsung.scmproject.delivery.vo.AvailableStaffInfoVo">
         SELECT

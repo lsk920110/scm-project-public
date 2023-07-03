@@ -10,12 +10,8 @@ public class CallcenterController extends BaseController {
 
     @RequestMapping("/callcenter")
     public String callcenterManagement(Model model){
-
         menuBarInfo(model);
         vendorList(model);
-
-
-
         return "callcenter/callcenter-management-form";
     }
 

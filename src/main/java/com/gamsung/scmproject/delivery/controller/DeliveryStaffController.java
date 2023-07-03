@@ -1,6 +1,7 @@
 package com.gamsung.scmproject.delivery.controller;
 
 import com.gamsung.scmproject.common.constant.ErrorCode;
+import com.gamsung.scmproject.common.constant.ModelObjectKey;
 import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.delivery.service.DeliveryStaffService;
@@ -27,25 +28,11 @@ public class DeliveryStaffController extends BaseController {
 
         menuBarInfo(model);
         List<TransportCenterVo> list = deliveryStaffService.tcInfoList();
-        model.addAttribute("tcList",list);
         List<DeliveryStaffInfoVo> deliveryStaffList = deliveryStaffService.selectDeliveryStaffList();
-        model.addAttribute("deliveryStaffList",deliveryStaffList);
+        model.addAttribute(ModelObjectKey.TC_LIST,list);
+        model.addAttribute(ModelObjectKey.DELIVERY_STAFF_LIST,deliveryStaffList);
         return "deliveryStaff/deliveryStaff-management-form";
 
     }
-
-
-
-
-
-    @PostMapping("/deliveryStaff/registration")
-    @ResponseBody
-    public ResultVo<?> deliveryStaffRegistration(@RequestBody DeliveryStaffRegistrationVo params){
-
-        deliveryStaffService.insertDeliveryStaff(params);
-
-        return makeResultVo(ErrorCode.SUCCESS);
-    }
-
 
 }

@@ -11,4 +11,6 @@ public class DeliveryStaffInfoVo {
     private String staffName;
     private String staffPhoneNum;
     private String state;
+    private Integer todayDeliveryCnt;
+    private Integer tommorowDeliveryCnt;
 }

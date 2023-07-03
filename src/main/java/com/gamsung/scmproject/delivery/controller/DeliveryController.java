@@ -25,36 +25,12 @@ import java.util.List;
 @Controller
 public class DeliveryController extends BaseController {
 
-    @Autowired
-    private DeliveryService deliveryService;
-
-    @Autowired
-    private VendorService vendorService;
-
     @GetMapping("/delivery/management")
     public String deliveryForm(Model model){
         menuBarInfo(model);
         vendorList(model);
 
         return "delivery/delivery-management-form";
-    }
-
-    @GetMapping("/api/batch/delivery/test")
-    @ResponseBody
-    public ResultVo<?> assignDeliveryInfo(){
-
-        int successRows = deliveryService.batchAssignDelivery();
-
-        return makeResultVo(ErrorCode.SUCCESS,successRows);
-    }
-
-    @PostMapping("/api/delivery/list/search")
-    @ResponseBody
-    public ResultVo<?> deliveryListSearch(@RequestBody DeliverySearchCriteriaVo params){
-        log.info("params : {}",params.toString());
-        List<DeliveryInfoVo> list =deliveryService.selectDeliveryList(params);
-
-        return makeResultVo(ErrorCode.SUCCESS,list);
     }
 
 

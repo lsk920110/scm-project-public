@@ -157,8 +157,8 @@
                     <td th:text="${deliveryStaff.deliveryArea}"></td>
                     <td th:text="${deliveryStaff.staffName}"></td>
                     <td th:text="${deliveryStaff.staffPhoneNum}"></td>
-                    <td><a href="#">0</a></td>
-                    <td><a href="#">0</a></td>
+                    <td><a href="#" th:text="${deliveryStaff.todayDeliveryCnt}"></a></td>
+                    <td><a href="#" th:text="${deliveryStaff.tommorowDeliveryCnt}"></a></td>
                     <td th:text="${deliveryStaff.state}"></td>
                 </tr>
                 </tbody>
