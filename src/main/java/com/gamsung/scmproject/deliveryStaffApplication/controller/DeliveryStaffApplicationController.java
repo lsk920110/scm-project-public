@@ -1,6 +1,7 @@
 package com.gamsung.scmproject.deliveryStaffApplication.controller;
 
 import com.gamsung.scmproject.common.constant.ErrorCode;
+import com.gamsung.scmproject.common.constant.ModelObjectKey;
 import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.common.vo.ResultVo;
 import com.gamsung.scmproject.delivery.service.DeliveryService;
@@ -28,9 +29,8 @@ public class DeliveryStaffApplicationController extends BaseController {
     public String deliveryStaffApplication(Model model){
 
         menuBarInfo(model);
-//        deliveryStaffApplicationService.
         List<TransportCenterVo> transportCenterVos = deliveryStaffService.tcInfoList();
-        model.addAttribute("tcList",transportCenterVos);
+        model.addAttribute(ModelObjectKey.TC_LIST,transportCenterVos);
 
 
         return "deliveryStaffApplication/deliveryStaffApplication-management-form";

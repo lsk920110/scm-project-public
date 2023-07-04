@@ -92,7 +92,7 @@
 
             $.ajax({
                 type        : 'POST',
-                url         : '/menubar/update/v2',
+                url         : '/api/menubar/update/v2',
                 data        : JSON.stringify({list : menuParamList}),
                 dataType    : 'json',
                 contentType : 'application/json',
@@ -177,7 +177,7 @@
         }
         $.ajax({
             method : 'put',
-            url : '/menubar/update',
+            url : '/api/menubar/update',
             data : JSON.stringify(params),
             contentType : 'application/json',
             dataType : 'json',

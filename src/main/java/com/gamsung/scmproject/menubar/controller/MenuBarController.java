@@ -52,38 +52,10 @@ public class MenuBarController extends BaseController {
         return "redirect:/menubar/management";
     }
 
-    @PutMapping("/menubar/update")
-    @ResponseBody
-    public ResultVo<?> menubarUpdate(@RequestBody MenubarInfoVo params){
-        menuBarService.updateMenuBar(params);
-        return makeResultVo(ErrorCode.SUCCESS);
-    }
 
-    @PostMapping("/menubar/update/v2")
-    @ResponseBody
-    public ResultVo<?> menubarUpdateV2(@RequestBody ListTypeParamVo<MenubarUpdateV2ParamVo> params){
-        log.info("{}",params);
-        menuBarService.updateMenuBarV2(params);
 
-        return makeResultVo(ErrorCode.SUCCESS);
-    }
 
-    @PostMapping("/api/menubar/orderSeq")
-    @ResponseBody
-    public ResultVo<?> menubarSeqUpdate(@RequestBody MenuIdListVo params){
 
-        menuBarService.updateMenuOrderSeq(params.getMenuIdList());
-        return makeResultVo(ErrorCode.SUCCESS);
-
-    }
-
-    @PostMapping("/api/menubar/delete")
-    @ResponseBody
-    public ResultVo<?>menubarDelete(@RequestBody MenuIdVo params){
-
-        menuBarService.deleteMenu(params.getMenuId());
-        return makeResultVo(ErrorCode.SUCCESS);
-    }
 
 
 

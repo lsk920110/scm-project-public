@@ -50,41 +50,6 @@ public class MemberController extends BaseController {
         return "redirect:/member";
     }
 
-    //회원가입
-    @PostMapping("/api/member/join")
-    @ResponseBody
-    public ResultVo memberJoinApi(@RequestBody MemberVo memberVo) {
-        memberService.joinMember(memberVo);
-
-        return makeResultVo(ErrorCode.SUCCESS);
-    }
-
-    @PostMapping("/api/member/login")
-    @ResponseBody
-    public ResultVo<?> memberLogin(@RequestBody MemberVo memberVo, HttpSession session) {
-        LoginResultVo lrv = memberService.loginMember(memberVo);
-
-        if (lrv.getLoginSuccess()) {
-            session.setAttribute(SessionKeys.LOGIN_ID_INFO, new MemberForSessionVo(lrv.getMemberVo()));
-            ResultVo<LoginResultVo> resultVo = new ResultVo<>();
-
-            LoginResultVo loginResultVo = new LoginResultVo();
-            loginResultVo.setLoginSuccess(lrv.getLoginSuccess());
-            loginResultVo.setId(memberVo.getId());
-
-            return makeResultVo(ErrorCode.SUCCESS,loginResultVo);
-        } else {
-            return makeResultVo(ErrorCode.LOGIN_FAILED);
-        }
-    }
-
-    @GetMapping("/api/member/emailDuplicatedCheck")
-    @ResponseBody
-    public ResultVo<?> emailDuplicatedCheck(@RequestParam String email) {
-
-        Boolean result = memberService.emailDuplicatedCheck(email);
-        return makeResultVo(ErrorCode.SUCCESS,result);
-    }
 
     @GetMapping("/login")
     public String loginPage() {
@@ -101,16 +66,6 @@ public class MemberController extends BaseController {
         model.addAttribute(ModelObjectKey.DEPARTMENT_LIST,departmentVos);
 
         return "member/member-detail-management";
-    }
-
-    @PostMapping("/api/member/update")
-    @ResponseBody
-    public ResultVo<?> updateMemberInfo(@RequestBody MemberVo params){
-        if (params.getState().equals("")) {
-            params.setState(null);
-        }
-        memberService.updateMemberInfo(params);
-        return makeResultVo(ErrorCode.SUCCESS);
     }
 
 }
