@@ -37,42 +37,6 @@ public class DeliveryStaffApplicationController extends BaseController {
     }
 
 
-    @PostMapping("/api/delivery/login")
-    @ResponseBody
-    public ResultVo<?> deliveryStaffLogin(@RequestBody DeliveryStaffLoginVo params){
-        deliveryStaffApplicationService.deliveryStaffLogin(params);
-        return makeResultVo(ErrorCode.SUCCESS);
-    }
-
-    @GetMapping("/api/deliveryStaff/list")
-    @ResponseBody
-    public ResultVo<?> deliveryStaffList(@RequestParam String tc){
-
-        List<DeliveryInfoVo> list = deliveryStaffService.selectDeliveryStaffListByTc(tc);
-        return makeResultVo(ErrorCode.SUCCESS,list);
-    }
-
-    
-
-    @GetMapping("/api/delivery/list")
-    @ResponseBody
-    public ResultVo<?> deliveryListForStaff(@RequestParam String staffId){
-
-        //특정기사에게 금일 할당된 배송 리스트를 불러온다.
-        List<DeliveryInfoVo> list = deliveryStaffApplicationService.deliveryListByStaffId(staffId);
-        return makeResultVo(ErrorCode.SUCCESS,list);
-    }
-
-    @PostMapping("/api/update/delivery/state")
-    @ResponseBody
-    public ResultVo<?> updateDeliveryState(@RequestBody DeliveryStateUpdateParamVo params){
-
-        //특정 고객 주문번호(배송번호)를 배송한후 결과를 전달하고 업데이트한다.
-        deliveryStaffApplicationService.updateDeliveryState(params);
-
-        return makeResultVo(ErrorCode.SUCCESS);
-    }
-
 
 
 

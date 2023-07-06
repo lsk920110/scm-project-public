@@ -22,6 +22,11 @@ import java.util.List;
 @Controller
 public class MenuBarController extends BaseController {
 
+    public static final String[] MENU_BAR_PATH = {
+            "/menubar/registration",
+            "/menubar/management",
+    };
+
     @Autowired
     private MenuBarService menuBarService;
 

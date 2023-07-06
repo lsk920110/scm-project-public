@@ -1,6 +1,9 @@
 package com.gamsung.scmproject.common.config;
 
 import com.gamsung.scmproject.common.interceptor.RequestInterceptor;
+import com.gamsung.scmproject.menubar.controller.MenuBarApiController;
+import com.gamsung.scmproject.menubar.controller.MenuBarController;
+import com.gamsung.scmproject.productCategory.controller.ProductCategoryController;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -40,11 +43,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/product/category",
                         "/api/product/category/list",
                         "/api/product/category")
-                .addPathPatterns(
-                        "/productCord/management",
-                        "/productCord/registration",
-                        "/productCord","/api/productModelInfo"
-                )
+                .addPathPatterns(ProductCategoryController.PRODUCT_CATEGORY_PATH)
                 .addPathPatterns(
                         "/product/model/management",
                         "/product/model",
@@ -60,6 +59,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/api/salesInfo/batch/test",
                         "/api/salesInfo"
                 )
+                .addPathPatterns(MenuBarController.MENU_BAR_PATH)
+                .addPathPatterns(MenuBarApiController.MENU_BAR_API_PATH)
         ;
     }
 }

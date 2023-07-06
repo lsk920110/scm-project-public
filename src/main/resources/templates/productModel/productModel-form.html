@@ -29,10 +29,10 @@
         <input name="modelCord" id="productModel" class="form-control" type="text">
         <label for="productModel">모델명을 입력하세요</label>
     </div>
-    <div class="d-grid gap-2">
-        <input placeholder="재고량을 입력하세요" class="form-control" name="stock" id="product-stock" type="number" min="0">
-        <label for="product-stock"></label>
-    </div>
+<!--    <div class="d-grid gap-2">-->
+<!--        <input placeholder="재고량을 입력하세요" class="form-control" name="stock" id="product-stock" type="number" min="0">-->
+<!--        <label for="product-stock"></label>-->
+<!--    </div>-->
     <div class="d-grid gap-2">
         <button class="btn btn-primary">저장</button>
     </div>
@@ -44,7 +44,7 @@
                 <th>id</th>
                 <th>카테고리</th>
                 <th>모델코드</th>
-                <th>재고량</th>
+<!--                <th>재고량</th>-->
                 <th>출시상태</th>
                 <th>등록자</th>
                 <th>등록일자</th>
@@ -55,7 +55,7 @@
                 <td th:text="${productModel.id}" aria-label="아이디"></td>
                 <td th:text="${productModel.productCategory}" aria-label="카데고리"></td>
                 <td th:text="${productModel.modelCord}" aria-label="모델코드"></td>
-                <td th:text="${productModel.stock}" aria-label="재고량"></td>
+<!--                <td th:text="${productModel.stock}" aria-label="재고량"></td>-->
                 <td aria-label="출시상태">
                     <select class="form-select">
                         <option th:each="productStatus : ${productStatusList}"

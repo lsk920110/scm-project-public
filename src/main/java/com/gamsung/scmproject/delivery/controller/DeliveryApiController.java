@@ -19,6 +19,12 @@ import java.util.List;
 @RestController
 public class DeliveryApiController extends BaseController {
 
+    public static String[] DELIVERY_API_PATH = {
+            "/deliveryStaff/management",
+            "/deliveryStaff/registration",
+            "/deliveryStaff/management",
+    };
+
     @Autowired
     private DeliveryService deliveryService;
 

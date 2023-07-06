@@ -284,7 +284,7 @@
 
                     txt += `<tr class="${orderState === '2' ? 'delete':'normal'}">`;
                     txt += `<td><input value="${item.statementId}" name="check-statement" class="form-check-input checkbox-input" type="checkbox"/></td>`
-                    txt += `<td><a href="/order/update?statementId=${item.statementId}" onclick="window.open(this.href , 'window_name' , 'width=1000,height=500,location=no,status=no,scrollbars=yes'); return false;">${item.statementId}</a></td>`;
+                    txt += `<td><a href="/order/update?statementId=${item.statementId}${item.orderId === null ? '' : '&orderCreated=y'}" onclick="window.open(this.href , 'window_name' , 'width=1000,height=500,location=no,status=no,scrollbars=yes'); return false;">${item.statementId}</a></td>`;
                     txt += `<td>${item.orderId === null ? '미생성건' : item.orderId}</td>`;
                     txt += `<td>${item.salesNo}</td>`;
                     txt += `<td>${productCordTxt}</td>`;

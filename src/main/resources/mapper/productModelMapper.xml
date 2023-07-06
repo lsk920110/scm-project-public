@@ -15,9 +15,9 @@
              , pmi.memberId
              , m.name
         FROM productModel pmi
-                 inner join productCategory pc on pmi.productCategoryId = pc.id
-                 inner join `member` m on pmi.memberId = m.id
-                 inner join productStatus ps on pmi.productStatusId = ps.id
+                 INNER JOIN productCategory pc on pmi.productCategoryId = pc.id
+                 INNER JOIN `member` m on pmi.memberId = m.id
+                 INNER JOIN productStatus ps on pmi.productStatusId = ps.id
     </select>
     <select id="selectProductModelByProductCategoryId"
             resultType="com.gamsung.scmproject.productModel.vo.ProductModelVo">

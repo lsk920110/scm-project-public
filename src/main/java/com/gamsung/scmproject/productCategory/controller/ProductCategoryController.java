@@ -22,7 +22,12 @@ import java.util.List;
 //@RequestMapping("/product/category")
 public class ProductCategoryController extends BaseController {
 
-
+    public static final String[] PRODUCT_CATEGORY_PATH = {
+            "/productCord/management",
+            "/productCord/registration",
+            "/productCord",
+            "/api/productModelInfo",
+    };
 
 
     @Autowired private ProductCategoryService productCategoryService;

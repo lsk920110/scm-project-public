@@ -20,20 +20,29 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequestMapping("/api/menubar")
 public class MenuBarApiController extends BaseController {
 
     @Autowired
     private MenuBarService menuBarService;
 
+    public static final String[] MENU_BAR_API_PATH = {
+            "/api/menubar/management",
+            "/api/menubar/registration",
+            "/api/menubar/update",
+            "/api/menubar/update/v2",
+            "/api/menubar/orderSeq",
+            "/api/menubar/delete"
+    };
 
-    @GetMapping("/api/menubar/management")
+    @GetMapping("/management")
     public ResultVo<?> menuManagementForm(@RequestParam(defaultValue = "1" , required = false) String position){
 
         List<MenubarInfoVo> menubars = menuBarService.selectMenubarAllForManagement(position);
         return makeResultVo(ErrorCode.SUCCESS,menubars);
     }
 
-    @PostMapping("/api/menubar/registration")
+    @PostMapping("/registration")
     public ResultVo<?> menubarRegistration(@ModelAttribute MenubarInfoVo params){
 
         menuBarService.insertMenuBar(params);
@@ -41,20 +50,20 @@ public class MenuBarApiController extends BaseController {
         return makeResultVo(ErrorCode.SUCCESS);
     }
 
-    @PutMapping("/api/menubar/update")
+    @PutMapping("/update")
     @ResponseBody
     public ResultVo<?> menubarUpdate(@RequestBody MenubarInfoVo params){
         menuBarService.updateMenuBar(params);
         return makeResultVo(ErrorCode.SUCCESS);
     }
 
-    @PostMapping("/api/menubar/update/v2")
+    @PostMapping("/update/v2")
     public ResultVo<?> menubarUpdateV2(@RequestBody ListTypeParamVo<MenubarUpdateV2ParamVo> params){
         menuBarService.updateMenuBarV2(params);
     return makeResultVo(ErrorCode.SUCCESS);
     }
 
-    @PostMapping("/api/menubar/orderSeq")
+    @PostMapping("/orderSeq")
     @ResponseBody
     public ResultVo<?> menubarSeqUpdate(@RequestBody MenuIdListVo params){
 
@@ -63,7 +72,7 @@ public class MenuBarApiController extends BaseController {
 
     }
 
-    @PostMapping("/api/menubar/delete")
+    @PostMapping("/delete")
     @ResponseBody
     public ResultVo<?>menubarDelete(@RequestBody MenuIdVo params){
         menuBarService.deleteMenu(params.getMenuId());

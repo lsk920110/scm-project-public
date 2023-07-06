@@ -140,7 +140,14 @@
         </tfoot>
     </table>
     <script>
+        const orderCreated = new URL(location.href).searchParams.get('orderCreated');
+        if(orderCreated === 'y'){
+            $('input#productCordEnter')[0].disabled = true
+        }
+
         $('#productCordEnter').keyup((event) => {
+            const orderCreated = new URL(location.href).searchParams.get('orderCreated');
+
             if (event.keyCode != 13) {
                 return
             }
