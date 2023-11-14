@@ -31,9 +31,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         )
                 .addPathPatterns("/deliveryStaff/management","/deliveryStaff/registration")
                 .addPathPatterns(
-                        "order/registration",
-                        "order/management",
-                        "order/update",
+                        "/order/registration",
+                        "/order/management",
+                        "/order/update",
                         "/api/statement/insert",
                         "/api/statement/update",
                         "/api/order/insert",

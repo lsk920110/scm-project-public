@@ -6,26 +6,37 @@
         position: absolute;
         width : 100%;
         height: 100px;
+        /*display : none;*/
     }
 </style>
 <th:block th:fragment="headerFragment">
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
+
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">TC정보</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon">asdasd</span>
+                <button class="btn btn-primary" th:if="${session.loginIdInfo == null}" onclick="location.href='/login'">
+                    로그인
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <a class="nav-link active" aria-current="page" href="#">연락처</a>
-                        <a class="nav-link" href="#">거래선</a>
-                        <a class="nav-link" href="#">Pricing</a>
-                    </div>
-                </div>
+                <span th:if="${session.loginIdInfo != null}">
+                    <p th:text="${session.loginIdInfo.name} + '님 환영합니다'"></p>
+                </span>
+<!--                logout 구현을 안했음....-->
+<!--                <button></button>-->
+<!--                <a class="navbar-brand" href="#">TC정보</a>-->
+<!--                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"-->
+<!--                        data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"-->
+<!--                        aria-label="Toggle navigation">-->
+<!--                    <span class="navbar-toggler-icon">asdasd</span>-->
+<!--                </button>-->
+<!--                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">-->
+<!--                    <div class="navbar-nav">-->
+<!--                        <a class="nav-link active" aria-current="page" href="#">연락처</a>-->
+<!--                        <a class="nav-link" href="#">거래선</a>-->
+<!--                        <a class="nav-link" href="#">Pricing</a>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
+
         </nav>
     </header>
 </th:block>

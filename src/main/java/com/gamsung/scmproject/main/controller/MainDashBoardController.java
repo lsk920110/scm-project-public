@@ -1,6 +1,7 @@
 package com.gamsung.scmproject.main.controller;
 
 import com.gamsung.scmproject.common.constant.SessionKeys;
+import com.gamsung.scmproject.common.controller.BaseController;
 import com.gamsung.scmproject.menubar.service.MenuBarService;
 import com.gamsung.scmproject.menubar.vo.MenubarSideAndHeaderVo;
 import jakarta.servlet.http.HttpSession;
@@ -11,7 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class MainDashBoardController {
+public class MainDashBoardController extends BaseController {
 
     @Autowired private MenuBarService menuBarService;
 
