@@ -39,6 +39,9 @@
 ```
 각 도메인별로 package를 생성하고, 도메인 내부에 controller,service,mapper,vo의 Package를 생성했습니다.
 ```
+
+### Common
+
 ![image](https://github.com/lsk920110/scm-project-public/assets/97416341/8bb883b2-b193-4706-8a15-e1d0c23bc538)
 ```
 common폴더에는
@@ -51,6 +54,8 @@ util : 각종 유틸메서드
 vo : 공통적으로 사용될 VO
 ```
 
+### AJAX Response규격
+
 ![image](https://github.com/lsk920110/scm-project-public/assets/97416341/8f25f52c-dad1-47c2-9a79-d5faf97d0823)
 ```
 @ResponseBody 공통 response규격은 ResultVo객체로 통일합니다.
@@ -58,8 +63,9 @@ errorCode,errorMessage는 constant의 ErrorCode(Enum)에서 정의가 되고,
 result는 제너릭으로 result객체 선언시 정의됩니다.
 ```
 
-![image](https://github.com/lsk920110/scm-project-public/assets/97416341/2b18f001-4584-4400-8e4e-43ed54b1b4e9)
-![image](https://github.com/lsk920110/scm-project-public/assets/97416341/abac51d5-1b0a-4c28-9b42-bec6c52173ef)
+### 데이터 조회
+
+<img width="50%" src="https://github.com/lsk920110/scm-project-public/assets/97416341/2b18f001-4584-4400-8e4e-43ed54b1b4e9"/>
 
 ```
 statement(전표)를 중심으로 코드,배송,주문등의 정보를 JOIN해서 참조해옵니다.
