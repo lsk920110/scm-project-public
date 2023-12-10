@@ -51,10 +51,24 @@ util : 각종 유틸메서드
 vo : 공통적으로 사용될 VO
 ```
 
+![image](https://github.com/lsk920110/scm-project-public/assets/97416341/8f25f52c-dad1-47c2-9a79-d5faf97d0823)
+```
+@ResponseBody 공통 response규격은 ResultVo객체로 통일합니다.
+errorCode,errorMessage는 constant의 ErrorCode(Enum)에서 정의가 되고,
+result는 제너릭으로 result객체 선언시 정의됩니다.
+```
+
+![image](https://github.com/lsk920110/scm-project-public/assets/97416341/2b18f001-4584-4400-8e4e-43ed54b1b4e9)
+![image](https://github.com/lsk920110/scm-project-public/assets/97416341/abac51d5-1b0a-4c28-9b42-bec6c52173ef)
+
+```
+statement(전표)를 중심으로 코드,배송,주문등의 정보를 JOIN해서 참조해옵니다.
+이때 상세정보들은 resultMap을 이용하여 한번에 정리하여 계층적인 데이터를 만들어 조회해옵니다.
+```
 
 
 
-##핵심기능
+## 핵심기능
 - 이 프로젝트의 핵심기능인 발주과정입니다.
 
 ![image](https://github.com/lsk920110/scm-project-public/assets/97416341/38f74ac5-7150-40ae-9879-82de572342e2)
