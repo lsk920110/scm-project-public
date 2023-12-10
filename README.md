@@ -8,6 +8,8 @@
 
 벤더사에 따른 상품코드 등록 및 발주를 진행하고, 발주가 진행된 주문건들의 배송,매출정산까지의 과정을 구현했습니다.
 
+<a href="https://port-0-scm-project-jvpb2mlocl3obz.sel5.cloudtype.app/">방문하기</a>
+
 ## [ERD](https://www.erdcloud.com/d/yZ24nJ6Jv2iX64RMH)
 ![scm-project](https://github.com/lsk920110/scm-project-public/assets/97416341/c2c1c2e2-b9ff-4e55-a34a-c7650439eadf)
 
