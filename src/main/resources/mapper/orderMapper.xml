@@ -206,10 +206,6 @@
             <result property="modelCord" column="modelCord"/>
         </collection>
     </resultMap>
-
-
-
-
     <select
             id="selectStatementInfo"
             resultType="com.gamsung.scmproject.order.vo.StatementInfoVo"

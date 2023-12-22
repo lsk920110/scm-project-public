@@ -5,6 +5,7 @@ import com.gamsung.scmproject.menubar.controller.MenuBarApiController;
 import com.gamsung.scmproject.menubar.controller.MenuBarController;
 import com.gamsung.scmproject.productCategory.controller.ProductCategoryController;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -15,6 +16,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 //    private List<String> pathList;
 
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedMethods("GET","POST","PUT","DELETE")
+                ;
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

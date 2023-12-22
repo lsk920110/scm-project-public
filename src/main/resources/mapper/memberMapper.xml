@@ -4,14 +4,14 @@
 <mapper namespace="com.gamsung.scmproject.member.mapper.MemberMapper">
     <insert id="insertMember">
         INSERT INTO member
-        (`department`,
+        (`departmentId`,
          `name`,
          `email`,
          `password`,
          `birth`,
          `state`,
          `role`)
-        VALUES ( #{department},
+        VALUES ( #{departmentId},
                 #{name},
                  #{email},
                  #{password}
@@ -48,6 +48,7 @@
                 END AS state,
             d.department
         FROM `member` m INNER JOIN `department` d ON d.id = m.departmentId
+        ORDER BY m.id DESC
     </select>
     <select id="selectMemberInfoById" resultType="com.gamsung.scmproject.member.vo.MemberVo">
     SELECT

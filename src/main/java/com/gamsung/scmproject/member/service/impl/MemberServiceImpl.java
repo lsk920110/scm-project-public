@@ -22,7 +22,8 @@ public class MemberServiceImpl implements MemberService {
     public void joinMember(MemberVo params) {
         //encrypt
         String password = params.getPassword();
-        params.setState("1");
+
+        if(params.getState() == null) params.setState("1");
 
         int row = memberMapper.insertMember(params);
     }
